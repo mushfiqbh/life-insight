@@ -15,7 +15,6 @@ const Page: React.FC = () => {
   const { postId } = useParams() as { postId: string };
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
   const { posts, loading } = useSelector((state: RootState) => state.posts);
-  // const [loading, setLoading] = useState(true);
   const [post, setPost] = useState<PostProps | null>(null);
   const [readingTime, setReadingTime] = useState(1);
 

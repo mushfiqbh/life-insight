@@ -1,8 +1,17 @@
 @import url("https://fonts.maateen.me/kalpurush/font.css");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
+
 :root {
-  
+  --color-deep: #13404f;
+  --color-bg: #f7f9f9;
+  --color-red: #d33b52;
+  --color-green: #2ebe7e;
+  --color-greenish: #dcebed;
+  --color-deepest: #257f69;
+  --color-gree: #d0ede1;
+  --color-blue: #2a528f;
+  --color-silver: #557580;
 }
 
 * {
@@ -13,6 +22,14 @@
   font-family: "kalpurush", "Roboto", Arial, sans-serif;
 }
 
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--color-deep);
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  padding-top: 4rem;
+}
+
 :lang(en) {
   font-family: "Roboto", Arial, sans-serif;
 }
@@ -21,21 +38,9 @@
   font-family: "kalpurush", Arial, sans-serif;
 }
 
-body {
-  color: var(--color-deep);
-  background-color: var(--color-bg);
-  min-height: 100vh;
-  padding-top: 4rem;
-}
-
 a {
   text-decoration: none;
   color: inherit;
-}
-
-.flex {
-  display: flex;
-  align-items: center;
 }
 
 @keyframes fadeIn {
@@ -46,6 +51,7 @@ a {
     opacity: 1;
   }
 }
+
 
 .post_elements_parent a {
   color: blue;

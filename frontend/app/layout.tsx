@@ -4,6 +4,7 @@ import ReduxProvider from "./redux-provider"; // Import the new provider
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import FetchData from "./fetch-data";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Next-Redux",
@@ -16,13 +17,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <ReduxProvider>
           <FetchData />
-          <Navbar />
-          {children}
-          <Footer />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar />
+            {children}
+            <Footer />
+          </ThemeProvider>
         </ReduxProvider>
       </body>
     </html>

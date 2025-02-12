@@ -2,8 +2,10 @@ import React from "react";
 
 const LoadingSpinner = () => {
   return (
-    <div className="min-h-[60vh] flex items-center justify-center">
-      <div className="w-24 h-24 border-4 border-gray-300 border-t-red-500 rounded-full animate-spin"></div>
+    <div className="w-full h-[50vh] flex gap-2 items-center justify-center">
+      <div className="w-2 h-5 animate-[ping_1.4s_linear_infinite] bg-sky-600"></div>
+      <div className="w-2 h-5 animate-[ping_1.8s_linear_infinite] bg-sky-600"></div>
+      <div className="w-2 h-5 animate-[ping_2s_linear_infinite] bg-sky-600"></div>
     </div>
   );
 };

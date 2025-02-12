@@ -6,7 +6,7 @@ import { assets } from '@/assets/assets';
 
 const Statbar: React.FC = () => {
   return (
-    <div className="w-full bg-deep mt-[70px] text-white flex items-center justify-between px-10 min-h-[5.5rem]">
+    <div className="w-full bg-deep text-white flex items-center justify-between px-10 min-h-[5.5rem]">
       <div className="w-[55%] flex items-center justify-between py-2 pr-5">
         <div>
           <h3 className="text-lg">বিশ্বস্ত মানসিক স্বাস্থ্য তথ্য আপনার প্রয়োজন</h3>
