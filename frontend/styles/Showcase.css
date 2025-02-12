@@ -1,0 +1,157 @@
+
+.showcase_list {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+}
+
+.showcase_list_single {
+  width: 70%;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-gree);
+}
+
+.showcase_list_single div {
+  padding: 10px;
+}
+
+.showcase_list_single h4 {
+  color: var(--color-green);
+}
+
+.showcase_list_flex {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.showcase_list_title {
+  width: 85%;
+}
+
+.showcase_list_title p {
+  max-height: 25px;
+  overflow: hidden;
+}
+
+.showcase_list_image {
+  display: flex;
+  align-items: center;
+}
+
+.showcase_list_image img {
+  padding: 5px 0;
+  width: 100px;
+  height: 70px;
+}
+
+.showcase_list_single:hover h3 {
+  color: var(--color-red);
+}
+
+.showcase_grid {
+  width: 100%;
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.showcase_grid_single {
+  height: 100%;
+  color: var(--color-deep);
+  background-color: #fff;
+  border-radius: 10px;
+  border-right: 5px solid rgb(240, 240, 240);
+  border-bottom: 5px solid rgb(240, 240, 240);
+}
+
+.showcase_grid_image {
+  height: 150px;
+  position: relative;
+  overflow: hidden;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.showcase_grid_image img {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.showcase_grid_single:hover img {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.showcase_grid_title {
+  padding: 1rem;
+}
+
+.showcase_grid_title b {
+  text-transform: uppercase;
+  color: var(--color-green);
+}
+
+.showcase_grid_title h3 {
+  height: 60px;
+  overflow-y: auto;
+}
+
+.showcase_grid_title h3::-webkit-scrollbar {
+  display: none;
+}
+
+.showcase_grid_title p {
+  color: var(--color-silver);
+}
+
+.showcase_grid_single:hover h3 {
+  color: var(--color-red);
+}
+
+@media (max-width: 480px) {
+  .showcase_list_single {
+    padding: 0 10px;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .showcase_list_title {
+    width: 100%;
+    padding-bottom: 10px;
+  }
+
+  .showcase_list_image {
+    display: none;
+  }
+
+  .showcase_grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+  }
+
+  .showcase_grid_image {
+    height: 100px;
+  }
+
+  .showcase_grid_title {
+    padding: 10px;
+  }
+
+  .showcase_grid_title h3 {
+    height: 52.8px;
+    font-size: medium;
+  }
+}

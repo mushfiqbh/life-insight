@@ -1,0 +1,73 @@
+.post_content a {
+  color: blue;
+  text-decoration: underline;
+}
+
+.post_content sup {
+  color: blue;
+}
+
+.post_content blockquote {
+  padding: 20px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background-color: whitesmoke;
+}
+
+.post_content .quote {
+  font-size: large;
+  padding: 20px;
+  font-weight: 600;
+  color: var(--color-deep);
+}
+
+.post_content .quote b {
+  color: var(--color-silver);
+  float: right;
+  margin-top: 10px;
+}
+
+.post_content .advice {
+  font-size: x-large;
+  text-align: center;
+  padding: 20px;
+  font-weight: 600;
+  color: var(--color-deep);
+}
+
+.post_content .advice hr {
+  height: 5px;
+  width: 150px;
+  margin-top: 20px;
+  margin-left: 50%;
+  transform: translate(-50%);
+  background-color: var(--color-green);
+}
+
+.post_content ul {
+  padding-left: 40px;
+}
+
+.post_content li::marker {
+  font-size: x-large;
+  color: var(--color-green);
+}
+
+.post_content li {
+  margin-bottom: 10px;
+  list-style-type: square;
+}
+
+.post_content li b {
+  color: var(--color-silver);
+}
+
+@media (max-width: 768px) {
+  .post_content ul {
+    padding-left: 30px;
+  }
+
+  .post_content ul {
+    padding-left: 30px;
+  }
+}

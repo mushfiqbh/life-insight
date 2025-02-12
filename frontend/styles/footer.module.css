@@ -1,0 +1,3 @@
+.sociallink {
+  @apply h-10 w-10 flex items-center justify-center bg-silvercolor transition-all duration-200 hover:opacity-50;
+}

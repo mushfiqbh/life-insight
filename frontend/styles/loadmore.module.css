@@ -1,0 +1,27 @@
+.showcase_loadmore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.showcase_loadmore b {
+  padding: 7px 20px;
+  margin: 0 20px;
+  font-size: large;
+  color: #fff;
+  background-color: var(--color-deepest);
+  border-radius: 5px 0;
+  cursor: pointer;
+}
+
+.showcase_loadmore button {
+  border: none;
+  color: var(--color-deepest);
+  background-color: transparent;
+  border-radius: 5px 0;
+  cursor: pointer;
+}
+
+.showcase_loadmore span {
+  font-size: 20px;
+}
