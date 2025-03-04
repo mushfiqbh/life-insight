@@ -4,7 +4,8 @@ import cors from "cors";
 import "dotenv/config";
 import userRouter from "./routes/userRoute.js";
 import postRouter from "./routes/postRoute.js";
-import catalogRouter from "./routes/catalogRoute.js";
+import miscRouter from "./routes/miscRoute.js";
+import overviewRouter from "./routes/overviewRoute.js";
 
 // app config
 const app = express();
@@ -24,7 +25,8 @@ mongoose.connect(process.env.DATABASE_URL).then(() => {
 app.use("/api/images", express.static("uploads"));
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
-app.use("/api/catalogs", catalogRouter);
+app.use("/api/catalogs", overviewRouter);
+app.use("/api/search", miscRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

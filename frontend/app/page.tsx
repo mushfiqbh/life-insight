@@ -6,7 +6,7 @@ import Section from "@/components/section";
 
 const page = async () => {
   return (
-    <div className="homepage">
+    <div className="mt-16">
       <Statbar />
       <Content />
       <Explore />

@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
-import LoadMore from "@/components/ui/load-more";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
@@ -10,16 +9,13 @@ import { deleteCatalog } from "@/redux/catalogSlice";
 import CatalogProps from "@/types/catalogProps";
 
 export default function CatalogList({ data }: { data: CatalogProps[] }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const items: CatalogProps[] = data?.slice(activeIndex * 10, (activeIndex + 1) * 10);
-  const posts = useSelector((state: RootState) => state.posts.posts);
   const userInfo = useSelector((state: RootState) => state.users.userInfo);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
   return (
     <div className="showcase_list">
-      {items?.map((item, index) => (
+      {data?.map((item, index) => (
         <div
           className="showcase_list_single"
           key={index}
@@ -27,18 +23,13 @@ export default function CatalogList({ data }: { data: CatalogProps[] }) {
         >
           <Link
             style={{ width: "100%" }}
-            href={"/admin/overview/" + item._id}
+            href={"/admin/label/" + item._id}
             className="showcase_list_flex"
           >
             <div className="showcase_list_title">
               <h3>{item.title}</h3>
               <p>
-                <b>
-                  {posts.reduce((p, c) => {
-                    return c.label === item.label ? p + 1 : p;
-                  }, 0)}{" "}
-                  Posts
-                </b>
+                <b> {item.posts.length} Posts</b>
                 {" Labeled For "}
                 <b>{item.label}</b>
                 {" Reviewed By "}
@@ -50,7 +41,7 @@ export default function CatalogList({ data }: { data: CatalogProps[] }) {
           <div className="flex justify-between gap-2">
             <button
               className="h-min"
-              onClick={() => router.push("/overview/" + item.label)}
+              onClick={() => router.push("/label/" + item.label)}
             >
               View
             </button>
@@ -71,12 +62,6 @@ export default function CatalogList({ data }: { data: CatalogProps[] }) {
           </div>
         </div>
       ))}
-
-      <LoadMore
-        length={data.length}
-        activeIndex={activeIndex}
-        setActiveIndex={setActiveIndex}
-      />
     </div>
   );
 }

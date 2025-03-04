@@ -1,15 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
+
 import userReducer from "./usersSlice";
-import catalogReducer from "./catalogSlice";
 import postsReducer from "./postsSlice";
+import catalogReducer from "./catalogSlice";
 
 const store = configureStore({
   reducer: {
-    users: userReducer,
-    catalogs: catalogReducer,
     posts: postsReducer,
+    users: userReducer,
+    catalogs: catalogReducer
   },
 });
+
+setupListeners(store.dispatch);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

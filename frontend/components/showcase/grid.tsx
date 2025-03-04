@@ -4,15 +4,15 @@ import { incrementViews } from "@/redux/postsSlice";
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Post from "@/types/postProps";
+import PostProps from "@/types/postProps";
 import LoadMore from "@/components/ui/load-more";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 
-export default function ShowGrid({ data }: { data: Post[] }) {
+export default function ShowGrid({ data }: { data: PostProps[] }) {
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
   const [activeIndex, setActiveIndex] = useState(0);
-  const items: Post[] = data?.slice(0, (activeIndex + 1) * 12);
+  const items: PostProps[] = data?.slice(0, (activeIndex + 1) * 12);
   const dispatch = useDispatch<AppDispatch>();
 
   return (

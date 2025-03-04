@@ -3,55 +3,41 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import CatalogProps from "@/types/catalogProps";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import ShowGrid from "@/components/showcase/grid";
-import PostProps from "@/types/postProps";
+import Accordion from "@/components/ui/accordion";
+import { fetchOverview } from "@/redux/catalogSlice";
 
 const Overview = () => {
   const { label } = useParams() as { label: string };
-  const { catalog, loading: loading1 } = useSelector(
-    (state: RootState) => state.catalogs
-  );
-  const { posts, loading: loading2 } = useSelector(
-    (state: RootState) => state.posts
-  );
-  const [overview, setOverview] = useState<CatalogProps | null>(null);
   const [activeKey, setActiveKey] = useState(0);
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch<AppDispatch>();
+  const { error } = useSelector((state: RootState) => state.catalogs);
+  const overview = useSelector((state: RootState) => state.catalogs.overview);
 
   useEffect(() => {
-    const theOverview = catalog.find(
-      (item: CatalogProps) => item.label.toLowerCase() === label.toLowerCase()
-    );
-    setOverview(theOverview || null);
-  }, [catalog, label]);
+    dispatch(fetchOverview(label)).finally(() => setLoading(false));
+  }, [label, dispatch]);
 
-  if (loading1 && loading2) {
+  if (loading) {
     return <LoadingSpinner />;
   }
 
-  if (!overview) {
+  if (error) {
     return (
-      <div className="p-6 text-center">
-        This page was not found. Go to{" "}
-        <Link className="underline text-blue-500" href="/overview">
-          Overview List
-        </Link>
+      <div className="w-full mt-12 p-5 md:p-20 bg-white">
+        Overview Not Found
       </div>
     );
   }
 
-  const relatedPosts = posts.filter(
-    (item: PostProps) => item.label === overview.label
-  );
-
   return (
-    <div className="w-full p-6 bg-white">
+    <div className="w-full mt-12 p-5 md:p-20 bg-white">
       <Link className="font-semibold text-gray-900" href="">
-        {overview.label.toUpperCase()}
+        {overview?.label?.toUpperCase()}
       </Link>
       <h1 className="text-4xl font-bold mt-2">{overview.title}</h1>
 
@@ -91,24 +77,7 @@ const Overview = () => {
           <h2 className="text-xl font-bold text-white bg-green-500 p-2 rounded-t-md">
             প্রায়ই জিজ্ঞাসিত প্রশ্নোত্তর
           </h2>
-          {overview.faqs.map(
-            (item, index) =>
-              item.question && (
-                <li key={index} className="p-4 border-b last:border-none">
-                  <h3
-                    className="cursor-pointer font-semibold"
-                    onClick={() =>
-                      setActiveIndex(activeIndex === index ? null : index)
-                    }
-                  >
-                    {item.question}
-                  </h3>
-                  {activeIndex === index && (
-                    <p className="mt-2 text-gray-700">{item.answer}</p>
-                  )}
-                </li>
-              )
-          )}
+          {<Accordion dataArr={overview.faqs} />}
         </ul>
       )}
 
@@ -143,7 +112,7 @@ const Overview = () => {
       )}
 
       <h2 className="text-2xl font-semibold mt-6">এই ওভারভিউ এর সমস্ত পোস্ট</h2>
-      <ShowGrid data={relatedPosts} />
+      <ShowGrid data={overview.posts} />
     </div>
   );
 };

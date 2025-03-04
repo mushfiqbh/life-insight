@@ -2,48 +2,43 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Fuse from "fuse.js";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 import PostProps from "@/types/postProps";
 import CatalogProps from "@/types/catalogProps";
+import axios from "axios";
+import { useSearchContext } from "@/context/SearchContext";
 
 interface SearchbarProps {
-  setSearchResult: (result: (PostProps | CatalogProps)[]) => void;
+  setSearchResult: (response: (PostProps | CatalogProps)[]) => void;
   setSearchPerformed: (performed: boolean) => void;
 }
 
-const Searchbar: React.FC<SearchbarProps> = ({
-  setSearchResult,
-  setSearchPerformed,
-}) => {
-  const posts = useSelector((state: RootState) => state.posts.posts);
-  const catalog = useSelector((state: RootState) => state.catalogs.catalog);
+const Searchbar: React.FC<SearchbarProps> = () => {
+  const { setSearchResult, setSearchPerformed } = useSearchContext();
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialQuery = searchParams?.get("query") || "";
   const [query, setQuery] = useState(initialQuery);
   const [searchTime, setSearchTime] = useState("");
+  const url = process.env.NEXT_PUBLIC_SERVER_URL;
 
-  const handleSearch = (event: React.FormEvent) => {
+  const handleSearch = async (event: React.FormEvent) => {
     event.preventDefault();
     setSearchTime(Date.now().toString());
     router.push(`/search?query=${encodeURIComponent(query)}`);
 
-    const options = {
-      keys: ["title", "subtitle", "content", "desc"],
-      includeScore: true,
-      threshold: 0.3,
-    };
+    try {
+      const response = await axios.get(url + "/api/search/" + query);
 
-    const fuse = new Fuse([...posts, ...catalog], options);
-    const result = fuse.search(query);
-    const data = result.map<PostProps | CatalogProps>(
-      ({ item }) => item as PostProps | CatalogProps
-    );
-    setSearchResult(data);
-    setSearchPerformed(true);
+      const data = response.data.data.map(
+        ({ item }: { item: PostProps | CatalogProps }) => item
+      );
+
+      setSearchResult(data);
+      setSearchPerformed(true);
+    } catch (error) {
+      console.error("Search request failed:", error);
+    }
   };
 
   useEffect(() => {

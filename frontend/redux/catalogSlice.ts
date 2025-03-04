@@ -1,26 +1,58 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import CatalogProps from "@/types/catalogProps";
+import CatalogProps, {
+  OverviewIndex,
+  CatalogState,
+} from "@/types/catalogProps";
 
 const url = process.env.NEXT_PUBLIC_SERVER_URL;
 
-interface CatalogState {
-  catalog: CatalogProps[];
-  loading: boolean;
-}
-
 const initialState: CatalogState = {
-  catalog: [],
+  overview: {} as CatalogProps,
+  overviews: {
+    overviewList: [],
+    totalPages: 1,
+  },
+  index: [],
   loading: true,
+  error: null,
 };
 
-// Fetch catalog
-export const fetchCatalog = createAsyncThunk("catalog/fetch", async () => {
-  const response = await axios.get(url + "/api/catalogs");
-  return response.data.data.sort((a: CatalogProps, b: CatalogProps) =>
-    a.title > b.title ? 1 : -1
-  );
-});
+// fetch admin posts
+export const fetchOverviews = createAsyncThunk(
+  "catalog/fetchOverviews",
+  async (page: number) => {
+    try {
+      const response = await fetch(`${url}/api/catalogs/page/${page}`);
+      const { data, totalPages }: { data: CatalogProps[]; totalPages: number } =
+        await response.json();
+
+      return { overviewList: data, totalPages };
+    } catch (error) {
+      console.error("Failed to fetch catalogs", error);
+    }
+  }
+);
+
+// Fetch overview index
+export const fetchOverviewIndex = createAsyncThunk(
+  "catalog/fetchOverviewIndex",
+  async () => {
+    const response = await axios.get(url + "/api/catalogs/");
+    return response.data.data.sort((a: OverviewIndex, b: OverviewIndex) =>
+      a.title > b.title ? 1 : -1
+    );
+  }
+);
+
+// Fetch overview with error handling
+export const fetchOverview = createAsyncThunk(
+  "catalog/fetchOverview",
+  async (label: string) => {
+    const response = await axios.get(url + "/api/catalogs/" + label);
+    return response.data.data;
+  }
+);
 
 // Delete catalog item
 export const deleteCatalog = createAsyncThunk(
@@ -45,14 +77,17 @@ const catalogSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchCatalog.fulfilled, (state, action) => {
-      state.catalog = action.payload;
-      state.loading = false;
+    builder.addCase(fetchOverviews.fulfilled, (state, action) => {
+      state.overviews = action.payload ?? { overviewList: [], totalPages: 0 };
     });
-    builder.addCase(deleteCatalog.fulfilled, (state, action) => {
-      state.catalog = state.catalog.filter(
-        (item) => item._id !== action.payload
-      );
+    builder.addCase(fetchOverview.fulfilled, (state, action) => {
+      state.overview = action.payload;
+    });
+    builder.addCase(fetchOverview.rejected, (state) => {
+      state.error = "Error";
+    });
+    builder.addCase(fetchOverviewIndex.fulfilled, (state, action) => {
+      state.index = action.payload;
     });
   },
 });

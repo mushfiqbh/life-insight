@@ -1,3 +1,5 @@
+import User from "./user";
+
 export default interface PostProps {
   _id: string;
   label: string;
@@ -9,7 +11,7 @@ export default interface PostProps {
   };
   content: string;
   readingTime: number;
-  editors: string[];
+  editors: User[];
   sources: {
     text: string;
     href: string;
@@ -26,4 +28,22 @@ export interface ContentDataProps {
   input2: string;
   placeholder1: string;
   placeholder2: string;
+}
+
+export interface PostsState {
+  post: {
+    post: PostProps;
+    relatedPosts: PostProps[];
+  };
+  posts: {
+    postList: PostProps[];
+    totalPages: number;
+  };
+  selectedPosts: {
+    adminChoice: PostProps;
+    latestPost: PostProps;
+    popularPosts: PostProps[];
+  };
+  loading: boolean;
+  error: string | null;
 }

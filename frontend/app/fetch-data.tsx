@@ -3,8 +3,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { fetchPosts } from "@/redux/postsSlice";
-import { fetchCatalog } from "@/redux/catalogSlice";
 import { getUserInfo, setToken } from "@/redux/usersSlice";
 import Cookies from "js-cookie";
 
@@ -14,8 +12,6 @@ const FetchData = () => {
   useEffect(() => {
     dispatch(setToken(Cookies.get("token") || ""));
     dispatch(getUserInfo(Cookies.get("token") || ""));
-    dispatch(fetchPosts());
-    dispatch(fetchCatalog());
   }, [dispatch]);
 
   return null;

@@ -4,16 +4,16 @@ import { incrementViews } from "@/redux/postsSlice";
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Post from "@/types/postProps";
 import LoadMore from "@/components/ui/load-more";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import CatalogProps from "@/types/catalogProps";
+import PostProps from "@/types/postProps";
 
 export default function SearchList({
   data,
 }: {
-  data: (Post | CatalogProps)[];
+  data: (PostProps | CatalogProps)[];
 }) {
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
   const [activeIndex, setActiveIndex] = useState(0);
@@ -24,7 +24,9 @@ export default function SearchList({
     <div className="showcase_list">
       {items?.map((item, index) => (
         <Link
-          href={"/post/" + item._id}
+          href={
+            "views" in item ? "/post/" + item._id : "/overview/" + item.label
+          }
           key={index}
           onClick={() => item._id && dispatch(incrementViews(item._id))}
           className="showcase_list_single"
@@ -36,7 +38,11 @@ export default function SearchList({
           </div>
           <div className="showcase_list_image">
             <Image
-              src={url + "/api/images/" + ('image' in item ? item.image : 'defaultCatalog.jpg')}
+              src={
+                url +
+                "/api/images/" +
+                ("image" in item ? item.image : "defaultCatalog.jpg")
+              }
               alt=""
               height={50}
               width={50}

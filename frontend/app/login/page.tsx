@@ -28,6 +28,8 @@ const Page: React.FC<LoginPopupProps> = () => {
   const [permissions, setPermissions] = useState<string[]>([]);
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
 
+  
+
   useEffect(() => {
     const fetched = userInfoList?.find((user) => user._id === targetId);
     setPermissions(fetched?.permission || []);

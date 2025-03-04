@@ -2,25 +2,31 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-// import { assets } from "@/assets/assets";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import Image from "next/image";
+import { topics } from "@/assets/assets";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { fetchOverviewIndex } from "@/redux/catalogSlice";
 
 const Page: React.FC = () => {
   const [activeAlpha, setActiveAlpha] = useState<string>("All");
   const [alphas, setAlphas] = useState<string[]>([]);
-
-  const catalog = useSelector((state: RootState) => state.catalogs.catalog);
+  const dispatch = useDispatch<AppDispatch>();
+  const overviews = useSelector((state: RootState) => state.catalogs.index);
 
   useEffect(() => {
-    if (!catalog || !Array.isArray(catalog)) return;
+    dispatch(fetchOverviewIndex());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!overviews || !Array.isArray(overviews)) return;
 
     const alphabet = Array.from(
       new Set(
-        catalog
+        overviews
           .map((item) => item?.title?.[0])
           .concat(
-            catalog
+            overviews
               .map((item) => item?.subtitle?.[0]?.toUpperCase())
               .filter(Boolean)
           )
@@ -28,33 +34,30 @@ const Page: React.FC = () => {
     );
 
     setAlphas(["All", ...alphabet.sort()]);
-  }, [catalog]);
+  }, [overviews]);
 
   return (
-    <>
-      <div className="w-full p-5 md:px-[10%] flex justify-between bg-green-500">
-        <h1 className="text-xl font-bold text-white">এটুজেড কন্ডিশন</h1>
-        {/* <div className="flex items-center justify-end gap-6">
-          {[
-            { src: assets.meditation, label: "ধ্যান" },
-            { src: assets.brain_health, label: "উন্নতি" },
-            { src: assets.adhd, label: "ADHD" },
-            { src: assets.anxiety, label: "দুশ্চিন্তা" },
-            { src: assets.addiction, label: "অনুরতি" },
-            { src: assets.psychology, label: "মনোবিজ্ঞান" },
-          ].map((item, index) => (
-            <Link href="" key={index} className="text-center">
-              <video src={item.src} className="h-16 w-16" />
-              <h4 className="text-white">{item.label}</h4>
+    <div>
+      <div className="w-full mt-16 p-5 md:px-[10%] md:flex justify-between bg-[--primary]">
+        <h1 className="text-xl mb-2 font-bold text-white">এটুজেড কন্ডিশন</h1>
+        <div className="flex flex-wrap items-center justify-start gap-6">
+          {topics.map((item, index) => (
+            <Link href={item.link} key={index} className="text-center">
+              <Image
+                src={item.icon}
+                alt={item.alt}
+                width={100}
+                height={100}
+                className="h-16 w-16"
+              />
+              <h4 className="text-white">{item.topic}</h4>
             </Link>
           ))}
-        </div> */}
+        </div>
       </div>
 
-      <div className="w-4/5 mx-auto p-5 bg-white">
-        <h3 className="text-lg font-semibold text-gray-800">
-          প্রথম বর্ণ দিয়ে খুঁজুন
-        </h3>
+      <div className="w-full md:w-4/5 mx-auto p-5">
+        <h3 className="text-lg text-gray-800">প্রথম বর্ণ দিয়ে খুঁজুন</h3>
         <div className="flex flex-wrap gap-2 mt-2">
           {alphas.map((alpha, index) => (
             <b
@@ -72,8 +75,8 @@ const Page: React.FC = () => {
         </div>
       </div>
 
-      <div className="w-4/5 mx-auto p-5 bg-white flex flex-wrap gap-5 font-bold">
-        {catalog.map((item, index) => {
+      <div className="w-full md:w-4/5 mx-auto p-5 flex flex-wrap gap-5 font-bold">
+        {overviews.map((item, index) => {
           if (
             activeAlpha === "All" ||
             activeAlpha === item.title[0] ||
@@ -94,7 +97,7 @@ const Page: React.FC = () => {
           return null;
         })}
       </div>
-    </>
+    </div>
   );
 };
 

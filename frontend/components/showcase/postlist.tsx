@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Post from "@/types/postProps";
-import LoadMore from "@/components/ui/load-more";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
@@ -12,18 +11,16 @@ import { deletePost } from "@/redux/postsSlice";
 
 export default function PostList({ data }: { data: Post[] }) {
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
-  const [activeIndex, setActiveIndex] = useState(0);
-  const items = data?.slice(activeIndex * 10, (activeIndex + 1) * 10);
   const router = useRouter();
   const userInfo = useSelector((state: RootState) => state.users.userInfo);
-  const adminChoice = useSelector(
-    (state: RootState) => state.posts.adminChoice
+  const { adminChoice } = useSelector(
+    (state: RootState) => state.posts.selectedPosts
   );
   const dispatch = useDispatch<AppDispatch>();
 
   return (
     <div className="showcase_list">
-      {items?.map((item, index) => {
+      {data?.map((item, index) => {
         return (
           <div className="showcase_list_single" key={index}>
             <Link
@@ -77,12 +74,6 @@ export default function PostList({ data }: { data: Post[] }) {
           </div>
         );
       })}
-
-      <LoadMore
-        length={data.length}
-        activeIndex={activeIndex}
-        setActiveIndex={setActiveIndex}
-      />
     </div>
   );
 }

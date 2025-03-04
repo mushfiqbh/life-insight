@@ -1,30 +1,57 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import Post from "../types/postProps";
+import PostProps, { PostsState } from "../types/postProps";
 import axios from "axios";
 
 const url = process.env.NEXT_PUBLIC_SERVER_URL;
 
-interface PostsState {
-  posts: Post[];
-  adminChoice: Post;
-  popularPosts: Post[];
-  latestPost: Post;
-  loading: boolean;
-}
-
 const initialState: PostsState = {
-  posts: [],
-  adminChoice: {} as Post,
-  latestPost: {} as Post,
-  popularPosts: [],
+  post: {
+    post: {} as PostProps,
+    relatedPosts: [],
+  },
+  posts: {
+    postList: [],
+    totalPages: 1,
+  },
+  selectedPosts: {
+    adminChoice: {} as PostProps,
+    latestPost: {} as PostProps,
+    popularPosts: [],
+  },
   loading: true,
+  error: null,
 };
 
-// Fetch posts
-export const fetchPosts = createAsyncThunk("posts/fetch", async () => {
-  const response = await axios.get(`${url}/api/posts`);
+// fetch admin posts
+export const fetchPosts = createAsyncThunk(
+  "posts/fetchPosts",
+  async (page: number) => {
+    try {
+      const response = await fetch(`${url}/api/posts/page/${page}`);
+      const { data, totalPages }: { data: PostProps[]; totalPages: number } =
+        await response.json();
+
+      return { postList: data, totalPages };
+    } catch (error) {
+      console.error("Failed to fetch posts", error);
+    }
+  }
+);
+
+// Fetch filtered posts
+export const fetchSelectedPosts = createAsyncThunk("posts/fetch", async () => {
+  const response = await axios.get(url + "/api/posts/filter");
   return response.data.data;
 });
+
+// Fetch post and related posts
+export const fetchPost = createAsyncThunk(
+  "posts/post",
+  async (postId: string) => {
+    const response = await axios.get(url + "/api/posts/" + postId);
+    return response.data.data;
+  }
+);
 
 // Increment post views
 export const incrementViews = createAsyncThunk(
@@ -53,7 +80,7 @@ export const updateAdminChoice = createAsyncThunk(
   "posts/updateAdminChoice",
   async (ID: string, { getState }) => {
     const { posts } = (getState() as { posts: PostsState }).posts;
-    const previousAdminChoice = posts.find((post) => post.adminChoice);
+    const previousAdminChoice = posts.postList.find((post) => post.adminChoice);
 
     await axios.put(`${url}/api/posts/${ID}`, { adminChoice: true });
 
@@ -73,26 +100,35 @@ const postsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchPosts.fulfilled, (state, action) => {
-      state.posts = action.payload;
-      state.adminChoice = action.payload.find((post: Post) => post.adminChoice);
-      const sorted = [...state.posts].sort((a, b) => b.views - a.views);
-      state.popularPosts = sorted.slice(0, 3);
-      state.latestPost = state.posts[state.posts.length - 1];
+      state.posts = action.payload ?? { postList: [], totalPages: 0 };
+    });
+    builder.addCase(fetchSelectedPosts.fulfilled, (state, action) => {
+      state.selectedPosts = action.payload;
       state.loading = false;
     });
+    builder.addCase(fetchPost.fulfilled, (state, action) => {
+      state.post = action.payload;
+    });
+    builder.addCase(fetchPost.rejected, (state) => {
+      state.error = "Error";
+    });
     builder.addCase(deletePost.fulfilled, (state, action) => {
-      state.posts = state.posts.filter((post) => post._id !== action.payload);
+      state.posts.postList = state.posts.postList.filter(
+        (post) => post._id !== action.payload
+      );
     });
-    builder.addCase(incrementViews.fulfilled, (state, action) => {
-      const post = state.posts.find((post) => post._id === action.payload);
-      if (post) {
-        post.views += 1;
-      }
-    });
-    builder.addCase(updateAdminChoice.fulfilled, (state, action) => {
-      state.adminChoice =
-        state.posts.find((post) => post._id === action.payload) || ({} as Post);
-    });
+    // builder.addCase(incrementViews.fulfilled, (state, action) => {
+    //   const post = state.posts.postList.find(
+    //     (post) => post._id === action.payload
+    //   );
+    //   if (post) {
+    //     post.views += 1;
+    //   }
+    // });
+    // builder.addCase(updateAdminChoice.fulfilled, (state, action) => {
+    //   state.adminChoice =
+    //     state.posts.find((post) => post._id === action.payload) || ({} as PostProps);
+    // });
   },
 });
 

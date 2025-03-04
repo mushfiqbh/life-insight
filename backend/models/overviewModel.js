@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const catalogSchema = mongoose.Schema({
+const overviewSchema = mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -13,6 +13,12 @@ const catalogSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  posts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "post",
+    },
+  ],
   desc: {
     type: String,
   },
@@ -32,6 +38,6 @@ const catalogSchema = mongoose.Schema({
   },
 });
 
-const catalogModel =
-  mongoose.models.catalog || mongoose.model("catalog", catalogSchema);
-export default catalogModel;
+const overviewModel =
+  mongoose.models.overview || mongoose.model("overview", overviewSchema);
+export default overviewModel;

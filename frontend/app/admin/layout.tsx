@@ -1,3 +1,4 @@
+import { AdminProvider } from "@/context/AdminContext";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,8 +8,10 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="admin">
-      <main>{children}</main>
-    </div>
+    <AdminProvider>
+      <div className="admin">
+        <main>{children}</main>
+      </div>
+    </AdminProvider>
   );
 }

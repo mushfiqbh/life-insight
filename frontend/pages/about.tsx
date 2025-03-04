@@ -1,16 +1,15 @@
-import Head from "next/head"
+import Head from "next/head";
 
 function About() {
   return (
     <>
-    <Head>
+      <Head>
         <title>About Us</title>
-    </Head>
-    <div>
-        THis is about page
-    </div>
+      </Head>
+      <div>THis is about page</div>
+      
     </>
-  )
+  );
 }
 
-export default About
+export default About;

@@ -1,15 +1,15 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { assets } from "@/assets/assets";
+import { sections } from "@/assets/assets";
 
 const Section = () => {
   return (
-    <div className="w-full">
-      <div className="w-4/5 mx-auto my-4 bg-transparent p-4">
+    <div className="w-full md:w-5/6 px-2 md:px-0 mx-auto">
+      <div className="bg-transparent my-4 py-4">
         <h3 className="pl-5">আমাদের প্রতিশ্রুতি</h3>
-        <div className="p-5 mt-2 rounded-xl bg-green-500 flex flex-wrap items-center justify-around">
-          <div className="w-1/3 pb-5">
+        <div className="p-5 md:p-10 mt-2 rounded-xl bg-green-500 flex flex-col md:flex-row items-center justify-around">
+          <div className="pb-5">
             <h2>
               আমাদের বিষয়বস্তু আপনাকে আপনার মানসিক জন্য সেরা পছন্দ করতে সাহায্য
               করে মঙ্গল
@@ -17,32 +17,66 @@ const Section = () => {
             <br />
             <Link
               href=""
-              className="p-4 text-white rounded-md bg-green-600 hover:bg-green-800 transition-all"
+              className="p-4 text-sm text-white rounded-md bg-green-600 hover:bg-green-800 transition-all"
             >
               আমাদের প্রক্রিয়া সম্পর্কে পড়ুন
             </Link>
           </div>
-          {[
-            {
-              img: assets.health_expert,
-              text: "লিখেছেন মানসিক স্বাস্থ্য বিশেষজ্ঞ এবং সাংবাদিক",
-            },
-            {
-              img: assets.fact_checked,
-              text: "বিজ্ঞান-সমর্থিত গবেষণার সাথে ফ্যাক্ট-চেক করা হয়েছে",
-            },
-            {
-              img: assets.medical_reviewd,
-              text: "চিকিত্সক এবং মানসিক স্বাস্থ্য পেশাদারদের দ্বারা পর্যালোচনা",
-            },
-            {
-              img: assets.update,
-              text: "সর্বশেষ স্বাস্থ্য তথ্য প্রতিফলিত করার জন্য আপডেট",
-            },
-          ].map((step, index) => (
-            <div key={index} className="w-1/5 text-center">
+          {sections.promises.map((step, index) => (
+            <div key={index} className="text-center flex md:flex-col">
               <Image src={step.img} alt="" className="w-24 mx-auto" />
               <h4>{step.text}</h4>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="my-4 py-4 border border-gray-200 rounded-lg">
+        <h3 className="pl-5">আমাদের রিভিউ বোর্ড</h3>
+        <div className="mt-3 md:flex rounded-lg">
+          <div className="md:w-1/2 grid grid-cols-1 md:grid-cols-2 gap-5 ml-[10px]">
+            {sections.reviewBoard.map(({ name, role, image, width }, index) => (
+              <Link
+                key={index}
+                href=""
+                className="flex items-center gap-[10px] hover:text-red-500"
+              >
+                <Image
+                  className="rounded-sm"
+                  src={image}
+                  alt=""
+                  width={width}
+                />
+                <div>
+                  <h4>{name}</h4>
+                  <p>{role}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div className="md:w-1/2 flex flex-col items-center justify-center gap-5 md:px-10 py-10">
+            <h2>
+              আমাদের বোর্ড-প্রত্যয়িত চিকিত্সক এবং অন্যান্য মানসিক স্বাস্থ্যের
+              দল পেশাদাররা নিশ্চিত করে যে আমাদের বিষয়বস্তু সঠিক, আপ-টু-ডেট এবং
+              অন্তর্ভুক্ত
+            </h2>
+            <Link
+              href=""
+              className="self-center md:self-start p-4 bg-green-700 hover:bg-slate-700 text-white rounded-md transition-all duration-200"
+            >
+              টিমের সাথে যুক্ত হোন
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-transparent my-4 py-4">
+        <h3>সাম্প্রতিক পুরষ্কার</h3>
+        <div className="mt-3 flex flex-col items-start md:flex-row md:items-center justify-between gap-3">
+          {sections.rewards.map(({ title, image }, index) => (
+            <div key={index}>
+              <Image src={image} alt="" width={100} height={100} />
+              <h4>{title}</h4>
             </div>
           ))}
         </div>

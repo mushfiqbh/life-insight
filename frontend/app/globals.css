@@ -1,3 +1,6 @@
+@import url("https://fonts.maateen.me/kalpurush/font.css");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,24 +9,52 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+:lang(en) {
+  font-family: "Roboto", Arial, sans-serif;
+}
+
+:lang(bn) {
+  font-family: "kalpurush", Arial, sans-serif;
+}
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    --primary: #13404f;
+    --color-bg: #f7f9f9;
+    --color-red: #d33b52;
+    --color-green: #2ebe7e;
+    --color-greenish: #dcebed;
+    --color-deepest: #257f69;
+    --color-gree: #d0ede1;
+    --color-blue: #2a528f;
+    --color-silver: #557580;
+    --background: #f7f9f9;
+    --foreground: #ff0000;
+
+    --deepest-blue: #13404f;
+    --background: #f7f9f9;
+    --foreground-red: #ff0000;
+    --primary-red: #d33b52;
+    --primary-green: #2ebe7e;
+    --soft-green: #dcebed;
+    --mint-green: #d0ede1;
+    --deep-green: #257f69;
+    --deep-blue: #2a528f;
+    --steel-silver: #557580;
+
+    --card: #ffffff;
+    --card-foreground: #0a0d11;
+    --popover: #ffffff;
+    --popover-foreground: #0a0d11;
+    --primary-foreground: #fafafa;
+    --secondary: #f0f1f5;
+    --secondary-foreground: #18191c;
+    --muted: #f0f1f5;
+    --muted-foreground: #717178;
+    --accent: #f0f1f5;
+    --accent-foreground: #18191c;
+    --destructive: #e03131;
+    --destructive-foreground: #fafafa;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 240 10% 3.9%;
@@ -35,7 +66,7 @@ body {
     --radius: 0.5rem;
   }
   .dark {
-    --background: 240 10% 3.9%;
+    --background: 0% 100% 100%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
     --card-foreground: 0 0% 98%;
@@ -68,5 +99,17 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 }

@@ -1,0 +1,135 @@
+.create_post {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: 20px 10%;
+}
+
+.mui_input > div {
+  width: 70%;
+}
+
+.create_post form {
+  width: 45%;
+}
+
+.add_image_upload img {
+  width: 120px;
+}
+
+.form_metadata {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form_metadata > div {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.form_metadata a {
+  margin-left: 30%;
+  font-size: small;
+  color: var(--color-silver);
+}
+
+.form_metadata input,
+.form_metadata select {
+  width: 70%;
+  padding: 10px;
+  font-size: large;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid var(--color-gree);
+}
+
+.form_metadata input:focus,
+.form_metadata select:focus {
+  border-bottom-color: var(--color-deep);
+}
+
+.form_sources {
+  display: flex;
+  flex-direction: column;
+}
+
+.form_sources input {
+  width: 100%;
+}
+
+.form_sources fieldset {
+  padding: 10px 0;
+  border: none;
+}
+
+.form_content textarea {
+  width: 100%;
+  height: 530px;
+  padding: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: medium;
+  outline: none;
+  border: none;
+  resize: vertical;
+  overflow: auto;
+}
+
+.form_btn {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.form_btn button {
+  width: 30%;
+  padding: 5px;
+  color: #fff;
+  border-radius: 10px;
+  background-color: var(--color-green);
+  font-size: large;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.form_btn button:hover {
+  background-color: var(--color-deep);
+}
+
+.post_preview {
+  width: 50%;
+  padding: 20px;
+  background-color: #fff;
+  height: 630px;
+  resize: vertical;
+  overflow: auto;
+  outline: none;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .create_post {
+    margin: 20px;
+    flex-direction: column;
+  }
+
+  .post_preview {
+    width: 100%;
+    padding: 20px 0;
+  }
+
+  .create_post > form {
+    width: 100%;
+  }
+
+  .form_metadata > div > label {
+    display: none;
+  }
+
+  .form_metadata input {
+    width: 100%;
+  }
+}
