@@ -4,7 +4,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["localhost", "127.0.0.1"],
+    domains: ["localhost", "127.0.0.1", "https://life-insight.onrender.com"],
   },
 };
 
