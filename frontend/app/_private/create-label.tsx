@@ -97,7 +97,7 @@ const CreateLabel = ({ data, setData, loading }: CreateLabelProps) => {
           },
           faqs: [{ question: "", answer: "" }],
           keyterms: [{ key: "", terms: "" }],
-          date: new Date().toISOString()
+          date: new Date().toISOString(),
         });
       } else {
         console.error(response.data.message);

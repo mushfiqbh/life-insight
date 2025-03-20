@@ -18,7 +18,7 @@ export default interface CatalogProps {
     key: string;
     terms: string;
   }[];
-  posts: PostProps[];
+  posts?: PostProps[];
   date: string;
 }
 
