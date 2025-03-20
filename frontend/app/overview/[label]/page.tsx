@@ -112,7 +112,7 @@ const Overview = () => {
       )}
 
       <h2 className="text-2xl font-semibold mt-6">এই ওভারভিউ এর সমস্ত পোস্ট</h2>
-      <ShowGrid data={overview.posts} />
+      <ShowGrid data={overview.posts || []} />
     </div>
   );
 };
