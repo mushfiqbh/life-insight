@@ -6,18 +6,21 @@ import clsx from "clsx";
 export function Button({
   variant = "contained",
   children,
+  type = "button",
   className,
   disabled = false,
   onClick,
 }: {
   variant?: "text" | "contained" | "outlined";
   children?: React.ReactNode;
+  type?: "button" | "submit" | "reset" | undefined;
   className?: string;
   disabled?: boolean;
   onClick?: () => void;
 }) {
   return (
     <button
+      type={type}
       onClick={onClick}
       disabled={disabled}
       className={clsx(

@@ -13,22 +13,23 @@ import { updateAdminChoice } from "@/redux/postsSlice";
 import { assets } from "@/assets/assets";
 
 import parse from "html-react-parser";
-import { Dispatch, SetStateAction } from "react";
 import LoadingSpinner from "@/components/ui/loading-spinner";
+import { useAdminContext } from "@/context/AdminContext";
 
-interface CreatePostProps {
-  data: PostProps;
-  setData: Dispatch<SetStateAction<PostProps>>;
+const CreatePost = ({
+  loading = false,
+  reset = false,
+}: {
   loading?: boolean;
-}
-
-const CreatePost = ({ data, setData, loading }: CreatePostProps) => {
+  reset?: boolean;
+}) => {
   const router = useRouter();
   const { postId } = useParams() as { postId: string };
-  const adminChoice = useSelector(
-    (state: RootState) => state.posts.adminChoice
+  const { adminChoice } = useSelector(
+    (state: RootState) => state.posts.selectedPosts
   );
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
+  const { data, setData } = useAdminContext();
   const { token, userInfo } = useSelector((state: RootState) => state.users);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [buttonText, setButtonText] = useState("Save");
@@ -42,6 +43,10 @@ const CreatePost = ({ data, setData, loading }: CreatePostProps) => {
     placeholder1: "",
     placeholder2: "",
   });
+
+  if (reset) {
+    setData({} as PostProps);
+  }
 
   const handleInsertText = () => {
     let textToInsert = "";
@@ -109,12 +114,12 @@ const CreatePost = ({ data, setData, loading }: CreatePostProps) => {
     const { label, title, subtitle, author, editors, sources, content, date } =
       data;
 
-    if (!editors.includes(userInfo._id)) {
-      setData({
-        ...data,
-        editors: [...editors, userInfo._id],
-      });
-    }
+    // if (!editors.includes(userInfo._id)) {
+    //   setData({
+    //     ...data,
+    //     editors: [...editors, userInfo._id],
+    //   });
+    // }
 
     let response;
     // Update Existing Post
@@ -164,7 +169,7 @@ const CreatePost = ({ data, setData, loading }: CreatePostProps) => {
           sources: [{ text: "", href: "" }],
           content: "",
           image: "",
-          date: new Date().toISOString().split("T")[0],
+          date: new Date().toISOString()
         });
         setFile(null);
       }
@@ -483,7 +488,7 @@ const CreatePost = ({ data, setData, loading }: CreatePostProps) => {
         )}
       </form>
 
-      <div className="w-full lg:w-1/2 p-5 bg-gray-100 rounded-lg shadow">
+      <div className="w-full lg:w-1/2 p-5 rounded-lg shadow">
         <h2 className="text-lg font-bold mb-2">Post Preview</h2>
         <div>{parse(data.content || "")}</div>
       </div>

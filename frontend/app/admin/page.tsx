@@ -16,7 +16,7 @@ const Page = () => {
       <Stack
         spacing={2}
         direction="row"
-        className="w-4/5 mx-auto flex-wrap gap-2 bg-white p-4 rounded-lg shadow-md"
+        className="w-full flex-wrap gap-2 bg-background p-4 rounded-lg shadow-md"
       >
         <Button
           variant={toggle ? "contained" : "outlined"}

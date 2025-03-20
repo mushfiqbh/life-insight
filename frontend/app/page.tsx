@@ -1,18 +1,18 @@
 import React from "react";
 import Statbar from "@/components/statbar";
-import Content from "@/components/content";
 import Explore from "@/components/explore";
 import Section from "@/components/section";
+import Spotlight from "@/components/spotlight";
 
-const page = async () => {
+const Page = () => {
   return (
-    <div className="mt-16">
+    <div className="mt-20">
       <Statbar />
-      <Content />
+      <Spotlight />
       <Explore />
       <Section />
     </div>
   );
 };
 
-export default page;
+export default Page;

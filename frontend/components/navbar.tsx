@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -8,14 +8,31 @@ import { assets } from "@/assets/assets";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { ThemeSwitcher } from "./ui/theme-switcher";
+import { useTranslations } from "next-intl";
+import LanguageSwitcher from "./ui/language-switcher";
 
 const Navbar: React.FC = () => {
   const token = useSelector((state: RootState) => state.users.token);
   const pathname = usePathname();
+  const t = useTranslations("navbar");
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <header className="fixed top-0 z-50 w-full shadow-md backdrop-blur-xl">
-      <div className="flex h-16 items-center justify-between px-10">
+    <header
+      className={`fixed top-0 z-50 w-full bg-transparent transition-all duration-300 ${
+        scrolled ? "p-5" : "p-0"
+      }`}
+    >
+      <nav className="flex h-20 items-center justify-between px-10 rounded-lg shadow-md backdrop-blur-xl">
         <Link href="/search" className="block md:hidden">
           <Image src={assets.menu} alt="menu" className="w-10" />
         </Link>
@@ -31,13 +48,13 @@ const Navbar: React.FC = () => {
           </Link>
           <nav className="hidden md:flex items-center ml-4 border-l border-gray-300 pl-4 space-x-4">
             {[
-              { href: "/atoz", label: "এটুজেড" },
-              { href: "/therapy", label: "থেরাপি" },
-              { href: "/living-well", label: "জীবন" },
-              { href: "/relationship", label: "সম্পর্ক" },
-              { href: "/psychology", label: "মনোবিজ্ঞান" },
-              { href: "/about", label: "আমাদের" },
-              token && { href: "/admin", label: "এডমিন প্যানেল" },
+              { href: "/atoz", label: t("atoz") },
+              { href: "/therapy", label: t("therapy") },
+              { href: "/living-well", label: t("living") },
+              { href: "/relationship", label: t("relate") },
+              { href: "/psychology", label: t("psych") },
+              { href: "/about", label: t("about") },
+              token && { href: "/admin", label: t("admin") },
             ]
               .filter((item): item is { href: string; label: string } =>
                 Boolean(item)
@@ -46,10 +63,10 @@ const Navbar: React.FC = () => {
                 <Link
                   key={href}
                   href={href}
-                  className={`pb-1 font-semibold border-b-3 transition-all ${
+                  className={`pb-1 border-b-4 transition-all ${
                     pathname === href
-                      ? "border-deep"
-                      : "border-transparent hover:border-red"
+                      ? "font-bold border-deep_blue"
+                      : "border-transparent hover:border-primary_red"
                   }`}
                 >
                   {label}
@@ -59,6 +76,7 @@ const Navbar: React.FC = () => {
         </div>
 
         <div className="flex gap-3">
+          <LanguageSwitcher />
           <Link href="/search" className="flex items-center cursor-pointer">
             <Image
               src={assets.search}
@@ -66,10 +84,9 @@ const Navbar: React.FC = () => {
               className="w-8 hover:opacity-70"
             />
           </Link>
-
           <ThemeSwitcher />
         </div>
-      </div>
+      </nav>
     </header>
   );
 };

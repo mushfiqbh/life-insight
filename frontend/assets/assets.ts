@@ -54,19 +54,19 @@ export const sections = {
   promises: [
     {
       img: health_expert,
-      text: "লিখেছেন মানসিক স্বাস্থ্য বিশেষজ্ঞ এবং সাংবাদিক",
+      text: "health_expert",
     },
     {
       img: fact_checked,
-      text: "বিজ্ঞান-সমর্থিত গবেষণার সাথে ফ্যাক্ট-চেক করা হয়েছে",
+      text: "fact_checked",
     },
     {
       img: medical_reviewd,
-      text: "চিকিত্সক এবং মানসিক স্বাস্থ্য পেশাদারদের দ্বারা পর্যালোচনা",
+      text: "medical_reviewed",
     },
     {
       img: update,
-      text: "সর্বশেষ স্বাস্থ্য তথ্য প্রতিফলিত করার জন্য আপডেট",
+      text: "update",
     },
   ],
   reviewBoard: [
@@ -125,26 +125,22 @@ export const sections = {
 export const quizes = [
   {
     icon: attachment,
-    alt: "",
-    quesion: "আপনার সংযুক্তি শৈলী কি?",
+    question: "attach",
     link: "",
   },
   {
     icon: gaslight,
-    alt: "",
-    quesion: "আপনার কি গ্যাসলাইট হচ্ছে?",
+    question: "gaslight",
     link: "",
   },
   {
     icon: emotion,
-    alt: "",
-    quesion: "আপনি কি আবেগ?",
+    question: "emotion",
     link: "",
   },
   {
     icon: leadership,
-    alt: "",
-    quesion: "আপনার নেতৃত্ব শৈলী কি?",
+    question: "leadership",
     link: "",
   },
 ];
@@ -152,40 +148,34 @@ export const quizes = [
 export const topics = [
   {
     icon: meditation,
-    alt: "",
-    topic: "ধ্যান",
+    title: "meditation",
     link: "",
   },
   {
     icon: therapy,
-    alt: "",
-    topic: "থেরাপি",
+    title: "therapy",
     link: "",
   },
   {
     icon: relationship,
-    alt: "",
-    topic: "সম্পর্ক",
+    title: "relationship",
     link: "",
   },
   {
     icon: selfImprovement,
-    alt: "",
-    topic: "সেলফ",
+    title: "self",
     link: "",
   },
 
   {
     icon: deppresion,
-    alt: "",
-    topic: "ডিপ্রেশন",
+    title: "depression",
     link: "",
   },
 
   {
     icon: anxiety,
-    alt: "",
-    topic: "দুশ্চিন্তা",
+    title: "anxiety",
     link: "",
   },
 ];

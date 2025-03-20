@@ -16,7 +16,7 @@ export function ThemeSwitcher() {
 
   return (
     <div
-      className="cursor-pointer p-2 rounded-full hover:bg-slate-100"
+      className="cursor-pointer p-2 rounded-full hover:bg-mint_green"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
     >
       {theme === "dark" ? (

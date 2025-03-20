@@ -7,12 +7,14 @@ import { topics } from "@/assets/assets";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchOverviewIndex } from "@/redux/catalogSlice";
+import { useTranslations } from "next-intl";
 
 const Page: React.FC = () => {
   const [activeAlpha, setActiveAlpha] = useState<string>("All");
   const [alphas, setAlphas] = useState<string[]>([]);
   const dispatch = useDispatch<AppDispatch>();
   const overviews = useSelector((state: RootState) => state.catalogs.index);
+  const t = useTranslations("explore");
 
   useEffect(() => {
     dispatch(fetchOverviewIndex());
@@ -37,20 +39,20 @@ const Page: React.FC = () => {
   }, [overviews]);
 
   return (
-    <div>
-      <div className="w-full mt-16 p-5 md:px-[10%] md:flex justify-between bg-[--primary]">
+    <div className="atoz mt-24">
+      <div className="w-full p-5 md:px-[10%] md:flex justify-between bg-primary_green">
         <h1 className="text-xl mb-2 font-bold text-white">এটুজেড কন্ডিশন</h1>
         <div className="flex flex-wrap items-center justify-start gap-6">
           {topics.map((item, index) => (
             <Link href={item.link} key={index} className="text-center">
               <Image
                 src={item.icon}
-                alt={item.alt}
+                alt={item.title}
                 width={100}
                 height={100}
                 className="h-16 w-16"
               />
-              <h4 className="text-white">{item.topic}</h4>
+              <h4 className="text-white">{t(item.title)}</h4>
             </Link>
           ))}
         </div>

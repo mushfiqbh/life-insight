@@ -17,7 +17,7 @@ export default function Layout({
 }) {
   return (
     <SearchProvider>
-      <div className="w-4/5 mx-auto bg-white p-4 md:w-full md:mx-0 mt-20">
+      <div className="w-full md:w-fit mx-auto p-4 mt-20">
         {searchBar}
         {children}
         {catalogs}

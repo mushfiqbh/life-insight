@@ -19,29 +19,14 @@ body {
 
 @layer base {
   :root {
-    --primary: #13404f;
-    --color-bg: #f7f9f9;
-    --color-red: #d33b52;
-    --color-green: #2ebe7e;
-    --color-greenish: #dcebed;
-    --color-deepest: #257f69;
-    --color-gree: #d0ede1;
-    --color-blue: #2a528f;
-    --color-silver: #557580;
+    --foreground: #000;
     --background: #f7f9f9;
-    --foreground: #ff0000;
-
-    --deepest-blue: #13404f;
-    --background: #f7f9f9;
-    --foreground-red: #ff0000;
     --primary-red: #d33b52;
+    --primary-blue: #2a528f;
+    --deep-blue: #13404f;
     --primary-green: #2ebe7e;
-    --soft-green: #dcebed;
     --mint-green: #d0ede1;
-    --deep-green: #257f69;
-    --deep-blue: #2a528f;
-    --steel-silver: #557580;
-
+    --ash: #557580;
     --card: #ffffff;
     --card-foreground: #0a0d11;
     --popover: #ffffff;
@@ -64,10 +49,18 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    
   }
   .dark {
-    --background: 0% 100% 100%;
-    --foreground: 0 0% 98%;
+    --foreground: #fff;
+    --background: #1E2636;
+    --primary-red: #d33b52;
+    --primary-blue: #2a528f;
+    --deep-blue: #13404f;
+    --primary-green: #2ebe7e;
+    --mint-green: #257f69;
+    --ash: #00000080;
     --card: 240 10% 3.9%;
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 3.9%;
@@ -90,6 +83,7 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --shadow-color: rgba(255, 255, 255, 0.1);
   }
 }
 
@@ -112,4 +106,9 @@ body {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+}
+
+.shadow1 {
+  box-shadow: 0 4px 10px var(--shadow-color);
+  border-radius: 8px;
 }

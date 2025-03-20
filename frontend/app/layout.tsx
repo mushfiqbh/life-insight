@@ -5,19 +5,25 @@ import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import FetchData from "./fetch-data";
 import { ThemeProvider } from "@/components/theme-provider";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
-  title: "Next-Redux",
-  description: "Implementing Redux in Next(App Router)",
+  title: "Life Insight",
+  description: "Health improvement blog application",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = (await cookies()).get("locale")?.value || "en";
+  const messages = await getMessages();
+
   return (
-    <html lang="bn" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body>
         <ReduxProvider>
           <FetchData />
@@ -27,9 +33,11 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Navbar />
-            {children}
-            <Footer />
+            <NextIntlClientProvider locale={locale} messages={messages}>
+              <Navbar />
+              {children}
+              <Footer />
+            </NextIntlClientProvider>
           </ThemeProvider>
         </ReduxProvider>
       </body>

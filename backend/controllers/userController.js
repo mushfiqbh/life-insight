@@ -54,7 +54,7 @@ const registerUser = async (req, res) => {
     }
 
     if (password.length < 8) {
-      res.json({
+      return res.json({
         success: false,
         message: "Enter at Least 8 Digit Password",
       });

@@ -30,14 +30,14 @@ const Page: React.FC = () => {
   // this not working - bug
   if (error) {
     return (
-      <div className="w-full mt-12 p-5 md:p-20 bg-white text-black">
+      <div className="w-full mt-12 p-5 md:p-20">
         Post Not Found
       </div>
     );
   }
 
   return (
-    <div className="w-full mt-12 p-5 md:p-20 bg-white text-black">
+    <div className="w-full mt-12 p-5 md:p-20">
       <div className="mb-6">
         <Link
           href={`/overview/${post.label}`}

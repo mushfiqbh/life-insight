@@ -3,24 +3,37 @@ import Link from "next/link";
 import Image from "next/image";
 import { assets } from "../assets/assets";
 import styles from "@/styles/footer.module.css";
+import { useTranslations } from "next-intl";
 
 const Footer = () => {
+  const t = useTranslations("footer");
+
   return (
-    <div className="w-full text-white text-center md:text-left bg-[--primary] px-[8%]">
+    <div className="w-full text-white text-center md:text-left bg-deep_blue px-[8%]">
       <Image src={assets.verywellmind} alt="" className="w-[150px] my-5" />
       <hr className="opacity-30" />
       <div className="w-full md:flex">
         <form className="md:w-[45%] pt-10">
-          <h4>আপনার ইনবক্সে একটি সুস্থ মনের জন্য দৈনিক টিপস</h4>
-          <input
-            type="search"
-            id="footer_search"
-            placeholder="Enter your email"
-            className="w-[70%] text-lg p-2.5 mt-2.5 border-none outline-none rounded-tl-lg"
-          />
-          <button className="w-[20%] p-2.5 mt-2.5 text-white bg-redcolor rounded-r-lg text-lg border-none outline-none cursor-pointer">
-            সাবমিট
-          </button>
+          <h4>{t("tips")}</h4>
+          <div className="flex items-center justify-center md:justify-start mt-3">
+            <input
+              type="search"
+              id="footer_search"
+              placeholder="Enter your email"
+              className="w-[70%] text-lg p-2.5 border-none outline-none rounded-lg bg-ash"
+            />
+            <button className="w-[10%] ml-3 rounded-lg text-lg cursor-pointer">
+              <svg
+                height="32"
+                viewBox="0 0 48 48"
+                width="32"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M4.02 42l41.98-18-41.98-18-.02 14 30 4-30 4z" />
+                <path d="M0 0h48v48h-48z" fill="none" />
+              </svg>
+            </button>
+          </div>
         </form>
         <div className="w-full md:w-[18%] p-[30px] pl-2.5 flex flex-col gap-2.5">
           <Link href="">Condition A-Z</Link>
@@ -48,7 +61,7 @@ const Footer = () => {
       <hr className="opacity-30" />
       <div className="w-full md:flex">
         <div className="w-full md:w-[45%] pt-10">
-          <b>আমাদের অনুসরণ করো</b>
+          <b>{t("follow")}</b>
           <div className="w-fit mt-5 mx-auto md:mx-0 flex gap-2.5">
             <Link href="" className={styles.sociallink}>
               +
@@ -65,13 +78,9 @@ const Footer = () => {
           </div>
         </div>
         <div className="w-full md:w-[55%] py-[50px] px-2.5">
-          <p>
-            &quot;খুব ভালো মন&quot; বিষয়বস্তু তথ্য ও শিক্ষামূলক শুধুমাত্র
-            উদ্দেশ্য। আমাদের ওয়েবসাইট একটি বিকল্প হতে উদ্দেশ্য নয় পেশাদার
-            চিকিৎসা পরামর্শ, রোগ নির্ণয় বা চিকিৎসা।
-          </p>
+          <p>{t("about")}</p>
           <br />
-          <p>Ⓒ 2024 Tesseract BD, Inc. — সমস্ত অধিকার সংরক্ষিত</p>
+          <p>Ⓒ 2024 Tesseract BD, Inc. — {t("rights")}</p>
         </div>
       </div>
     </div>

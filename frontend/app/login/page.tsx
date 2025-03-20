@@ -6,6 +6,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { getUserInfo, setToken } from "@/redux/usersSlice";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { Button } from "@/components/ui/button";
 
 interface LoginPopupProps {
   setShowHide: (show: boolean) => void;
@@ -27,8 +28,6 @@ const Page: React.FC<LoginPopupProps> = () => {
   const [targetId, setTargetId] = useState(userInfo?._id || "");
   const [permissions, setPermissions] = useState<string[]>([]);
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
-
-  
 
   useEffect(() => {
     const fetched = userInfoList?.find((user) => user._id === targetId);
@@ -88,14 +87,15 @@ const Page: React.FC<LoginPopupProps> = () => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96" ref={popupRef}>
-        {token && (
-          <div>
-            <h2 className="text-xl font-bold">{userInfo?.name}</h2>
-            <h3 className="text-gray-600">{userInfo?.email}</h3>
-            <div className="mt-4 flex justify-between">
-              <button
+    <div className="mt-[65px] flex">
+      {token && (
+        <div className="w-full md:w-1/3 min-h-full p-32 bg-ash">
+          <ul>
+            <li>Profile</li>
+            <li>Account</li>
+            <li>Preference</li>
+            <li className="w-fit mt-4 p-2 flex rounded-lg">
+              <Button
                 onClick={() => {
                   Cookies.remove("token");
                   dispatch(setToken(""));
@@ -103,8 +103,17 @@ const Page: React.FC<LoginPopupProps> = () => {
                 }}
               >
                 Log Out
-              </button>
-            </div>
+              </Button>
+            </li>
+          </ul>
+        </div>
+      )}
+      <div className="w-full md:w-2/3 p-32 " ref={popupRef}>
+        {token && (
+          <div>
+            <h2 className="text-xl font-bold">{userInfo?.name}</h2>
+            <h3 className="text-gray-600">{userInfo?.email}</h3>
+
             {userInfo?.permission?.includes("admin") && (
               <form className="mt-4 space-y-2">
                 <label className="block font-semibold">Permissions</label>
@@ -178,7 +187,7 @@ const Page: React.FC<LoginPopupProps> = () => {
                 required
               />
               {message && <p className="text-red-500">{message}</p>}
-              <button type="submit">{onLogin ? "Login" : "Register"}</button>
+              <Button type="submit">{onLogin ? "Login" : "Register"}</Button>
             </form>
           </div>
         )}

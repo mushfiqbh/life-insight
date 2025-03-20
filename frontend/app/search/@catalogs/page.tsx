@@ -4,7 +4,7 @@ import { catalogue } from "@/assets/assets";
 
 const Catalogs: React.FC = () => {
   return (
-    <div className="w-full p-5 flex flex-col items-center gap-5" id="catalog">
+    <div className="w-full flex flex-col gap-5" id="catalog">
       {catalogue?.map((set, index) => (
         <div key={index} className="min-w-[50%] sm:min-w-full">
           <Link href={set.pathname}>
@@ -13,12 +13,12 @@ const Catalogs: React.FC = () => {
             </h1>
           </Link>
           <hr className="my-2" />
-          <div className="grid grid-cols-3 gap-2 py-5 sm:grid-cols-2">
+          <div className="flex flex-wrap gap-5 md:gap-12 py-5">
             {set.includes.map((item, idx) => (
               <Link
                 key={idx}
                 href={item.pathname}
-                className="font-semibold hover:text-red-600"
+                className="font-semibold rounded-lg border-2 border-background hover:border-foreground p-3"
               >
                 {item.subtitle}
               </Link>

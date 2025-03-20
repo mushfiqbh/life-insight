@@ -1,45 +1,28 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
-import PostProps from "@/types/postProps";
 import CreatePost from "@/app/_private/create-post";
 import { useParams } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPost } from "@/redux/postsSlice";
+import { AppDispatch } from "@/redux/store";
+import { useAdminContext } from "@/context/AdminContext";
+import { RootState } from "@/redux/store";
 
 const Page = () => {
   const { postId } = useParams() as { postId: string };
-  const url = process.env.NEXT_PUBLIC_SERVER_URL;
-  const [loading, setLoading] = useState<boolean>(true);
-  const [data, setData] = useState<PostProps>({
-    _id: "",
-    readingTime: 0,
-    views: 0,
-    adminChoice: false,
-    label: "",
-    title: "",
-    subtitle: "",
-    author: {
-      name: "",
-      bio: "",
-    },
-    editors: [],
-    sources: [{ text: "", href: "" }],
-    content: "",
-    image: "",
-    date: new Date().toISOString().split("T")[0],
-  });
+  const dispatch = useDispatch<AppDispatch>();
+  const [loading, setLoading] = useState(true);
+  const { setData } = useAdminContext();
+  const { post } = useSelector((state: RootState) => state.posts.post);
 
   useEffect(() => {
-    const fetchPostData = async () => {
-      const response = await axios.get(`${url}/api/posts/${postId}`);
-      const postData = response.data.data;      
-      setData(postData);
-      setLoading(false);
-    };
-    fetchPostData();
-  }, [postId, url]);
+    dispatch(fetchPost(postId));
+    setData(post);
+    setLoading(false);    
+  }, [dispatch, postId, post, setData]);
 
-  return <CreatePost data={data} setData={setData} loading={loading} />;
+  return <CreatePost loading={loading} />;
 };
 
 export default Page;

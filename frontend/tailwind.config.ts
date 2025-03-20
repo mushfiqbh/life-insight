@@ -10,8 +10,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+        primary_red: "var(--primary-red)",
+        primary_blue: "var(--primary-blue)",
+        deep_blue: "var(--deep-blue)",
+        primary_green: "var(--primary-green)",
+        deep_green: "var(--deep-green)",
+        mint_green: "var(--mint-green)",
+        ash: "var(--ash)",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
@@ -20,7 +27,6 @@ export default {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
-        primary: "var(--primary)",
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",

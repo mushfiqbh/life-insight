@@ -29,7 +29,7 @@ export const selectedPosts = async (req, res) => {
 
     data.adminChoice = await postModel.findOne({ adminChoice: 1 });
     data.latestPost = await postModel.findOne().sort({ createdAt: -1 });
-    data.popularPosts = await postModel.find().sort({ views: -1 }).limit(3);
+    data.popularPosts = await postModel.find().sort({ views: -1 }).limit(4);
 
     res.json({ success: true, data });
   } catch (error) {
@@ -46,8 +46,6 @@ export const getPost = async (req, res) => {
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
-
-    // post.editors.populate()
 
     const relatedPosts = await postModel.find({
       label: post.label,

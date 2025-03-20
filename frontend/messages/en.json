@@ -1,0 +1,55 @@
+{
+  "hello": "Hello World!",
+  "greeting": "Welcome, {name}!",
+  "popular": "Popular",
+  "readnow": "Read Now",
+  "explore": {
+    "getquiz": "Take a Quiz",
+    "mhealth": "Mental Health",
+    "attach": "What's Your Attachment Style?",
+    "gaslight": "Are You Being Gaslighted?",
+    "emotion": "What Emotion Are You?",
+    "leadership": "What Is Your Leadership Style?",
+    "meditation": "Meditaion",
+    "therapy": "Therapy",
+    "relationship": "Relationship",
+    "self": "Improvement",
+    "depression": "Depression",
+    "anxiety": "Anxiety"
+  },
+  "navbar": {
+    "atoz": "AtoZ",
+    "therapy": "Therapy",
+    "living": "Living Well",
+    "relate": "Relationship",
+    "psych": "Psychology",
+    "about": "About",
+    "admin": "Admin Panel"
+  },
+  "statbar": {
+    "bio": "Trusted mental health information when you need it most",
+    "slogan": "Know more, live brighter",
+    "readers": "Readers Helped Each Year",
+    "exparts": "Expert Health Writers",
+    "topics": "Mental Health Topics"
+  },
+  "section": {
+    "promise": "Out Promise",
+    "promiseHead": "Our content helps you make the best choices for your mental well-being.",
+    "promiseBtn": "Read about out process",
+    "health_expert": "Written by mental health experts and journalists",
+    "fact_checked": "Fact-checked with science-backed research",
+    "medical_reviewed": "Reviewed by physicians and mental health professionals",
+    "update": "Updated to reflect the latest health information",
+    "review": "Out Review Board",
+    "reviewHead": "Our team of board-certified physicians and other mental health professionals ensures our content is accurate, up-to-date, and inclusive.",
+    "reviewBtn": "Meet The Team",
+    "awards": "Recent Awards"
+  },
+  "footer": {
+    "tips": "Daily tips to inbox",
+    "follow": "Follow Us",
+    "about": "'VeryWellMind' Verywell Mind's content is for informational and educational purposes only. Our website is not intended to be a substitute for professional medical advice, diagnosis, or treatment.",
+    "rights": "All rights reserved"
+  }
+}
