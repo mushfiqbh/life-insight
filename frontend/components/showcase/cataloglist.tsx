@@ -29,7 +29,7 @@ export default function CatalogList({ data }: { data: CatalogProps[] }) {
             <div className="showcase_list_title">
               <h3>{item.title}</h3>
               <p>
-                <b> {item.posts.length} Posts</b>
+                <b> {item?.posts?.length} Posts</b>
                 {" Labeled For "}
                 <b>{item.label}</b>
                 {" Reviewed By "}
