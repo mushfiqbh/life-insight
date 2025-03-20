@@ -7,12 +7,7 @@ import CatalogProps from "@/types/catalogProps";
 import axios from "axios";
 import { useSearchContext } from "@/context/SearchContext";
 
-interface SearchbarProps {
-  setSearchResult: (response: (PostProps | CatalogProps)[]) => void;
-  setSearchPerformed: (performed: boolean) => void;
-}
-
-const Searchbar: React.FC<SearchbarProps> = () => {
+const Searchbar: React.FC = () => {
   const { setSearchResult, setSearchPerformed } = useSearchContext();
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
