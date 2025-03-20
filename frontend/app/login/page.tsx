@@ -8,11 +8,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 
-interface LoginPopupProps {
-  setShowHide: (show: boolean) => void;
-}
-
-const Page: React.FC<LoginPopupProps> = () => {
+const Page: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { token, userInfo, userInfoList } = useSelector(
     (state: RootState) => state.users
