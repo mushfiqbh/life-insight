@@ -14,7 +14,6 @@ const PostPagination = () => {
   const { postList, totalPages } = useSelector(
     (state: RootState) => state.posts.posts
   );
-
   const [loading, setLoading] = useState(false);
   const { page1: page, setPage1: setPage } = useAdminContext();
 
@@ -36,14 +35,22 @@ const PostPagination = () => {
   return (
     <div>
       <PostList data={postList} />
-      <div className="flex justify-center mt-4 space-x-2">
-        <Button onClick={handlePrev} disabled={page === 1}>
-          Previous
+      <div className="flex justify-center mt-6 space-x-4">
+        <Button
+          onClick={handlePrev}
+          disabled={page === 1}
+          className="px-4 py-2 rounded-lg shadow-md disabled:opacity-50"
+        >
+          Prev
         </Button>
-        <span className="px-4 py-2 border rounded-md bg-white">
+        <span className="px-5 py-2 border rounded-lg bg-gray-100 text-gray-800 shadow-sm flex items-center">
           Page {page} of {totalPages}
         </span>
-        <Button onClick={handleNext} disabled={page === totalPages}>
+        <Button
+          onClick={handleNext}
+          disabled={page === totalPages}
+          className="px-4 py-2 rounded-lg shadow-md disabled:opacity-50"
+        >
           Next
         </Button>
       </div>

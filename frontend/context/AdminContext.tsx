@@ -41,7 +41,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     sources: [{ text: "", href: "" }],
     content: "",
     image: "",
-    date: new Date().toISOString()
+    date: new Date().toISOString(),
   });
 
   return (

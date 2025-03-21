@@ -38,9 +38,9 @@ const OverviewPagination = () => {
       <CatalogList data={overviewList} />
       <div className="flex justify-center mt-4 space-x-2">
         <Button onClick={handlePrev} disabled={page === 1}>
-          Previous
+          Prev
         </Button>
-        <span className="px-4 py-2 border rounded-md bg-white">
+        <span className="px-5 py-2 border rounded-lg bg-gray-100 text-gray-800 shadow-sm flex items-center">
           Page {page} of {totalPages}
         </span>
         <Button onClick={handleNext} disabled={page === totalPages}>

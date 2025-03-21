@@ -12,7 +12,7 @@ const Page = () => {
   const { toggle, setToggle } = useAdminContext();
 
   return (
-    <div className="p-4 mt-20">
+    <div className="w-fit mx-auto p-4 mt-20">
       <Stack
         spacing={2}
         direction="row"

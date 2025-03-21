@@ -1,57 +1,69 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import { deleteCatalog } from "@/redux/catalogSlice";
 import CatalogProps from "@/types/catalogProps";
+import { franc } from "franc-min";
+
+const detectLanguage = (text: string) => {
+  const langCode = franc(text);
+  const langMap: Record<string, string> = {
+    eng: "en",
+    ben: "bn",
+    hin: "hi",
+    spa: "es",
+    fra: "fr",
+  };
+  return langMap[langCode] || "en";
+};
 
 export default function CatalogList({ data }: { data: CatalogProps[] }) {
+  const [language, setLanguage] = useState<string>("en");
   const userInfo = useSelector((state: RootState) => state.users.userInfo);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
+  useEffect(() => {
+    setLanguage(detectLanguage(data?.[0]?.title));
+  }, [data, setLanguage]);
+
   return (
-    <div className="showcase_list">
+    <div className="w-full space-y-4 my-5">
       {data?.map((item, index) => (
         <div
-          className="showcase_list_single"
           key={index}
-          style={{ display: "flex", justifyContent: "space-between" }}
+          lang={language}
+          className="flex items-center justify-between p-4 border rounded-lg shadow-sm text-foreground bg-background hover:shadow-md transition"
         >
           <Link
-            style={{ width: "100%" }}
-            href={"/admin/label/" + item._id}
-            className="showcase_list_flex"
+            href={`/admin/label/${item._id}`}
+            className="flex-1 flex items-center gap-4"
           >
-            <div className="showcase_list_title">
-              <h3>{item.title}</h3>
-              <p>
-                <b> {item?.posts?.length} Posts</b>
-                {" Labeled For "}
-                <b>{item.label}</b>
-                {" Reviewed By "}
-                <b>{item.author.name}</b>
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold">{item.title}</h3>
+              <p className="text-sm">
+                <b>{item?.posts?.length} Posts</b> Labeled For{" "}
+                <b>{item.label}</b> Reviewed By <b>{item.author.name}</b>
               </p>
             </div>
           </Link>
 
-          <div className="flex justify-between gap-2">
+          <div className="flex gap-2">
             <button
-              className="h-min"
-              onClick={() => router.push("/label/" + item.label)}
+              className="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
+              onClick={() => router.push(`/label/${item.label}`)}
             >
               View
             </button>
             {userInfo?.permission?.includes("deleteOverview") && (
               <button
-                className="h-min"
-                color="error"
+                className="px-3 py-1 text-sm font-medium text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
                 onClick={() => {
-                  const yes = confirm("Are you sure to delete?");
-                  if (yes && item._id) {
+                  if (confirm("Are you sure to delete?") && item._id) {
                     dispatch(deleteCatalog(item._id));
                   }
                 }}
