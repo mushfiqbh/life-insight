@@ -18,6 +18,8 @@
     "anxiety": "Anxiety"
   },
   "navbar": {
+    "login": "Login",
+    "account": "Account",
     "atoz": "AtoZ",
     "therapy": "Therapy",
     "living": "Living Well",

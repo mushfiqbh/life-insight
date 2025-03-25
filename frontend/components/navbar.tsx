@@ -39,21 +39,21 @@ const Navbar: React.FC = () => {
 
         <div className="flex items-center">
           <Link href="/" className="flex items-center">
-            {/* <Image
-              src={assets.brand}
+            <Image
+              src={assets.verywellmind}
               alt="brand"
               className="w-48 cursor-pointer hover:opacity-70"
-            /> */}
-            BRAND
+            />
           </Link>
           <nav className="hidden md:flex items-center ml-4 border-l border-gray-300 pl-4 space-x-4">
             {[
               { href: "/atoz", label: t("atoz") },
-              { href: "/therapy", label: t("therapy") },
-              { href: "/living-well", label: t("living") },
-              { href: "/relationship", label: t("relate") },
-              { href: "/psychology", label: t("psych") },
+              // { href: "/therapy", label: t("therapy") },
+              // { href: "/living-well", label: t("living") },
+              // { href: "/relationship", label: t("relate") },
+              // { href: "/psychology", label: t("psych") },
               { href: "/about", label: t("about") },
+              { href: "/login", label: token ? t("account") : t("login") },
               token && { href: "/admin", label: t("admin") },
             ]
               .filter((item): item is { href: string; label: string } =>
