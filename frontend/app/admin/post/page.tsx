@@ -1,6 +1,5 @@
-"use client";
+import PostForm from "./post-form";
 
-import CreatePost from "@/app/_private/create-post";
-const Page = () => <CreatePost reset={true} />;
+const Page = () => <PostForm />;
 
 export default Page;

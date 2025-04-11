@@ -2,7 +2,7 @@ import { AdminProvider } from "@/context/AdminContext";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Admin - Next-Redux",
+  title: "Admin - Life Insight",
   description: "Implementing Redux in Next(App Router)",
 };
 

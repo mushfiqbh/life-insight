@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import CatalogProps from "@/types/catalogProps";
-import CreateLabel from "@/app/_private/create-label";
+import CreateLabel from "@/app/admin/_private/create-label";
 import { useParams } from "next/navigation";
 import axios from "axios";
 

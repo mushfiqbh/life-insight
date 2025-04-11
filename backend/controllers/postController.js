@@ -12,11 +12,11 @@ export const getAllPosts = async (req, res) => {
     const totalPosts = await postModel.countDocuments(); // Get total post count
     const data = await postModel.find().skip(skip).limit(limit);
 
-    res.status(200).json({ 
-      success: true, 
-      data, 
-      totalPages: Math.ceil(totalPosts / limit), 
-      currentPage: pageNo 
+    res.status(200).json({
+      success: true,
+      data,
+      totalPages: Math.ceil(totalPosts / limit),
+      currentPage: pageNo,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: "Error Occurred", error });
@@ -60,7 +60,8 @@ export const getPost = async (req, res) => {
 
 export const createPost = async (req, res) => {
   const image_filename = `${req.file.filename}`;
-  const { userId } = req.body;
+
+  const userId = req.userId;
 
   const words = req.body.content?.split(" ")?.length;
   const reading_time = Math.ceil(words / 225);
@@ -72,24 +73,15 @@ export const createPost = async (req, res) => {
     author: JSON.parse(req.body.author),
     content: req.body.content,
     readingTime: reading_time,
-    editors: JSON.parse([userId]),
+    editors: [userId],
     sources: JSON.parse(req.body.sources),
     image: image_filename,
-    date: req.body.date,
+    adminChoice: req.body.adminChoice,
   });
 
   try {
-    let overview = await overviewModel.findOne({
-      label: { label: req.body.label },
-    });
-
-    if (!overview) {
-      return res.json({ success: false, message: "Label does not exists" });
-    }
-
     const thePost = await newPost.save();
-    await overview.posts.push(thePost._id);
-
+    
     res.json({ success: true, message: "Post Created" });
   } catch (error) {
     res.json({ success: false, message: "Error Creating Post", error });
@@ -98,7 +90,7 @@ export const createPost = async (req, res) => {
 
 export const updatePost = async (req, res) => {
   const { postId } = req.params;
-  const { userId, ...updateFields } = req.body; // Separate userId and other fields
+  const userId = req.userId;
 
   try {
     const post = await postModel.findById(postId);
@@ -106,27 +98,34 @@ export const updatePost = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    // Ensure editors array exists
-    if (!post.editors) {
-        post.editors = [];
+    // Ensure `content` exists and calculate reading time safely
+    const words = typeof req.body.content === "string" 
+      ? req.body.content.trim().split(/\s+/).length 
+      : 0;
+    const readingTime = words > 0 ? Math.ceil(words / 225) : 1; // Minimum 1 minute
+
+    // Ensure `editors` exists as an array
+    if (!Array.isArray(post.editors)) {
+      post.editors = [];
     }
 
     // Add userId to editors if not already present
-    if (userId && !post.editors.includes(userId)) {
+    if (userId && !post.editors.includes(userId.toString())) {
       post.editors.push(userId);
     }
 
-    // Update other fields
-    Object.assign(post, updateFields);
+    // Update post fields
+    Object.assign(post, { ...req.body, readingTime });
 
     await post.save();
 
-    res.status(200).json({ success: true, message: "Post Updated" });
+    res.status(200).json({ success: true, message: "Post Updated", post });
   } catch (error) {
-    console.error("Error updating post:", error); // Log the error for debugging
+    console.error("Error updating post:", error);
     res.status(500).json({ message: "Error updating post", error: error.message });
   }
 };
+
 
 export const incrementViews = async (req, res) => {
   const { postId } = req.params;

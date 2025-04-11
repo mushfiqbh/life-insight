@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { Stack } from "@mui/material";
 import { Button } from "@/components/ui/button";
 import { useAdminContext } from "@/context/AdminContext";
-import PostPagination from "./_posts/page";
-import OverviewPagination from "./_overviews/page";
+import PostPagination from "./_private/post-pagination";
+import OverviewPagination from "./_private/overview-pagination";
 
 const Page = () => {
   const router = useRouter();

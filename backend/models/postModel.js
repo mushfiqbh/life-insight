@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import { type } from "os";
 
 const postSchema = mongoose.Schema(
   {
+    
     label: {
       type: String,
       required: true,
@@ -15,11 +15,8 @@ const postSchema = mongoose.Schema(
       type: String,
     },
     author: {
-      type: {
-        name: String,
-        bio: String,
-      },
-      required: true,
+      name: String,
+      bio: String,
     },
     content: {
       type: String,

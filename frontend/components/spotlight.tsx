@@ -11,7 +11,7 @@ import { RootState } from "@/redux/store";
 import { useTranslations } from "next-intl";
 
 const Spotlight = () => {
-  const url = process.env.NEXT_PUBLIC_SERVER_URL;
+  // const url = process.env.NEXT_PUBLIC_SERVER_URL;
   const dispatch = useDispatch<AppDispatch>();
   const { selectedPosts, loading } = useSelector(
     (state: RootState) => state.posts
@@ -44,7 +44,7 @@ const Spotlight = () => {
               <div className="max-h-[22rem] relative overflow-hidden rounded-tl-lg rounded-tr-lg">
                 <Image
                   priority
-                  src={`${url}/api/images/${latestPost?.image}`}
+                  src={latestPost?.image} // `${url}/api/images/${latestPost?.image}`
                   alt={latestPost?.title}
                   width={1920}
                   height={1080}
@@ -76,7 +76,7 @@ const Spotlight = () => {
                   <Image
                     width={1920}
                     height={1080}
-                    src={`${url}/api/images/${adminChoice?.image}`}
+                    src={adminChoice?.image} // `${url}/api/images/${adminChoice?.image}`
                     alt={adminChoice?.title}
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                   />
@@ -113,9 +113,7 @@ const Spotlight = () => {
               onClick={() => item._id && dispatch(incrementViews(item._id))}
             >
               <b className="text-green-600 uppercase">{item.label}</b>
-              <h2 className="text-lg font-semibold">
-                {item.title}
-              </h2>
+              <h2 className="text-lg font-semibold">{item.title}</h2>
               <p className="text-sm text-gray-700">{item.author.name}</p>
             </Link>
           </div>

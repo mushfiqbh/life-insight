@@ -1,41 +1,43 @@
 "use client";
 
-import { useState, useRef } from "react";
-import axios from "axios";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import insertAtCursor from "@/lib/insertAtCursor";
 import { Button, Stack } from "@mui/material";
 import Image from "next/image";
 import PostProps, { ContentDataProps } from "@/types/postProps";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import { useParams, useRouter } from "next/navigation";
-import { updateAdminChoice } from "@/redux/postsSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 import { assets } from "@/assets/assets";
-
 import parse from "html-react-parser";
+import axios from "axios";
 import LoadingSpinner from "@/components/ui/loading-spinner";
-import { useAdminContext } from "@/context/AdminContext";
 
-const CreatePost = ({
-  loading = false,
-  reset = false,
-}: {
-  loading?: boolean;
-  reset?: boolean;
-}) => {
-  const router = useRouter();
-  const { postId } = useParams() as { postId: string };
-  const { adminChoice } = useSelector(
-    (state: RootState) => state.posts.selectedPosts
-  );
+const PostForm = ({ postId }: { postId?: string }) => {
+  const [data, setData] = useState<PostProps>({
+    _id: "",
+    views: 0,
+    adminChoice: false,
+    label: "",
+    title: "",
+    subtitle: "",
+    author: {
+      name: "",
+      bio: "",
+    },
+    editors: [],
+    sources: [{ text: "", href: "" }],
+    content: "",
+    image: "",
+  });
+
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
-  const { data, setData } = useAdminContext();
+  const router = useRouter();
   const { token, userInfo } = useSelector((state: RootState) => state.users);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [buttonText, setButtonText] = useState("Save");
   const [step, setStep] = useState(1);
   const [file, setFile] = useState<File | null>(null);
-  const dispatch = useDispatch<AppDispatch>();
   const [contentData, setContentData] = useState<ContentDataProps>({
     markup: "",
     input1: "",
@@ -43,10 +45,24 @@ const CreatePost = ({
     placeholder1: "",
     placeholder2: "",
   });
+  const [loading, setLoading] = useState(true);
 
-  if (reset) {
-    setData({} as PostProps);
-  }
+  useEffect(() => {
+    const getPostById = async (postId: string) => {
+      const res = await fetch(`${url}/api/posts/${postId}`);
+      return res.json();
+    };
+
+    if (postId) {
+      setLoading(true);
+      getPostById(postId)
+        .then((response) => {
+          setData(response.data.post);
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
+    }
+  }, [postId, url]);
 
   const handleInsertText = () => {
     let textToInsert = "";
@@ -75,106 +91,47 @@ const CreatePost = ({
   };
 
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setButtonText("Save");
-    setData({
-      ...data,
-      [name]: value,
-    });
-  };
-
-  const handleSourcesChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number
+    index?: number
   ) => {
-    const name = event.target.name;
-    const value = event.target.value;
+    const { name, value } = event.target;
     setButtonText("Save");
-    const sourcesDataCopy = [...data.sources];
 
-    if (name === "text") {
-      sourcesDataCopy[index].text = value;
-    } else if (name === "href") {
-      sourcesDataCopy[index].href = value;
+    if (typeof index === "number") {
+      const sourcesData = [...data.sources];
+      if (name === "text" || name === "href") {
+        sourcesData[index][name] = value;
+        setData({ ...data, sources: sourcesData });
+      }
+    } else if (name.startsWith("author.")) {
+      const field = name.split(".")[1];
+      setData({
+        ...data,
+        author: { ...data.author, [field]: value },
+      });
+    } else {
+      setData({ ...data, [name]: value });
     }
-
-    setData({
-      ...data,
-      sources: sourcesDataCopy,
-    });
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setButtonText("Saving");
-
-    const { label, title, subtitle, author, editors, sources, content, date } =
-      data;
-
-    // if (!editors.includes(userInfo._id)) {
-    //   setData({
-    //     ...data,
-    //     editors: [...editors, userInfo._id],
-    //   });
-    // }
-
-    let response;
-    // Update Existing Post
-    if (postId) {
-      response = await axios.put(
-        url + "/api/post/update/" + postId,
-        {
-          ...data,
-          label: label.toLowerCase(),
-        },
-        { headers: { token } }
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(
+        key,
+        typeof value === "object" ? JSON.stringify(value) : value
       );
-      setButtonText("Saved");
-    } else if (!file) {
-      alert("Please upload an image");
-      setButtonText("Save");
-      // Create New Post
-    } else {
-      const formData = new FormData();
-      formData.append("label", label.toLowerCase());
-      formData.append("title", title);
-      formData.append("subtitle", subtitle);
-      formData.append("author", JSON.stringify(author));
-      formData.append("editors", JSON.stringify(editors));
-      formData.append("sources", JSON.stringify(sources));
-      formData.append("content", content);
-      formData.append("date", date);
-      formData.append("image", file);
-
-      response = await axios.post(url + "/api/post/create", formData, {
-        headers: { token },
-      });
-      if (response.data.success) {
-        setData({
-          _id: "",
-          readingTime: 0,
-          views: 0,
-          adminChoice: false,
-          label: "",
-          title: "",
-          subtitle: "",
-          author: {
-            name: "",
-            bio: "",
-          },
-          editors: [],
-          sources: [{ text: "", href: "" }],
-          content: "",
-          image: "",
-          date: new Date().toISOString()
-        });
-        setFile(null);
-      }
-      setButtonText("Saved");
-    }
+    });
+    if (file) formData.append("image", file);
+    const response = postId
+      ? await axios.put(`${url}/api/posts/${data._id}`, formData, {
+          headers: { token },
+        })
+      : await axios.post(`${url}/api/posts/`, formData, { headers: { token } });
+    if (response.data.success) setData({} as PostProps);
+    setButtonText("Saved");
   };
 
   if (loading) {
@@ -185,31 +142,35 @@ const CreatePost = ({
     <div className="w-4/5 mt-20 mx-auto my-5 flex flex-col lg:flex-row gap-5">
       <form onSubmit={handleSubmit}>
         <Stack spacing={2} direction="row" justifyContent="space-between">
-          <Button variant="contained" color="error">
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => router.back()}
+          >
             EXIT
           </Button>
           <div>
-            <div
-              hidden={buttonText !== "Saved" ? true : false}
-              className="inline"
-              onClick={() => router.push("/admin/post/" + postId)}
-            >
-              <Button
-                variant="text"
-                type="button"
-                style={{ marginLeft: "20px" }}
+            {postId && (
+              <div
+                hidden={buttonText !== "Saved" ? true : false}
+                className="inline"
+                onClick={() => router.push("/admin/post/" + data._id)}
               >
-                Edit Saved Post
-              </Button>
-            </div>
+                <Button
+                  variant="text"
+                  type="button"
+                  style={{ marginLeft: "20px" }}
+                >
+                  Edit Saved Post
+                </Button>
+              </div>
+            )}
 
             {step == 1 ? (
               <Button
                 variant="outlined"
                 onClick={() => setStep(2)}
-                // disabled={
-                //   data.label && data.author && data.author ? false : true
-                // }
+                disabled={data.label && data.author ? false : true}
               >
                 Next
               </Button>
@@ -252,12 +213,15 @@ const CreatePost = ({
                 id="image"
                 hidden
               />
-              <Image
-                src={postId && url + "/images/" + "image3.jpg"} // data.image
-                width={100}
-                height={100}
-                alt=""
-              />
+
+              {postId && (
+                <Image
+                  src={url + "/images/" + "image3.jpg"} // data.image
+                  width={100}
+                  height={100}
+                  alt=""
+                />
+              )}
             </div>
 
             <div>
@@ -296,20 +260,20 @@ const CreatePost = ({
 
             <div className="mui_input">
               <label htmlFor="author">Author</label>
-              {/* <input
+              <input
                 type="text"
-                name="author"
-                value={data.author.name}
+                name="author.name"
+                value={data.author?.name}
                 onChange={handleChange}
-              /> */}
+              />
             </div>
 
-            <div>
-              <label htmlFor="date">Date</label>
+            <div className="mui_input">
+              <label htmlFor="author">Author</label>
               <input
-                type="date"
-                name="date"
-                value={data.date}
+                type="text"
+                name="author.bio"
+                value={data.author?.bio}
                 onChange={handleChange}
               />
             </div>
@@ -323,14 +287,14 @@ const CreatePost = ({
                     type="text"
                     name="text"
                     value={data.sources[index].text}
-                    onChange={(event) => handleSourcesChange(event, index)}
+                    onChange={(event) => handleChange(event, index)}
                     placeholder={"উৎস যোগ করুন " + (index + 1)}
                   />
                   <input
                     type="text"
                     name="href"
                     value={data.sources[index].href}
-                    onChange={(event) => handleSourcesChange(event, index)}
+                    onChange={(event) => handleChange(event, index)}
                     placeholder={"উৎস লিঙ্ক যোগ করুন " + (index + 1)}
                   />
                 </fieldset>
@@ -356,14 +320,19 @@ const CreatePost = ({
               </Button>
             </div>
 
-            {userInfo?.permission?.includes("adminChoice") && postId && (
+            {userInfo?.permission?.includes("adminChoice") && (
               <Stack direction="row">
                 <Button
                   type="button"
                   color="success"
-                  onClick={() => dispatch(updateAdminChoice(postId))}
+                  onClick={() => {
+                    setData({
+                      ...data,
+                      adminChoice: !data.adminChoice,
+                    });
+                  }}
                 >
-                  {adminChoice._id === postId
+                  {data?.adminChoice
                     ? "Admin Choiced *"
                     : "Make Admin Choice *"}
                 </Button>
@@ -496,4 +465,4 @@ const CreatePost = ({
   );
 };
 
-export default CreatePost;
+export default PostForm;

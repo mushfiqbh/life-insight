@@ -9,7 +9,7 @@ import overviewRouter from "./routes/overviewRoute.js";
 
 // app config
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 
 // middleware
 app.use(express.json());

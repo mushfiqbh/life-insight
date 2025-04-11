@@ -10,7 +10,7 @@ export default interface PostProps {
     bio: string;
   };
   content: string;
-  readingTime: number;
+  readingTime?: number;
   editors: User[];
   sources: {
     text: string;
@@ -19,7 +19,7 @@ export default interface PostProps {
   image: string;
   views: number;
   adminChoice: boolean;
-  date: string;
+  date?: string;
 }
 
 export interface ContentDataProps {
