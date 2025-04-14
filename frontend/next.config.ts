@@ -9,8 +9,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "life-insight.onrender.com",
       },
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+      },
     ],
-    domains: ["localhost", "127.0.0.1", "https://life-insight.onrender.com"],
   },
 };
 
