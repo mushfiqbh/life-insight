@@ -3,14 +3,20 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import insertAtCursor from "@/lib/insertAtCursor";
-import { Button, Stack } from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Stack,
+  TextField,
+} from "@mui/material";
 import Image from "next/image";
 import PostProps, { ContentDataProps } from "@/types/postProps";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { assets } from "@/assets/assets";
-import parse from "html-react-parser";
 import axios from "axios";
+import parse from "html-react-parser";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 
 const PostForm = ({ postId }: { postId?: string }) => {
@@ -36,8 +42,8 @@ const PostForm = ({ postId }: { postId?: string }) => {
   const { token, userInfo } = useSelector((state: RootState) => state.users);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [buttonText, setButtonText] = useState("Save");
-  const [step, setStep] = useState(1);
   const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState(false);
   const [contentData, setContentData] = useState<ContentDataProps>({
     markup: "",
     input1: "",
@@ -139,70 +145,53 @@ const PostForm = ({ postId }: { postId?: string }) => {
   }
 
   return (
-    <div className="w-4/5 mt-20 mx-auto my-5 flex flex-col lg:flex-row gap-5">
-      <form onSubmit={handleSubmit}>
-        <Stack spacing={2} direction="row" justifyContent="space-between">
+    <div className="w-4/5 mt-20 mx-auto my-5 flex flex-col gap-5">
+      <form onSubmit={handleSubmit} className="w-full">
+        <Stack
+          spacing={2}
+          direction="row"
+          className="w-fit mx-auto my-5 p-4 bg-background rounded-lg shadow-md"
+        >
           <Button
             variant="contained"
             color="error"
-            onClick={() => router.back()}
+            onClick={() =>
+              confirm("Exit without Saving?") ? router.back() : null
+            }
           >
             EXIT
           </Button>
-          <div>
-            {postId && (
-              <div
-                hidden={buttonText !== "Saved" ? true : false}
-                className="inline"
-                onClick={() => router.push("/admin/post/" + data._id)}
-              >
-                <Button
-                  variant="text"
-                  type="button"
-                  style={{ marginLeft: "20px" }}
-                >
-                  Edit Saved Post
-                </Button>
-              </div>
-            )}
 
-            {step == 1 ? (
-              <Button
-                variant="outlined"
-                onClick={() => setStep(2)}
-                disabled={data.label && data.author ? false : true}
-              >
-                Next
-              </Button>
-            ) : (
-              <Button variant="outlined" onClick={() => setStep(1)}>
-                Back
-              </Button>
-            )}
+          <Button
+            variant="outlined"
+            type="button"
+            onClick={() => setPreview(!preview)}
+          >
+            {preview ? "EditPage" : "Preview"}
+          </Button>
 
-            <Button
-              variant="contained"
-              type="submit"
-              style={{ marginLeft: "20px" }}
-              disabled={buttonText === "Saved" ? true : false}
-            >
-              {buttonText}
-            </Button>
-          </div>
+          <Button
+            variant="contained"
+            type="submit"
+            disabled={buttonText === "Saved" ? true : false}
+          >
+            {buttonText}
+          </Button>
         </Stack>
-        <br />
 
-        {step === 1 && (
-          <div className="form_metadata">
-            <div className="add_image_upload">
+        <div className="w-full flex flex-col md:flex-row justify-between gap-3">
+          <div className="w-full md:w-1/2 flex flex-col gap-3">
+            <Stack direction="row" spacing={5}>
               <label htmlFor="image">
                 <Image
                   width={100}
                   height={100}
+                  className="cursor-pointer"
                   src={file ? URL.createObjectURL(file) : assets.upload_area}
                   alt=""
                 />
               </label>
+
               <input
                 onChange={(e) => {
                   if (e.target.files) {
@@ -222,245 +211,271 @@ const PostForm = ({ postId }: { postId?: string }) => {
                   alt=""
                 />
               )}
-            </div>
+            </Stack>
 
-            <div>
-              <label htmlFor="label">Label</label>
-              <input
-                lang="en"
-                type="text"
-                name="label"
-                value={data.label}
-                onChange={handleChange}
-                placeholder="Label (English Only)"
-                required
-              />
-            </div>
+            <TextField
+              label="Label"
+              variant="standard"
+              lang="en"
+              name="label"
+              value={data.label}
+              onChange={handleChange}
+              placeholder="Label (English Only)"
+              required
+            />
 
-            <div>
-              <label htmlFor="title">Title</label>
-              <input
-                type="text"
-                name="title"
-                value={data.title}
-                onChange={handleChange}
-                placeholder="শিরোনাম"
-              />
-            </div>
-            <div>
-              <label htmlFor="subtitle">Subtitle</label>
-              <input
-                type="text"
-                name="subtitle"
-                value={data.subtitle}
-                onChange={handleChange}
-                placeholder="সাবটাইটেল"
-              />
-            </div>
+            <TextField
+              label="Title"
+              variant="standard"
+              type="text"
+              name="title"
+              value={data.title}
+              onChange={handleChange}
+              placeholder="শিরোনাম"
+            />
 
-            <div className="mui_input">
-              <label htmlFor="author">Author</label>
-              <input
+            <TextField
+              label="Subtitle"
+              variant="standard"
+              type="text"
+              name="subtitle"
+              value={data.subtitle}
+              onChange={handleChange}
+              placeholder="সাবটাইটেল"
+            />
+
+            <Stack
+              width="100%"
+              direction="row"
+              spacing={3}
+              justifyContent="space-between"
+            >
+              <TextField
+                label="Author Name"
+                variant="standard"
                 type="text"
                 name="author.name"
                 value={data.author?.name}
                 onChange={handleChange}
               />
-            </div>
-
-            <div className="mui_input">
-              <label htmlFor="author">Author</label>
-              <input
+              <TextField
+                label="Author Bio"
+                variant="standard"
                 type="text"
                 name="author.bio"
                 value={data.author?.bio}
                 onChange={handleChange}
               />
-            </div>
+            </Stack>
 
-            <div className="form_sources">
-              <label htmlFor="sources"></label>
-              {data?.sources?.map((item, index) => (
-                <fieldset key={index}>
-                  <legend>{"Source " + (index + 1)}</legend>
-                  <input
-                    type="text"
-                    name="text"
-                    value={data.sources[index].text}
-                    onChange={(event) => handleChange(event, index)}
-                    placeholder={"উৎস যোগ করুন " + (index + 1)}
-                  />
-                  <input
-                    type="text"
-                    name="href"
-                    value={data.sources[index].href}
-                    onChange={(event) => handleChange(event, index)}
-                    placeholder={"উৎস লিঙ্ক যোগ করুন " + (index + 1)}
-                  />
-                </fieldset>
-              ))}
-              <Button
-                type="button"
-                variant="outlined"
-                color="info"
-                onClick={() => {
-                  setData({
-                    ...data,
-                    sources: [
-                      ...data.sources,
-                      {
-                        text: "",
-                        href: "",
-                      },
-                    ],
-                  });
-                }}
+            {data?.sources?.map((_, index) => (
+              <Stack
+                key={index}
+                direction="row"
+                spacing={3}
+                justifyContent="space-between"
               >
-                ADD ANOTHOR SOURCE
-              </Button>
-            </div>
+                <TextField
+                  label={`Source ${index + 1} Title`}
+                  variant="standard"
+                  type="text"
+                  name="text"
+                  value={data.sources[index].text}
+                  onChange={(event) => handleChange(event, index)}
+                />
+                <TextField
+                  label={`Source ${index + 1} Link`}
+                  variant="standard"
+                  type="text"
+                  name="href"
+                  value={data.sources[index].href}
+                  onChange={(event) => handleChange(event, index)}
+                />
+              </Stack>
+            ))}
 
-            {userInfo?.permission?.includes("adminChoice") && (
-              <Stack direction="row">
-                <Button
-                  type="button"
-                  color="success"
-                  onClick={() => {
+            <Button
+              type="button"
+              variant="outlined"
+              color="error"
+              className="w-fit"
+              onClick={() => {
+                setData({
+                  ...data,
+                  sources: [
+                    ...data.sources,
+                    {
+                      text: "",
+                      href: "",
+                    },
+                  ],
+                });
+              }}
+            >
+              + Add Source
+            </Button>
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={data?.adminChoice}
+                  disabled={!userInfo?.permission?.includes("adminChoice")}
+                  onChange={() =>
                     setData({
                       ...data,
                       adminChoice: !data.adminChoice,
-                    });
-                  }}
-                >
-                  {data?.adminChoice
-                    ? "Admin Choiced *"
-                    : "Make Admin Choice *"}
-                </Button>
-              </Stack>
-            )}
+                    })
+                  }
+                />
+              }
+              label={
+                data?.adminChoice
+                  ? "Admin Choiced Post"
+                  : "Make This Post Admin Choice"
+              }
+            />
           </div>
-        )}
-        {step === 2 && (
-          <div className="form_content">
-            <Stack direction="row" flexWrap="wrap">
-              <Button
-                variant="text"
-                color="warning"
-                onClick={() =>
-                  setContentData({
-                    ...contentData,
-                    markup: "title",
-                    placeholder1: "Title",
-                    placeholder2: "",
-                  })
-                }
-              >
-                Title
-              </Button>
-              <Button
-                variant="text"
-                color="warning"
-                onClick={() =>
-                  setContentData({
-                    ...contentData,
-                    markup: "blockquote",
-                    placeholder1: "Quote Text",
-                    placeholder2: "",
-                  })
-                }
-              >
-                Blockquote
-              </Button>
-              <Button
-                variant="text"
-                color="warning"
-                onClick={() =>
-                  setContentData({
-                    ...contentData,
-                    markup: "quote",
-                    placeholder1: "Quote Text",
-                    placeholder2: "Who Said?",
-                  })
-                }
-              >
-                Quote
-              </Button>
-              <Button
-                variant="text"
-                color="warning"
-                onClick={() =>
-                  setContentData({
-                    ...contentData,
-                    markup: "advice",
-                    placeholder1: "Quote Title",
-                    placeholder2: "",
-                  })
-                }
-              >
-                Advice
-              </Button>
-            </Stack>
 
-            {contentData.markup && (
-              <Stack direction="column">
-                {contentData.placeholder1 && (
-                  <input
-                    type="text"
-                    name="input1"
-                    value={contentData.input1}
-                    placeholder={contentData.placeholder1}
-                    onChange={(e) =>
+          {/* Right Section */}
+
+          <div className="w-full md:w-1/2 flex-col gap-3">
+            {preview ? (
+              <div>{parse(data.content || "")}</div>
+            ) : (
+              <div>
+                <Stack direction="row" flexWrap="wrap">
+                  <Button
+                    variant="text"
+                    color="warning"
+                    onClick={() =>
                       setContentData({
                         ...contentData,
-                        input1: e.target.value,
+                        markup: "title",
+                        placeholder1: "Title",
+                        placeholder2: "",
                       })
                     }
-                  />
-                )}
-
-                {contentData.placeholder2 && (
-                  <input
-                    type="text"
-                    name="input2"
-                    value={contentData.input2}
-                    placeholder={contentData.placeholder2}
-                    onChange={(e) =>
+                  >
+                    Title
+                  </Button>
+                  <Button
+                    variant="text"
+                    color="warning"
+                    onClick={() =>
                       setContentData({
                         ...contentData,
-                        input2: e.target.value,
+                        markup: "blockquote",
+                        placeholder1: "Quote Text",
+                        placeholder2: "",
                       })
                     }
-                  />
+                  >
+                    Blockquote
+                  </Button>
+                  <Button
+                    variant="text"
+                    color="warning"
+                    onClick={() =>
+                      setContentData({
+                        ...contentData,
+                        markup: "quote",
+                        placeholder1: "Quote Text",
+                        placeholder2: "Who Said?",
+                      })
+                    }
+                  >
+                    Quote
+                  </Button>
+                  <Button
+                    variant="text"
+                    color="warning"
+                    onClick={() =>
+                      setContentData({
+                        ...contentData,
+                        markup: "advice",
+                        placeholder1: "Quote Title",
+                        placeholder2: "",
+                      })
+                    }
+                  >
+                    Advice
+                  </Button>
+                </Stack>
+
+                {contentData.markup && (
+                  <Stack direction="column" gap={3}>
+                    {contentData.placeholder1 && (
+                      <TextField
+                        label=""
+                        variant="standard"
+                        type="text"
+                        name="input1"
+                        value={contentData.input1}
+                        placeholder={contentData.placeholder1}
+                        onChange={(e) =>
+                          setContentData({
+                            ...contentData,
+                            input1: e.target.value,
+                          })
+                        }
+                      />
+                    )}
+
+                    {contentData.placeholder2 && (
+                      <TextField
+                        label=""
+                        variant="standard"
+                        type="text"
+                        name="input2"
+                        value={contentData.input2}
+                        placeholder={contentData.placeholder2}
+                        onChange={(e) =>
+                          setContentData({
+                            ...contentData,
+                            input2: e.target.value,
+                          })
+                        }
+                      />
+                    )}
+
+                    <Stack direction="row" gap={3}>
+                      <Button
+                        type="button"
+                        color="warning"
+                        variant="outlined"
+                        className="w-fit"
+                        onClick={handleInsertText}
+                      >
+                        MOVE CURSOR WHERE TO INSERT THAN CLICK ME
+                      </Button>
+                      <Button
+                        type="button"
+                        color="warning"
+                        variant="outlined"
+                        className="w-fit"
+                        onClick={() =>
+                          setContentData({ ...contentData, markup: "" })
+                        }
+                      >
+                        CLOSE
+                      </Button>
+                    </Stack>
+                  </Stack>
                 )}
 
-                <Button
-                  type="button"
-                  color="warning"
-                  variant="outlined"
-                  onClick={handleInsertText}
-                >
-                  MOVE CURSOR WHERE TO INSERT THAN CLICK ME
-                </Button>
-              </Stack>
+                <textarea
+                  className="w-full min-h-screen focus:outline-none p-5"
+                  ref={textareaRef}
+                  name="content"
+                  value={data.content}
+                  onChange={handleChange}
+                  placeholder="Type HTML/CSS/Rich Text Code Here"
+                />
+              </div>
             )}
-
-            <div>
-              <textarea
-                ref={textareaRef}
-                name="content"
-                value={data.content}
-                onChange={handleChange}
-                placeholder="Type HTML/CSS/Rich Text Code Here"
-              />
-            </div>
           </div>
-        )}
+        </div>
       </form>
-
-      <div className="w-full lg:w-1/2 p-5 rounded-lg shadow">
-        <h2 className="text-lg font-bold mb-2">Post Preview</h2>
-        <div>{parse(data.content || "")}</div>
-      </div>
     </div>
   );
 };
