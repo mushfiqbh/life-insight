@@ -2,14 +2,11 @@ import mongoose from "mongoose";
 
 const postSchema = mongoose.Schema(
   {
-    
     label: {
       type: String,
-      required: true,
     },
     title: {
       type: String,
-      required: true,
     },
     subtitle: {
       type: String,
@@ -23,7 +20,6 @@ const postSchema = mongoose.Schema(
     },
     readingTime: {
       type: Number,
-      required: true,
     },
     editors: {
       type: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
@@ -35,7 +31,6 @@ const postSchema = mongoose.Schema(
     },
     image: {
       type: String,
-      required: true,
     },
     views: {
       type: Number,

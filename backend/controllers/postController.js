@@ -81,7 +81,7 @@ export const createPost = async (req, res) => {
 
   try {
     const thePost = await newPost.save();
-    
+
     res.json({ success: true, message: "Post Created" });
   } catch (error) {
     res.json({ success: false, message: "Error Creating Post", error });
@@ -95,37 +95,65 @@ export const updatePost = async (req, res) => {
   try {
     const post = await postModel.findById(postId);
     if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Post not found" });
     }
 
-    // Ensure `content` exists and calculate reading time safely
-    const words = typeof req.body.content === "string" 
-      ? req.body.content.trim().split(/\s+/).length 
-      : 0;
-    const readingTime = words > 0 ? Math.ceil(words / 225) : 1; // Minimum 1 minute
+    // Calculate reading time if content is provided
+    const content = req.body.content ?? post.content;
+    const words =
+      typeof content === "string" ? content.trim().split(/\s+/).length : 0;
+    const readingTime = Math.max(1, Math.ceil(words / 225));
 
-    // Ensure `editors` exists as an array
-    if (!Array.isArray(post.editors)) {
-      post.editors = [];
+    // Add editor if not already present
+    if (!Array.isArray(post.editors)) post.editors = [];
+
+    const userIdStr = userId?.toString();
+    if (userIdStr && !post.editors.includes(userIdStr)) {
+      post.editors.push(userIdStr);
     }
 
-    // Add userId to editors if not already present
-    if (userId && !post.editors.includes(userId.toString())) {
-      post.editors.push(userId);
+    // Fields that should be updated (only from request body)
+    const updatableFields = {
+      title: req.body.title,
+      label: req.body.label,
+      subtitle: req.body.subtitle,
+      author: JSON.parse(req.body.author),
+      content: req.body.content,
+      readingTime,
+      sources: JSON.parse(req.body.sources),
+      image: req.body.image,
+      adminChoice: req.body.adminChoice,
+    };
+
+    // Optional parsing for structured fields
+    if (req.body.author) {
+      updatableFields.author = JSON.parse(req.body.author);
     }
 
-    // Update post fields
-    Object.assign(post, { ...req.body, readingTime });
+    if (req.body.sources) {
+      updatableFields.sources = JSON.parse(req.body.sources);
+    }
+
+    if (req.file?.filename) {
+      updatableFields.image = req.file.filename;
+    }
+
+    Object.assign(post, updatableFields);
 
     await post.save();
 
     res.status(200).json({ success: true, message: "Post Updated", post });
   } catch (error) {
     console.error("Error updating post:", error);
-    res.status(500).json({ message: "Error updating post", error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Error updating post",
+      error: error.message,
+    });
   }
 };
-
 
 export const incrementViews = async (req, res) => {
   const { postId } = req.params;
