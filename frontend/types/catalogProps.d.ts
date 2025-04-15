@@ -19,7 +19,7 @@ export default interface CatalogProps {
     terms: string;
   }[];
   posts?: PostProps[];
-  date: string;
+  date?: string;
 }
 
 export interface CatalogState {
