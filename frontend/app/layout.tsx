@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ReduxProvider from "./redux-provider"; // Import the new provider
 import Footer from "@/components/footer";
-import Navbar from "@/components/navbar";
+import Header from "@/components/header";
 import FetchData from "./fetch-data";
 import { ThemeProvider } from "@/components/theme-provider";
 import { NextIntlClientProvider } from "next-intl";
@@ -34,7 +34,7 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <NextIntlClientProvider locale={locale} messages={messages}>
-              <Navbar />
+              <Header />
               {children}
               <Footer />
             </NextIntlClientProvider>

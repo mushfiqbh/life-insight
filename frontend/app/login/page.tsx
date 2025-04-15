@@ -83,7 +83,7 @@ const Page: React.FC = () => {
   };
 
   return (
-    <div className="mt-[65px] flex">
+    <div className="w-full mt-[65px] flex flex-col md:flex-row">
       {token && (
         <div className="w-full md:w-1/3 min-h-full p-32 bg-ash">
           <ul>

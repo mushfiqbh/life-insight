@@ -112,7 +112,7 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
           `${url}/api/catalogs/${labelId}`,
           formData,
           {
-            headers: { token },
+            headers: { token, "Content-Type": "multipart/form-data" },
           }
         );
         if (response.data.success) {
@@ -122,7 +122,7 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
         }
       } else {
         const response = await axios.post(`${url}/api/catalogs/`, formData, {
-          headers: { token },
+          headers: { token, "Content-Type": "multipart/form-data" },
         });
         if (response.data.success) {
           setData({

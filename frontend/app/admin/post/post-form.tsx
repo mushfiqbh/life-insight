@@ -135,19 +135,42 @@ const PostForm = ({ postId }: { postId?: string }) => {
         typeof value === "object" ? JSON.stringify(value) : value
       );
     });
+
     if (file) formData.append("image", file);
-    const response = postId
-      ? await axios.put(`${url}/api/posts/${data._id}`, formData, {
-          headers: { token },
-        })
-      : await axios.post(`${url}/api/posts/`, formData, { headers: { token } });
-    if (response.data.success) setData({} as PostProps);
-    setButtonText("Saved");
+
+    try {
+      const response = postId
+        ? await axios.put(`${url}/api/posts/${data._id}`, formData, {
+            headers: { token, "Content-Type": "multipart/form-data" },
+          })
+        : await axios.post(`${url}/api/posts/`, formData, {
+            headers: { token, "Content-Type": "multipart/form-data" },
+          });
+      if (response.data.success) {
+        setButtonText("Saved");
+        setData({
+          _id: "",
+          views: 0,
+          adminChoice: false,
+          label: "",
+          title: "",
+          subtitle: "",
+          author: {
+            name: "",
+            bio: "",
+          },
+          editors: [],
+          sources: [{ text: "", href: "" }],
+          content: "",
+          image: "",
+        });
+      }
+    } catch (error) {
+      console.error("Error saving post", error);
+    }
   };
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+  if (loading) return <LoadingSpinner />;
 
   return (
     <div className="w-4/5 mt-20 mx-auto my-5 flex flex-col gap-5">
@@ -170,6 +193,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
             </Button>
 
             <Button
+              type="submit"
               size="small"
               color="info"
               startIcon={<SaveIcon />}
@@ -307,7 +331,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
           <FormControlLabel
             control={
               <Checkbox
-                checked={data?.adminChoice}
+                checked={!!data?.adminChoice}
                 disabled={!userInfo?.permission?.includes("adminChoice")}
                 onChange={() =>
                   setData({
