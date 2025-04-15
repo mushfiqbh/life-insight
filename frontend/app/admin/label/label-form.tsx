@@ -34,7 +34,9 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
   useEffect(() => {
     if (labelId) {
       const fetchLabelData = async () => {
-        const response = await fetch(`${url}/api/catalogs/byid/${labelId}`);
+        const response = await fetch(`${url}/api/catalogs/byid/${labelId}`, {
+          headers: { token },
+        });
         return response.json();
       };
 
@@ -48,7 +50,7 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
     } else {
       setLoading(false);
     }
-  }, [labelId, url]);
+  }, [labelId, url, token]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

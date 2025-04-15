@@ -57,7 +57,9 @@ const PostForm = ({ postId }: { postId?: string }) => {
   useEffect(() => {
     if (postId) {
       const getPostById = async (postId: string) => {
-        const response = await fetch(`${url}/api/posts/${postId}`);
+        const response = await fetch(`${url}/api/posts/${postId}`, {
+          headers: { token },
+        });
         return response.json();
       };
 
@@ -71,7 +73,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
     } else {
       setLoading(false);
     }
-  }, [postId, url]);
+  }, [postId, url, token]);
 
   const handleInsertText = () => {
     let textToInsert = "";
@@ -153,7 +155,6 @@ const PostForm = ({ postId }: { postId?: string }) => {
         onSubmit={handleSubmit}
         className="w-full py-10 flex flex-col md:flex-row justify-between gap-3"
       >
-
         {/*================================ Left Section ============================*/}
 
         <div className="w-full md:w-1/2 flex flex-col gap-3">
