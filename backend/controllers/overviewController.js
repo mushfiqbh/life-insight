@@ -42,12 +42,30 @@ export const getOverview = async (req, res) => {
     const overview = await overviewModel
       .findOne({ label: label.toLowerCase() })
       .populate("posts");
-      
+
     if (!overview) {
       return res
         .status(404)
         .json({ success: false, message: "Overview not found" });
-    }    
+    }
+
+    res.status(200).json({ success: true, data: overview });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error Occurred", error });
+  }
+};
+
+export const getOverviewById = async (req, res) => {
+  const { labelId } = req.params;
+
+  try {
+    const overview = await overviewModel.findById(labelId).populate("posts");
+
+    if (!overview) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Overview not found" });
+    }
 
     res.status(200).json({ success: true, data: overview });
   } catch (error) {
@@ -64,7 +82,6 @@ export const createOverview = async (req, res) => {
     author: JSON.parse(req.body.author),
     faqs: JSON.parse(req.body.faqs),
     keyterms: JSON.parse(req.body.keyterms),
-    date: req.body.date,
   });
 
   try {
@@ -88,11 +105,9 @@ export const updateOverview = async (req, res) => {
     await overviewModel.findByIdAndUpdate(overviewId, req.body);
     const updatedOverview = await overviewModel.findById(overviewId);
 
-    res
-      .status(200)
-      .json({ message: "Overview Updated", data: updatedOverview });
+    res.json({ success: true, message: "Overview Updated", data: updatedOverview });
   } catch (error) {
-    res.status(500).json({ message: "Error updating Overview", error });
+    res.status(500).json({ success: false, message: "Error updating Overview", error });
   }
 };
 
