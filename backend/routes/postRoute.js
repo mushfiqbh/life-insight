@@ -29,7 +29,7 @@ postRouter.get("/page/:pageNo", getAllPosts); // Get list of posts
 postRouter.get("/filter", selectedPosts); // Get list of posts
 postRouter.get("/:postId", getPost); // Get a specific post by ID
 postRouter.post("/", authMiddleware, upload.single("image"), createPost); // Create a new post
-postRouter.put("/:postId", authMiddleware, updatePost); // Update a specific post by ID
+postRouter.put("/:postId", authMiddleware, upload.single("image"), updatePost); // Update a specific post by ID
 postRouter.put("/:postId/inc", incrementViews); // Increment specific post property (e.g. views)
 postRouter.delete("/:postId", authMiddleware, deletePost); // Delete a specific post by ID
 

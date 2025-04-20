@@ -22,7 +22,7 @@ mongoose.connect(process.env.DATABASE_URL).then(() => {
 });
 
 // api endpoint
-app.use("/api/images", express.static("uploads"));
+app.use("/api/image", express.static("uploads"));
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/catalogs", overviewRouter);

@@ -40,7 +40,7 @@ export default function SearchList({
             <Image
               src={
                 url +
-                "/api/images/" +
+                "/api/image/" +
                 ("image" in item ? item.image : "defaultCatalog.jpg")
               }
               alt=""

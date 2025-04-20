@@ -50,7 +50,7 @@ export default function PostList({ data }: { data: Post[] }) {
           >
             <div className="w-14 h-14 flex-shrink-0 overflow-hidden rounded-md border">
               <Image
-                src={`${url}/images/${item.image}`}
+                src={`${url}/api/image/${item.image}`}
                 alt={item.title}
                 width={56}
                 height={56}

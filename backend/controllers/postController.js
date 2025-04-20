@@ -59,8 +59,6 @@ export const getPost = async (req, res) => {
 };
 
 export const createPost = async (req, res) => {
-  const image_filename = `${req.file.filename}`;
-
   const userId = req.userId;
 
   const words = req.body.content?.split(" ")?.length;
@@ -75,12 +73,12 @@ export const createPost = async (req, res) => {
     readingTime: reading_time,
     editors: [userId],
     sources: JSON.parse(req.body.sources),
-    image: image_filename,
+    image: req.file.filename,
     adminChoice: req.body.adminChoice,
   });
 
   try {
-    const thePost = await newPost.save();
+    await newPost.save();
 
     res.json({ success: true, message: "Post Created" });
   } catch (error) {
@@ -93,58 +91,59 @@ export const updatePost = async (req, res) => {
   const userId = req.userId;
 
   try {
-    const post = await postModel.findById(postId);
-    if (!post) {
+    // Fetch the existing post to validate and modify editors
+    const existingPost = await postModel.findById(postId);
+    if (!existingPost) {
       return res
         .status(404)
         .json({ success: false, message: "Post not found" });
     }
 
-    // Calculate reading time if content is provided
-    const content = req.body.content ?? post.content;
+    // Calculate reading time
+    const content = req.body.content ?? existingPost.content;
     const words =
       typeof content === "string" ? content.trim().split(/\s+/).length : 0;
     const readingTime = Math.max(1, Math.ceil(words / 225));
 
-    // Add editor if not already present
-    if (!Array.isArray(post.editors)) post.editors = [];
-
+    // Handle editors list
+    let editors = Array.isArray(existingPost.editors)
+      ? [...existingPost.editors]
+      : [];
     const userIdStr = userId?.toString();
-    if (userIdStr && !post.editors.includes(userIdStr)) {
-      post.editors.push(userIdStr);
+    if (userIdStr && !editors.includes(userIdStr)) {
+      editors.push(userIdStr);
     }
 
-    // Fields that should be updated (only from request body)
-    const updatableFields = {
+    // Build the updated fields
+    const updatedFields = {
       title: req.body.title,
       label: req.body.label,
       subtitle: req.body.subtitle,
-      author: JSON.parse(req.body.author),
       content: req.body.content,
       readingTime,
-      sources: JSON.parse(req.body.sources),
-      image: req.body.image,
+      image: req.file?.filename || req.body.image,
       adminChoice: req.body.adminChoice,
+      editors,
     };
 
-    // Optional parsing for structured fields
     if (req.body.author) {
-      updatableFields.author = JSON.parse(req.body.author);
+      updatedFields.author = JSON.parse(req.body.author);
     }
 
     if (req.body.sources) {
-      updatableFields.sources = JSON.parse(req.body.sources);
+      updatedFields.sources = JSON.parse(req.body.sources);
     }
 
-    if (req.file?.filename) {
-      updatableFields.image = req.file.filename;
-    }
+    // Update the post
+    const updatedPost = await postModel.findByIdAndUpdate(
+      postId,
+      { $set: updatedFields },
+      { new: true }
+    );
 
-    Object.assign(post, updatableFields);
-
-    await post.save();
-
-    res.status(200).json({ success: true, message: "Post Updated", post });
+    res
+      .status(200)
+      .json({ success: true, message: "Post Updated", post: updatedPost });
   } catch (error) {
     console.error("Error updating post:", error);
     res.status(500).json({

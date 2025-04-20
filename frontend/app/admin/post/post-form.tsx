@@ -127,26 +127,50 @@ const PostForm = ({ postId }: { postId?: string }) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setButtonText("Saving");
-    const formData = new FormData();
-    Object.entries(data).forEach(([key, value]) => {
-      formData.append(
-        key,
-        typeof value === "object" ? JSON.stringify(value) : value
-      );
-    });
 
-    if (file) formData.append("image", file);
+    if (!postId && !file) {
+      alert("Image is required when creating a new post.");
+      return;
+    }
+
+    setButtonText("Saving");
+
+    const buildFormData = (): FormData => {
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          const isObject = typeof value === "object";
+          formData.append(
+            key,
+            isObject ? JSON.stringify(value) : String(value)
+          );
+        }
+      });
+      if (file) formData.append("image", file);
+      return formData;
+    };
+
+    const sendRequest = async (formData: FormData) => {
+      const config = {
+        headers: {
+          token,
+        },
+      };
+
+      const endpoint = postId
+        ? `${url}/api/posts/${data._id}`
+        : `${url}/api/posts/`;
+
+      const method = postId ? axios.put : axios.post;
+      return method(endpoint, formData, config);
+    };
 
     try {
-      const response = postId
-        ? await axios.put(`${url}/api/posts/${data._id}`, formData, {
-            headers: { token, "Content-Type": "multipart/form-data" },
-          })
-        : await axios.post(`${url}/api/posts/`, formData, {
-            headers: { token, "Content-Type": "multipart/form-data" },
-          });
-      if (response.data.success) {
+      const formData = buildFormData();
+
+      const response = await sendRequest(formData);
+
+      if (!postId && response.data?.success) {
         setButtonText("Saved");
         setData({
           _id: "",
@@ -155,10 +179,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
           label: "",
           title: "",
           subtitle: "",
-          author: {
-            name: "",
-            bio: "",
-          },
+          author: { name: "", bio: "" },
           editors: [],
           sources: [{ text: "", href: "" }],
           content: "",
@@ -166,7 +187,13 @@ const PostForm = ({ postId }: { postId?: string }) => {
         });
       }
     } catch (error) {
-      console.error("Error saving post", error);
+      if (axios.isAxiosError(error)) {
+        console.error("Axios error:", error.response?.data || error.message);
+      } else {
+        console.error("Unexpected error:", error);
+      }
+    } finally {
+      setButtonText("Save");
     }
   };
 
@@ -228,7 +255,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
 
             {postId && (
               <Image
-                src={url + "/images/" + "image3.jpg"} // data.image
+                src={`${url}/api/image/${data.image}`}
                 width={100}
                 height={100}
                 alt=""
