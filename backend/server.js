@@ -17,7 +17,7 @@ app.use(cors());
 
 // database connection
 mongoose.connect(process.env.DATABASE_URL).then(() => {
-  const env = process.env.NODE_ENV || "development";
+  const env = process.env.NODE_ENV || "Development";
   console.log(`Database Connected to ${env} environment`);
 });
 

@@ -4,15 +4,12 @@ const overviewSchema = mongoose.Schema(
   {
     title: {
       type: String,
-      required: true,
     },
     subtitle: {
       type: String,
-      required: true,
     },
     label: {
       type: String,
-      required: true,
     },
     posts: [
       {
@@ -25,7 +22,6 @@ const overviewSchema = mongoose.Schema(
     },
     author: {
       type: Object,
-      required: true,
     },
     faqs: {
       type: Array,

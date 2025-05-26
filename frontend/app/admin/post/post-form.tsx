@@ -40,10 +40,10 @@ const PostForm = ({ postId }: { postId?: string }) => {
 
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
   const router = useRouter();
-  const { token, userInfo } = useSelector((state: RootState) => state.users);
+  const { token, userInfo } = useSelector((state: RootState) => state.user);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [buttonText, setButtonText] = useState("Save");
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[] | null>(null);
   const [preview, setPreview] = useState(false);
   const [contentData, setContentData] = useState<ContentDataProps>({
     markup: "",
@@ -55,12 +55,12 @@ const PostForm = ({ postId }: { postId?: string }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (postId) {
+    if (postId && token) {
       const getPostById = async (postId: string) => {
         const response = await fetch(`${url}/api/posts/${postId}`, {
-          headers: { token },
+          headers: { Authorization: `Bearer ${token}`, },
         });
-        return response.json();
+        return await response.json();
       };
 
       setLoading(true);
@@ -125,11 +125,11 @@ const PostForm = ({ postId }: { postId?: string }) => {
     }
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const createPost = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!postId && !file) {
-      alert("Image is required when creating a new post.");
+    if (!postId && !files) {
+      alert("Cover Image is required when creating a new post.");
       return;
     }
 
@@ -146,7 +146,11 @@ const PostForm = ({ postId }: { postId?: string }) => {
           );
         }
       });
-      if (file) formData.append("image", file);
+
+      files?.forEach((image) => {
+        formData.append("images", image);
+      });
+
       return formData;
     };
 
@@ -202,7 +206,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
   return (
     <div className="w-4/5 mt-20 mx-auto my-5 flex flex-col gap-5">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={createPost}
         className="w-full py-10 flex flex-col md:flex-row justify-between gap-3"
       >
         {/*================================ Left Section ============================*/}
@@ -232,34 +236,53 @@ const PostForm = ({ postId }: { postId?: string }) => {
           </Stack>
 
           <Stack direction="row" spacing={5}>
-            <label htmlFor="image">
+            <label htmlFor="images">
               <Image
                 width={100}
                 height={100}
                 className="cursor-pointer"
-                src={file ? URL.createObjectURL(file) : assets.upload_area}
-                alt=""
+                src={assets.upload_area}
+                alt="Upload"
               />
             </label>
 
             <input
               onChange={(e) => {
                 if (e.target.files) {
-                  setFile(e.target.files[0]);
+                  const selectedFiles = Array.from(e.target.files);
+                  setFiles(selectedFiles);
                 }
               }}
               type="file"
-              id="image"
+              id="images"
+              multiple
               hidden
             />
 
+            {files?.map((file, index) => (
+              <figure key={index}>
+                <Image
+                  width={100}
+                  height={100}
+                  src={URL.createObjectURL(file)}
+                  alt={`Preview ${index + 1}`}
+                />
+                <figcaption>
+                  {index == 0 ? "Cover Image" : `Image ${index}`}
+                </figcaption>
+              </figure>
+            ))}
+
             {postId && (
-              <Image
-                src={`${url}/api/image/${data.image}`}
-                width={100}
-                height={100}
-                alt=""
-              />
+              <figure>
+                <Image
+                  src={data.image}
+                  width={100}
+                  height={100}
+                  alt="Uploaded Image"
+                />
+                <figcaption>Cover Image</figcaption>
+              </figure>
             )}
           </Stack>
 
@@ -359,7 +382,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
             control={
               <Checkbox
                 checked={!!data?.adminChoice}
-                disabled={!userInfo?.permission?.includes("adminChoice")}
+                disabled={!userInfo?.permissions?.includes("adminChoice")}
                 onChange={() =>
                   setData({
                     ...data,

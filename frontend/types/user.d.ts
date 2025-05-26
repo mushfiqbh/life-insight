@@ -3,7 +3,7 @@ interface User {
   name: string;
   email: string;
   password: string;
-  permission: string[];
+  permissions: string[];
 }
 
 export default User;

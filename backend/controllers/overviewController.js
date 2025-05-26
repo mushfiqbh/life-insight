@@ -73,27 +73,55 @@ export const getOverviewById = async (req, res) => {
   }
 };
 
-export const createOverview = async (req, res) => {
-  const newOverview = new overviewModel({
-    title: req.body.title,
-    subtitle: req.body.subtitle,
-    label: req.body.subtitle.toLowerCase().split(" ").join("-"),
-    desc: req.body.desc,
-    author: JSON.parse(req.body.author),
-    faqs: JSON.parse(req.body.faqs),
-    keyterms: JSON.parse(req.body.keyterms),
-  });
-
+// Safe parsing helpers
+const safeParse = (value, fallback) => {
   try {
+    return typeof value === "string" ? JSON.parse(value) : value;
+  } catch {
+    return fallback;
+  }
+};
+
+export const createOverview = async (req, res) => {
+  try {
+    const { title, subtitle, desc } = req.body;
+
+    const label = subtitle?.toLowerCase().split(" ").join("-");
+
+    const parsedAuthor = safeParse(req.body.author, {});
+    const parsedFaqs = safeParse(req.body.faqs, []);
+    const parsedKeyterms = safeParse(req.body.keyterms, []);
+
+    const newOverview = new overviewModel({
+      title,
+      subtitle,
+      label,
+      desc,
+      author: parsedAuthor,
+      faqs: parsedFaqs,
+      keyterms: parsedKeyterms,
+    });
+
     await newOverview.save();
-    res.json({ success: true, message: "Overview Created" });
+
+    return res.status(201).json({
+      success: true,
+      message: "Overview Created",
+      data: newOverview,
+    });
   } catch (error) {
-    res.json({ success: false, message: "Error Creating Overview", error });
+    console.error("Error creating overview:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
   }
 };
 
 export const updateOverview = async (req, res) => {
   const { overviewId } = req.params;
+  const { title, subtitle, desc, author, faqs, keyterms } = req.body;
 
   try {
     const overview = await overviewModel.findById(overviewId);
@@ -101,13 +129,35 @@ export const updateOverview = async (req, res) => {
       return res.status(404).json({ message: "Overview not found" });
     }
 
-    req.body.label = req.body.subtitle.toLowerCase().split(" ").join("-");
-    await overviewModel.findByIdAndUpdate(overviewId, req.body);
+    const parsedAuthor = safeParse(author, {});
+    const parsedFaqs = safeParse(faqs, []);
+    const parsedKeyterms = safeParse(keyterms, []);
+
+    const label = subtitle?.toLowerCase().split(" ").join("-");
+
+    await overviewModel.findByIdAndUpdate(overviewId, {
+      title,
+      subtitle,
+      desc,
+      author: parsedAuthor,
+      faqs: parsedFaqs,
+      keyterms: parsedKeyterms,
+      label,
+    });
+
     const updatedOverview = await overviewModel.findById(overviewId);
 
-    res.json({ success: true, message: "Overview Updated", data: updatedOverview });
+    res.json({
+      success: true,
+      message: "Overview Updated",
+      data: updatedOverview,
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error updating Overview", error });
+    res.status(500).json({
+      success: false,
+      message: "Error updating Overview",
+      error,
+    });
   }
 };
 

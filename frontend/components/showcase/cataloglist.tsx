@@ -23,7 +23,7 @@ const detectLanguage = (text: string) => {
 
 export default function CatalogList({ data }: { data: CatalogProps[] }) {
   const [language, setLanguage] = useState<string>("en");
-  const userInfo = useSelector((state: RootState) => state.users.userInfo);
+  const userInfo = useSelector((state: RootState) => state.user.userInfo);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
@@ -59,7 +59,7 @@ export default function CatalogList({ data }: { data: CatalogProps[] }) {
             >
               View
             </button>
-            {userInfo?.permission?.includes("deleteOverview") && (
+            {userInfo?.permissions?.includes("deleteOverview") && (
               <button
                 className="px-3 py-1 text-sm font-medium text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
                 onClick={() => {

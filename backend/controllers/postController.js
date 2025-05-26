@@ -1,11 +1,53 @@
-import overviewModel from "../models/overviewModel.js";
 import postModel from "../models/postModel.js";
 import userModel from "../models/userModel.js";
 import fs from "fs";
+import uploadToCloudinary from "../utils/cloudinaryUpload.js";
+
+export const createPost = async (req, res) => {
+  const userId = req.userId;
+
+  try {
+    const imageUrl = req.file
+      ? await uploadToCloudinary(req.file, "posts")
+      : req.body.image || "default_image_url"; // Use a default image URL if no file is uploaded
+
+    if (!imageUrl) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Image upload failed" });
+    }
+
+    // Calculate reading time
+    const words = req.body.content?.split(" ")?.length || 0;
+    const reading_time = Math.ceil(words / 225);
+
+    const newPost = new postModel({
+      title: req.body.title,
+      label: req.body.label,
+      subtitle: req.body.subtitle,
+      author: JSON.parse(req.body.author),
+      content: req.body.content,
+      readingTime: reading_time,
+      editors: [userId],
+      sources: JSON.parse(req.body.sources),
+      image: imageUrl,
+      adminChoice: req.body.adminChoice,
+    });
+
+    await newPost.save();
+
+    res.json({ success: true, message: "Post Created" });
+  } catch (error) {
+    console.error("Error in createPost:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Error Creating Post", error });
+  }
+};
 
 export const getAllPosts = async (req, res) => {
   const pageNo = parseInt(req.params.pageNo) || 1;
-  const limit = 5;
+  const limit = 10;
   const skip = (pageNo - 1) * limit;
 
   try {
@@ -55,34 +97,6 @@ export const getPost = async (req, res) => {
     res.json({ success: true, data: { post, relatedPosts } });
   } catch (error) {
     res.json({ success: false, message: "Error Occurred", error });
-  }
-};
-
-export const createPost = async (req, res) => {
-  const userId = req.userId;
-
-  const words = req.body.content?.split(" ")?.length;
-  const reading_time = Math.ceil(words / 225);
-
-  const newPost = new postModel({
-    title: req.body.title,
-    label: req.body.label,
-    subtitle: req.body.subtitle,
-    author: JSON.parse(req.body.author),
-    content: req.body.content,
-    readingTime: reading_time,
-    editors: [userId],
-    sources: JSON.parse(req.body.sources),
-    image: req.file.filename,
-    adminChoice: req.body.adminChoice,
-  });
-
-  try {
-    await newPost.save();
-
-    res.json({ success: true, message: "Post Created" });
-  } catch (error) {
-    res.json({ success: false, message: "Error Creating Post", error });
   }
 };
 

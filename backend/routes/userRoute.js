@@ -5,9 +5,9 @@ import {
   registerUser,
   deleteAccount,
   updateUserInfo,
-  updateUserInfoByAdmin,
+  updatePermissions,
 } from "../controllers/userController.js";
-import authMiddleware from "../middleware/auth.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 
 const userRouter = express.Router();
 
@@ -16,6 +16,6 @@ userRouter.post("/login", loginUser); // Authenticate a user
 userRouter.post("/register", registerUser); // Register a new user
 userRouter.delete("/", authMiddleware, deleteAccount); // Delete current user's account
 userRouter.put("/", authMiddleware, updateUserInfo); // Update current user's info
-userRouter.put("/:userId", authMiddleware, updateUserInfoByAdmin); // Admin updates another user
+userRouter.put("/:targetId", authMiddleware, updatePermissions); // Admin updates another user
 
 export default userRouter;

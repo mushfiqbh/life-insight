@@ -7,8 +7,7 @@ const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET);
 };
 
-// login user
-const loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -37,8 +36,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-// register user
-const registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
   try {
     const exists = await userModel.findOne({ email });
@@ -78,8 +76,9 @@ const registerUser = async (req, res) => {
   }
 };
 
-const getUserInfo = async (req, res) => {
-  const { userId } = req.body;
+export const getUserInfo = async (req, res) => {
+  const userId = req.userId;
+
   try {
     const userInfo = await userModel.findById(userId, { password: 0 });
 
@@ -87,7 +86,7 @@ const getUserInfo = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if (userInfo.permission.includes("admin")) {
+    if (userInfo.permissions.includes("admin")) {
       const userInfoList = await userModel.find({}, { password: 0 });
       return res.status(200).json({ success: true, userInfo, userInfoList });
     }
@@ -98,8 +97,8 @@ const getUserInfo = async (req, res) => {
   }
 };
 
-const deleteAccount = async (req, res) => {
-  const { userId } = req.body;
+export const deleteAccount = async (req, res) => {
+  const userId = req.userId;
 
   try {
     const user = await userModel.findById(userId);
@@ -113,15 +112,16 @@ const deleteAccount = async (req, res) => {
   }
 };
 
-const updateUserInfo = async (req, res) => {
-  const { userId, ...rest } = req.body;
+export const updateUserInfo = async (req, res) => {
+  const userId = req.userId;
+  const updateData = req.body;
 
   try {
     const user = await userModel.findById(userId, { password: 0 });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    await userModel.findByIdAndUpdate(userId, rest); // rest = Request body except userId
+    await userModel.findByIdAndUpdate(userId, updateData);
 
     res.status(200).json({ success: true, message: "User Info Updated" });
   } catch (error) {
@@ -129,39 +129,36 @@ const updateUserInfo = async (req, res) => {
   }
 };
 
-const updateUserInfoByAdmin = async (req, res) => {
-  const { userId, ...rest } = req.body;
-  const targetId = req.params.userId;
+export const updatePermissions = async (req, res) => {
+  const userId = req.userId;
+  const targetId = req.params.targetId;
+  const { permissions } = req.body;
 
   try {
-    const user = await userModel.findById(userId, { password: 0 });
+    const user = await userModel.findById(userId).select("-password");
     if (!user) {
-      return res.status(404).json({ message: "Admin User Not found" });
+      return res.status(404).json({ message: "You are not signed in" });
     }
 
-    if (!user.permission.includes("admin")) {
+    if (!user.permissions.includes("admin")) {
       return res
         .status(401)
         .json({ success: false, message: "Permission Denied" });
     }
 
-    const target = await userModel.findById(targetId, { password: 0 });
+    const target = await userModel.findById(targetId).select("-password");
     if (!target) {
       return res.status(404).json({ message: "Target User Not found" });
     }
-    await userModel.findByIdAndUpdate(targetId, rest); // rest = Request body except userId
 
-    res.status(200).json({ success: true, message: "User Info Updated" });
+    await userModel.findByIdAndUpdate(targetId, {
+      $set: { permissions: permissions },
+    });
+
+    res
+      .status(200)
+      .json({ success: true, message: "User permissions updated" });
   } catch (error) {
     res.status(500).json({ message: "Error Updating User Info", error });
   }
-};
-
-export {
-  loginUser,
-  registerUser,
-  getUserInfo,
-  deleteAccount,
-  updateUserInfo,
-  updateUserInfoByAdmin,
 };

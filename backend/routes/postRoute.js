@@ -1,6 +1,7 @@
+// postRouter.js
 import express from "express";
 import multer from "multer";
-import authMiddleware from "../middleware/auth.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 import {
   createPost,
   updatePost,
@@ -13,24 +14,20 @@ import {
 
 const postRouter = express.Router();
 
-// Image Storage Engine
-const storage = multer.diskStorage({
-  destination: "uploads",
-  filename: (req, file, callback) => {
-    return callback(null, `${Date.now()}${file.originalname}`);
-  },
-});
+// Memory Storage for Buffer
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
-const upload = multer({
-  storage,
-});
+// ROUTES
+postRouter.get("/page/:pageNo", getAllPosts);
+postRouter.get("/filter", selectedPosts);
+postRouter.get("/:postId", getPost);
 
-postRouter.get("/page/:pageNo", getAllPosts); // Get list of posts
-postRouter.get("/filter", selectedPosts); // Get list of posts
-postRouter.get("/:postId", getPost); // Get a specific post by ID
-postRouter.post("/", authMiddleware, upload.single("image"), createPost); // Create a new post
-postRouter.put("/:postId", authMiddleware, upload.single("image"), updatePost); // Update a specific post by ID
-postRouter.put("/:postId/inc", incrementViews); // Increment specific post property (e.g. views)
-postRouter.delete("/:postId", authMiddleware, deletePost); // Delete a specific post by ID
+// UPLOAD (Now using memory buffer, not disk)
+postRouter.post("/", authMiddleware, upload.single("image"), createPost);
+
+postRouter.put("/:postId", authMiddleware, upload.none(), updatePost);
+postRouter.put("/:postId/inc", incrementViews);
+postRouter.delete("/:postId", authMiddleware, deletePost);
 
 export default postRouter;

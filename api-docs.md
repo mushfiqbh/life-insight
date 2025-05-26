@@ -8,7 +8,7 @@ http://onrender.com
 ## Static Files
 ### Serve Uploaded Images
 ```
-GET /api/images/{filename}
+GET /api/image/{filename}
 ```
 - Serves static image files from the `uploads` directory.
 

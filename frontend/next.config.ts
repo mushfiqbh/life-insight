@@ -6,12 +6,16 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "life-insight.onrender.com",
-      },
-      {
         protocol: "http",
         hostname: "127.0.0.1",
+      },
+      {
+        protocol: "https",
+        hostname: "nodewebapp-cmatepawd0g4grd6.southindia-01.azurewebsites.net",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
       },
     ],
   },

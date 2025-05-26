@@ -8,7 +8,7 @@ import catalogReducer from "./catalogSlice";
 const store = configureStore({
   reducer: {
     posts: postsReducer,
-    users: userReducer,
+    user: userReducer,
     catalogs: catalogReducer
   },
 });

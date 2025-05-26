@@ -11,7 +11,7 @@ import { RootState } from "@/redux/store";
 const Navbar = () => {
   const pathname = usePathname();
   const t = useTranslations("navbar");
-  const token = useSelector((state: RootState) => state.users.token);
+  const token = useSelector((state: RootState) => state.user.token);
 
   return (
     <nav className="bg-transparent border-gray-300 gap-5 hidden md:flex items-center ml-4 pl-4 border-l">

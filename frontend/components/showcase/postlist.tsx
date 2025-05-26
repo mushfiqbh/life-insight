@@ -23,10 +23,9 @@ const detectLanguage = (text: string) => {
 };
 
 export default function PostList({ data }: { data: Post[] }) {
-  const url = process.env.NEXT_PUBLIC_SERVER_URL;
   const router = useRouter();
   const [language, setLanguage] = useState<string>("en");
-  const userInfo = useSelector((state: RootState) => state.users.userInfo);
+  const userInfo = useSelector((state: RootState) => state.user.userInfo);
   const { adminChoice } = useSelector(
     (state: RootState) => state.posts.selectedPosts
   );
@@ -50,7 +49,7 @@ export default function PostList({ data }: { data: Post[] }) {
           >
             <div className="w-14 h-14 flex-shrink-0 overflow-hidden rounded-md border">
               <Image
-                src={`${url}/api/image/${item.image}`}
+                src={item.image}
                 alt={item.title}
                 width={56}
                 height={56}
@@ -78,7 +77,7 @@ export default function PostList({ data }: { data: Post[] }) {
             >
               View
             </button>
-            {userInfo?.permission?.includes("deletePost") && (
+            {userInfo?.permissions?.includes("deletePost") && (
               <button
                 className="px-3 py-1 text-sm font-medium text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
                 onClick={() => {

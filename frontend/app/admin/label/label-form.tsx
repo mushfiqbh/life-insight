@@ -32,10 +32,10 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (labelId) {
+    if (labelId && token) {
       const fetchLabelData = async () => {
         const response = await fetch(`${url}/api/catalogs/byid/${labelId}`, {
-          headers: { token },
+          headers: { Authorization: `Bearer ${token}` },
         });
         return response.json();
       };
@@ -93,59 +93,73 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
     event.preventDefault();
     setButtonText("Saving");
 
-    const filteredFaqs = data.faqs.filter((faq) => faq.question && faq.answer);
-    const filteredKeyterms = data.keyterms.filter(
-      (keyterm) => keyterm.key && keyterm.terms
-    );
+    const buildFormData = (): FormData => {
+      const formData = new FormData();
 
-    const formData = {
-      ...data,
-      faqs: filteredFaqs.length ? filteredFaqs : [{ question: "", answer: "" }],
-      keyterms: filteredKeyterms.length
-        ? filteredKeyterms
-        : [{ key: "", terms: "" }],
+      // Clean FAQs and Keyterms
+      const faqs = data.faqs.filter((faq) => faq.question && faq.answer);
+      const keyterms = data.keyterms.filter((term) => term.key && term.terms);
+
+      const finalData = {
+        ...data,
+        faqs: faqs.length ? faqs : [{ question: "", answer: "" }],
+        keyterms: keyterms.length ? keyterms : [{ key: "", terms: "" }],
+      };
+
+      Object.entries(finalData).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          const isObject = typeof value === "object";
+          formData.append(
+            key,
+            isObject ? JSON.stringify(value) : String(value)
+          );
+        }
+      });
+
+      return formData;
+    };
+
+    const sendRequest = async (formData: FormData) => {
+      const config = {
+        headers: {
+          token,
+        },
+      };
+
+      const endpoint = labelId
+        ? `${url}/api/catalogs/${labelId}`
+        : `${url}/api/catalogs/`;
+
+      const method = labelId ? axios.put : axios.post;
+      return method(endpoint, formData, config);
     };
 
     try {
-      if (labelId) {
-        const response = await axios.put(
-          `${url}/api/catalogs/${labelId}`,
-          formData,
-          {
-            headers: { token, "Content-Type": "multipart/form-data" },
-          }
-        );
-        if (response.data.success) {
-          console.log("Overview Updated Successfully");
-        } else {
-          console.error(response.data.message);
-        }
-      } else {
-        const response = await axios.post(`${url}/api/catalogs/`, formData, {
-          headers: { token, "Content-Type": "multipart/form-data" },
+      const formData = buildFormData();
+      const response = await sendRequest(formData);
+
+      if (!labelId && response.data?.success) {
+        setData({
+          _id: "",
+          title: "",
+          subtitle: "",
+          desc: "",
+          label: "",
+          author: { name: "", bio: "" },
+          faqs: [{ question: "", answer: "" }],
+          keyterms: [{ key: "", terms: "" }],
         });
-        if (response.data.success) {
-          setData({
-            _id: "",
-            title: "",
-            subtitle: "",
-            desc: "",
-            label: "",
-            author: {
-              name: "",
-              bio: "",
-            },
-            faqs: [{ question: "", answer: "" }],
-            keyterms: [{ key: "", terms: "" }],
-          });
-        } else {
-          console.error(response.data.message);
-        }
       }
 
       setButtonText("Saved");
     } catch (error) {
-      console.error("Error saving overview:", error);
+      if (axios.isAxiosError(error)) {
+        console.error("Axios error:", error.response?.data || error.message);
+      } else {
+        console.error("Unexpected error:", error);
+      }
+    } finally {
+      setButtonText("Save");
     }
   };
 

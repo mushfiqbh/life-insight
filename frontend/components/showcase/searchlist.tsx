@@ -39,9 +39,9 @@ export default function SearchList({
           <div className="showcase_list_image">
             <Image
               src={
-                url +
-                "/api/image/" +
-                ("image" in item ? item.image : "defaultCatalog.jpg")
+                "image" in item
+                  ? item.image
+                  : url + "/api/image/" + "defaultCatalog.jpg"
               }
               alt=""
               height={50}

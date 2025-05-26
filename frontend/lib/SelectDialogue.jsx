@@ -39,7 +39,7 @@
 //       url + "/api/author/addauthor",
 //       dialogValue,
 //       {
-//         headers: { token },
+//         headers: { Authorization: `Bearer ${token}` },
 //       }
 //     );
 //     if (response.data.success) {

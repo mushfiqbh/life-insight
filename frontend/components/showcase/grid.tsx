@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 
 export default function ShowGrid({ data }: { data: PostProps[] }) {
-  const url = process.env.NEXT_PUBLIC_SERVER_URL;
   const [activeIndex, setActiveIndex] = useState(0);
   const items: PostProps[] = data?.slice(0, (activeIndex + 1) * 12);
   const dispatch = useDispatch<AppDispatch>();
@@ -26,7 +25,7 @@ export default function ShowGrid({ data }: { data: PostProps[] }) {
             className="bg-white rounded-lg border shadow-lg overflow-hidden"
           >
             <Image
-              src={`${url}/api/images/image3.jpg`}
+              src={item.image}
               alt=""
               width={300}
               height={200}

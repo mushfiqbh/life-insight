@@ -40,11 +40,12 @@ const Header: React.FC = () => {
 
         <div className="flex items-center">
           <Link href="/" className="flex items-center">
-            <Image
+            {/* <Image
+              priority
               src={assets.verywellmind}
               alt="brand"
               className="w-48 cursor-pointer hover:opacity-70"
-            />
+            /> */}
           </Link>
 
           <Navbar />

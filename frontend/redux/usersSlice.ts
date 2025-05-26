@@ -5,31 +5,39 @@ import axios from "axios";
 const url = process.env.NEXT_PUBLIC_SERVER_URL;
 
 interface UserState {
-  token: string;
-  userInfo: User;
+  token: string | null;
+  userInfo: User | null;
   userInfoList: User[];
+  error: string | null;
 }
 
 const initialState: UserState = {
-  token: "",
-  userInfo: {} as User,
+  token: null,
+  userInfo: null,
   userInfoList: [],
+  error: null,
 };
 
-// Fetch user info
 export const getUserInfo = createAsyncThunk(
   "user/getUserInfo",
-  async (token: string, { rejectWithValue }) => {
+  async (_, { getState, rejectWithValue }) => {
+    const { user } = getState() as { user: UserState };
+    const token = user.token;
+
+    if (!token) return rejectWithValue("No token available");
+
     try {
       const response = await axios.get(`${url}/api/users`, {
-        headers: { token },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        return rejectWithValue(error.response.data);
+        return rejectWithValue(error.response.data.message || "Fetch error");
       }
-      return rejectWithValue(error);
+      return rejectWithValue("Unknown error");
     }
   }
 );
@@ -40,15 +48,37 @@ const userSlice = createSlice({
   reducers: {
     setToken: (state, action: PayloadAction<string>) => {
       state.token = action.payload;
+      if (typeof window !== "undefined") {
+        localStorage.setItem("token", action.payload);
+      }
+    },
+    loadTokenFromStorage: (state) => {
+      if (typeof window !== "undefined") {
+        const savedToken = localStorage.getItem("token");
+        state.token = savedToken || null;
+      }
+    },
+    logout: (state) => {
+      state.token = null;
+      state.userInfo = null;
+      state.userInfoList = [];
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("token");
+      }
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getUserInfo.fulfilled, (state, action) => {
-      state.userInfo = action.payload.userInfo;
-      state.userInfoList = action.payload.userInfoList;
-    });
+    builder
+      .addCase(getUserInfo.fulfilled, (state, action) => {
+        state.userInfo = action.payload.userInfo;
+        state.userInfoList = action.payload.userInfoList;
+        state.error = null;
+      })
+      .addCase(getUserInfo.rejected, (state, action) => {
+        state.error = action.payload as string;
+      });
   },
 });
 
-export const { setToken } = userSlice.actions;
+export const { setToken, loadTokenFromStorage, logout } = userSlice.actions;
 export default userSlice.reducer;

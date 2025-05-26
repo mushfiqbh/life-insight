@@ -13,7 +13,6 @@ import { fetchPost } from "@/redux/postsSlice";
 
 const Page: React.FC = () => {
   const { postId } = useParams() as { postId: string };
-  const url = process.env.NEXT_PUBLIC_SERVER_URL;
   const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState(true);
   const { error } = useSelector((state: RootState) => state.posts);
@@ -29,11 +28,7 @@ const Page: React.FC = () => {
 
   // this not working - bug
   if (error) {
-    return (
-      <div className="w-full mt-12 p-5 md:p-20">
-        Post Not Found
-      </div>
-    );
+    return <div className="w-full mt-12 p-5 md:p-20">Post Not Found</div>;
   }
 
   return (
@@ -57,7 +52,7 @@ const Page: React.FC = () => {
       </div>
       <div className="w-full mb-6">
         <Image
-          src={`${url}/api/images/image3.jpg`} // ${post.image}
+          src={post.image}
           width={512}
           height={288}
           alt={post?.title || "Post_Image"}
@@ -67,6 +62,7 @@ const Page: React.FC = () => {
       <div className="flex flex-col md:flex-row gap-10">
         <div className="w-full md:w-2/3 text-lg leading-relaxed">
           <ContentWithTOC data={post.content} />
+
           <div className="bg-green-100 p-4 mt-6 rounded-md">
             <p>
               Verywell Mind uses high-quality sources, including peer-reviewed

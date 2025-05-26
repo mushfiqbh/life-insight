@@ -23,7 +23,7 @@ const StoreContextProvider = (props) => {
       const response = await axios.put(
         url + "/api/user/update/" + targetId,
         data,
-        { headers: { token } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (response.status === 200) {
