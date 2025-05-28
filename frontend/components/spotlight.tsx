@@ -9,6 +9,7 @@ import { fetchSelectedPosts, incrementViews } from "@/redux/postsSlice";
 import LoadingSpinner from "./ui/loading-spinner";
 import { RootState } from "@/redux/store";
 import { useTranslations } from "next-intl";
+import { assets } from "@/assets/assets";
 
 const Spotlight = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -42,7 +43,8 @@ const Spotlight = () => {
             >
               <div className="max-h-[22rem] relative overflow-hidden rounded-tl-lg rounded-tr-lg">
                 <Image
-                  src={latestPost?.image}
+                  priority
+                  src={assets.dunning_krugar}
                   alt={latestPost?.title}
                   width={1920}
                   height={1080}
@@ -72,9 +74,10 @@ const Spotlight = () => {
               >
                 <div className="h-72 relative overflow-hidden rounded-lg">
                   <Image
+                    priority
+                    src={assets.dunning_krugar}
                     width={1920}
                     height={1080}
-                    src={adminChoice?.image}
                     alt={adminChoice?.title}
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                   />

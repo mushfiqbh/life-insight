@@ -16,7 +16,7 @@ export default function ShowGrid({ data }: { data: PostProps[] }) {
 
   return (
     <>
-      <div className="grid grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         {items?.map((item, index) => (
           <Link
             href={`/post/${item._id}`}

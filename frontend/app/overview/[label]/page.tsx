@@ -35,8 +35,8 @@ const Overview = () => {
   }
 
   return (
-    <div className="w-full mt-16 p-5 md:p-20 bg-white">
-      <Link className="font-semibold text-gray-900" href="">
+    <div className="w-full mt-16 p-5 md:p-20">
+      <Link className="font-semibold" href="">
         {overview?.label?.toUpperCase()}
       </Link>
       <h1 className="text-4xl font-bold mt-2">{overview.title}</h1>

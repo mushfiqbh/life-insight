@@ -10,6 +10,7 @@ import ShowGrid from "@/components/showcase/grid";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import ContentWithTOC from "@/components/contentTOC";
 import { fetchPost } from "@/redux/postsSlice";
+import { assets } from "@/assets/assets";
 
 const Page: React.FC = () => {
   const { postId } = useParams() as { postId: string };
@@ -52,7 +53,8 @@ const Page: React.FC = () => {
       </div>
       <div className="w-full mb-6">
         <Image
-          src={post.image}
+          priority
+          src={assets.dunning_krugar}
           width={1280}
           height={720}
           alt={post?.title || "Post_Image"}
