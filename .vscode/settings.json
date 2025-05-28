@@ -1,3 +1,5 @@
 {
-    "postman.settings.dotenv-detection-notification-visibility": false
+    "postman.settings.dotenv-detection-notification-visibility": false,
+    "appService.defaultWebAppToDeploy": "/subscriptions/f6464555-5e08-485d-93d8-fd67b8839e32/resourceGroups/PersonalProjects/providers/Microsoft.Web/sites/NodeWebApp",
+    "appService.deploySubpath": "backend\\controllers"
 }

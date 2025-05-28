@@ -3,7 +3,11 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { getUserInfo, setToken } from "@/redux/usersSlice";
+import {
+  getUserInfo,
+  setToken,
+  loadTokenFromStorage,
+} from "@/redux/usersSlice";
 import Cookies from "js-cookie";
 
 const FetchData = () => {
@@ -12,6 +16,7 @@ const FetchData = () => {
   useEffect(() => {
     dispatch(setToken(Cookies.get("token") || ""));
     dispatch(getUserInfo());
+    dispatch(loadTokenFromStorage());
   }, [dispatch]);
 
   return null;

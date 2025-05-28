@@ -4,12 +4,11 @@ import useAuth from "@/hooks/useAuth";
 import AuthForm from "@/components/auth/authForm";
 import UserSidebar from "@/components/auth/userSidebar";
 import PermissionForm from "@/components/auth/permissionForm";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 
 const Page: React.FC = () => {
-  const { token, userInfo } = useSelector((state: RootState) => state.user);
   const {
+    token,
+    userInfo,
     onLogin,
     setOnLogin,
     formState,
@@ -22,9 +21,9 @@ const Page: React.FC = () => {
     <div className="w-full mt-[100px] flex flex-col md:flex-row">
       <div className="w-full md:w-2/3 p-8">
         {token && (
-          <div className="flex flex-col md:flex-row bg-gray-100">
+          <div className="flex flex-col md:flex-row">
             <UserSidebar />
-            <div className="w-full md:w-2/3 p-8 bg-white shadow-md rounded-lg">
+            <div className="w-full md:w-2/3 p-8 shadow-md rounded-lg">
               <h2 className="text-xl font-bold">{userInfo?.name}</h2>
               <h3 className="text-gray-600">{userInfo?.email}</h3>
               <PermissionForm />

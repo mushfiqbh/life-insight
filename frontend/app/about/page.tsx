@@ -2,7 +2,7 @@ import Head from "next/head";
 
 function About() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-screen">
       <Head>
         <title>About Us</title>
         <meta
@@ -10,7 +10,7 @@ function About() {
           content="Learn more about our team and mission."
         />
       </Head>
-      <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg">
+      <div className="max-w-2xl mx-auto p-6 shadow-md rounded-lg">
         <h1 className="text-3xl font-bold mb-4">About Us</h1>
         <p className="text-gray-700 mb-4">
           We are a dedicated team committed to providing the best service
