@@ -8,7 +8,7 @@ mongoose.connect(process.env.DATABASE_URL).then(() => {
   console.log(`Database Connected to ${env} environment`);
 });
 
-async function migrateImageFieldToImagesArray() {
+async function migration() {
   try {
     // Find all posts that have an 'image' field
     const postsWithImage = await postModel.find({
@@ -31,6 +31,6 @@ async function migrateImageFieldToImagesArray() {
   }
 }
 
-// migrateImageFieldToImagesArray();
+// migration();
 
 mongoose.disconnect();

@@ -66,12 +66,13 @@ const Section = () => {
         </div>
       </div>
 
+      {/* Award Section */}
       <div className="bg-transparent my-4 py-4">
         <h3>{t("awards")}</h3>
         <div className="mt-3 flex flex-col items-start md:flex-row md:items-center justify-between gap-3">
           {sections.rewards.map(({ title, image }, index) => (
             <div key={index}>
-              <Image src={image} alt="" width={100} height={100} />
+              <Image src={image} alt="award_logo" width={100} className="h-auto" />
               <h4>{title}</h4>
             </div>
           ))}

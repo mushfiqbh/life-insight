@@ -16,9 +16,7 @@ const Statbar: React.FC = () => {
         <Image
           src={assets.logo}
           alt="logo"
-          width={100}
-          height={100}
-          className="float-right md:float-none"
+          className="w-24 h-24 float-right md:float-none"
         />
       </div>
       <div className="w-full md:w-[45%] text-sm md:text-lg flex items-center justify-between gap-2">

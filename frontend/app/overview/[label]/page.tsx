@@ -35,7 +35,7 @@ const Overview = () => {
   }
 
   return (
-    <div className="w-full mt-12 p-5 md:p-20 bg-white">
+    <div className="w-full mt-16 p-5 md:p-20 bg-white">
       <Link className="font-semibold text-gray-900" href="">
         {overview?.label?.toUpperCase()}
       </Link>

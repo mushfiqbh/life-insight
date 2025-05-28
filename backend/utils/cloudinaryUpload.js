@@ -2,12 +2,10 @@
 import streamifier from "streamifier";
 import cloudinary from "./cloudinary.js";
 
-const uploadToCloudinary = (buffer) => {
+const uploadToCloudinary = (buffer, folder) => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
-      {
-        folder: "posts",
-      },
+      { folder },
       (error, result) => {
         if (result) {
           resolve(result.secure_url);

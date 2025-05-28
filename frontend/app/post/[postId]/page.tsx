@@ -32,7 +32,7 @@ const Page: React.FC = () => {
   }
 
   return (
-    <div className="w-full mt-12 p-5 md:p-20">
+    <div className="w-full mt-16 p-5 md:p-20">
       <div className="mb-6">
         <Link
           href={`/overview/${post.label}`}
@@ -52,9 +52,10 @@ const Page: React.FC = () => {
       </div>
       <div className="w-full mb-6">
         <Image
+          priority
           src={post.image}
-          width={512}
-          height={288}
+          width={1280}
+          height={720}
           alt={post?.title || "Post_Image"}
           className="rounded-lg"
         />

@@ -27,7 +27,7 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
 
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
   const router = useRouter();
-  const { token } = useSelector((state: RootState) => state.users);
+  const { token } = useSelector((state: RootState) => state.user);
   const [buttonText, setButtonText] = useState("Save");
   const [loading, setLoading] = useState(true);
 
@@ -122,7 +122,8 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
     const sendRequest = async (formData: FormData) => {
       const config = {
         headers: {
-          token,
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
       };
 

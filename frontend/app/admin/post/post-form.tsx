@@ -43,7 +43,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
   const { token, userInfo } = useSelector((state: RootState) => state.user);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [buttonText, setButtonText] = useState("Save");
-  const [files, setFiles] = useState<File[] | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState(false);
   const [contentData, setContentData] = useState<ContentDataProps>({
     markup: "",
@@ -58,7 +58,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
     if (postId && token) {
       const getPostById = async (postId: string) => {
         const response = await fetch(`${url}/api/posts/${postId}`, {
-          headers: { Authorization: `Bearer ${token}`, },
+          headers: { Authorization: `Bearer ${token}` },
         });
         return await response.json();
       };
@@ -67,9 +67,14 @@ const PostForm = ({ postId }: { postId?: string }) => {
       getPostById(postId)
         .then((response) => {
           setData(response.data.post);
-          setLoading(false);
         })
-        .catch(() => setLoading(false));
+        .catch((error) => {
+          console.error("Error fetching post:", error);
+          alert("Failed to load post data. Please try again later.");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     } else {
       setLoading(false);
     }
@@ -128,7 +133,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
   const createPost = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!postId && !files) {
+    if (!postId && !file) {
       alert("Cover Image is required when creating a new post.");
       return;
     }
@@ -147,9 +152,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
         }
       });
 
-      files?.forEach((image) => {
-        formData.append("images", image);
-      });
+      formData.append("image", file ? file : data.image);
 
       return formData;
     };
@@ -157,7 +160,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
     const sendRequest = async (formData: FormData) => {
       const config = {
         headers: {
-          token,
+          Authorization: `Bearer ${token}`,
         },
       };
 
@@ -236,7 +239,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
           </Stack>
 
           <Stack direction="row" spacing={5}>
-            <label htmlFor="images">
+            <label htmlFor="image">
               <Image
                 width={100}
                 height={100}
@@ -248,32 +251,32 @@ const PostForm = ({ postId }: { postId?: string }) => {
 
             <input
               onChange={(e) => {
-                if (e.target.files) {
-                  const selectedFiles = Array.from(e.target.files);
-                  setFiles(selectedFiles);
+                const selectedFile = e.target.files?.[0];
+                if (selectedFile) {
+                  setFile(selectedFile);
+                } else {
+                  setFile(null);
                 }
               }}
               type="file"
-              id="images"
-              multiple
+              id="image"
               hidden
             />
 
-            {files?.map((file, index) => (
-              <figure key={index}>
+            {file && (
+              <figure>
                 <Image
                   width={100}
                   height={100}
                   src={URL.createObjectURL(file)}
-                  alt={`Preview ${index + 1}`}
+                  alt="Uploaded Image"
+                  className="object-cover"
                 />
-                <figcaption>
-                  {index == 0 ? "Cover Image" : `Image ${index}`}
-                </figcaption>
+                <figcaption>New Cover Image</figcaption>
               </figure>
-            ))}
+            )}
 
-            {postId && (
+            {postId && data.image && (
               <figure>
                 <Image
                   src={data.image}

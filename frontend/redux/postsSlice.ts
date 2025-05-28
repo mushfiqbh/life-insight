@@ -68,7 +68,12 @@ export const incrementViews = createAsyncThunk(
 export const deletePost = createAsyncThunk(
   "posts/delete",
   async (ID: string) => {
-    const response = await axios.delete(`${url}/api/posts/${ID}`);
+    const response = await axios.delete(`${url}/api/posts/${ID}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    
     if (response.status === 200) {
       return ID;
     }

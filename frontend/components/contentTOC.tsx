@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import parse from "html-react-parser";
+import "./contentTOC.css";
 
 export default function ContentWithTOC({ data }: { data: string }) {
   const [headings, setHeadings] = useState<
@@ -25,9 +26,9 @@ export default function ContentWithTOC({ data }: { data: string }) {
   }, [data]);
 
   return (
-    <div className="flex gap-6 p-4">
+    <div className="flex flex-col md:flex-row gap-6">
       {/* Sidebar TOC */}
-      <aside className="w-1/4 sticky top-4 h-fit p-4 bg-white shadow-md rounded-lg">
+      <aside className="w-full md:w-1/4 h-fit p-4 bg-white shadow-md rounded-lg">
         <h2 className="text-lg font-semibold mb-2">Contents</h2>
         <ul className="space-y-2">
           {headings.map((heading) => (
@@ -44,8 +45,9 @@ export default function ContentWithTOC({ data }: { data: string }) {
       </aside>
 
       {/* Main Content */}
-      <Card className="w-3/4 p-6 prose lg:prose-xl max-w-none">
+      <Card className="w-full md:w-3/4 p-2">
         <motion.div
+          className="post_elements_parent"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}

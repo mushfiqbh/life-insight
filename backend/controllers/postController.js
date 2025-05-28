@@ -8,8 +8,8 @@ export const createPost = async (req, res) => {
 
   try {
     const imageUrl = req.file
-      ? await uploadToCloudinary(req.file, "posts")
-      : req.body.image || "default_image_url"; // Use a default image URL if no file is uploaded
+      ? await uploadToCloudinary(req.file.buffer, "posts") // use buffer
+      : req.body.image || "default_image_url";
 
     if (!imageUrl) {
       return res
@@ -17,7 +17,6 @@ export const createPost = async (req, res) => {
         .json({ success: false, message: "Image upload failed" });
     }
 
-    // Calculate reading time
     const words = req.body.content?.split(" ")?.length || 0;
     const reading_time = Math.ceil(words / 225);
 
@@ -35,7 +34,6 @@ export const createPost = async (req, res) => {
     });
 
     await newPost.save();
-
     res.json({ success: true, message: "Post Created" });
   } catch (error) {
     console.error("Error in createPost:", error);
@@ -105,7 +103,6 @@ export const updatePost = async (req, res) => {
   const userId = req.userId;
 
   try {
-    // Fetch the existing post to validate and modify editors
     const existingPost = await postModel.findById(postId);
     if (!existingPost) {
       return res
@@ -113,13 +110,17 @@ export const updatePost = async (req, res) => {
         .json({ success: false, message: "Post not found" });
     }
 
-    // Calculate reading time
     const content = req.body.content ?? existingPost.content;
     const words =
       typeof content === "string" ? content.trim().split(/\s+/).length : 0;
     const readingTime = Math.max(1, Math.ceil(words / 225));
 
-    // Handle editors list
+    // let imageUrl = req.body.image || existingPost.image;
+
+    // if (req.file) {
+    //   imageUrl = await uploadToCloudinary(req.file.buffer, "posts");
+    // }
+
     let editors = Array.isArray(existingPost.editors)
       ? [...existingPost.editors]
       : [];
@@ -128,14 +129,13 @@ export const updatePost = async (req, res) => {
       editors.push(userIdStr);
     }
 
-    // Build the updated fields
     const updatedFields = {
       title: req.body.title,
       label: req.body.label,
       subtitle: req.body.subtitle,
       content: req.body.content,
       readingTime,
-      image: req.file?.filename || req.body.image,
+      image: existingPost.image,
       adminChoice: req.body.adminChoice,
       editors,
     };
@@ -148,7 +148,6 @@ export const updatePost = async (req, res) => {
       updatedFields.sources = JSON.parse(req.body.sources);
     }
 
-    // Update the post
     const updatedPost = await postModel.findByIdAndUpdate(
       postId,
       { $set: updatedFields },
@@ -194,6 +193,7 @@ export const incrementViews = async (req, res) => {
 
 export const deletePost = async (req, res) => {
   const { postId } = req.params;
+  const userId = req.userId;
 
   try {
     const post = await postModel.findById(postId);
@@ -201,12 +201,18 @@ export const deletePost = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    const permit = await userModel.findById(req.body.userId);
-    if (!permit.permission.includes("deletePost")) {
+    const permit = await userModel.findById(userId);
+    if (!permit.permissions.includes("deletePost")) {
       return res.status(401).json({ message: "Permission Denied" });
     }
 
-    fs.unlink(`uploads/${post.image}`, () => {});
+    // if (post.image) {
+    //   const imageUrl = post.image;
+    //   const publicId = imageUrl.split("/").slice(-2).join("/").split(".")[0]; // → posts/abc123
+
+    //   await cloudinary.uploader.destroy(publicId);
+    // }
+
     await postModel.findByIdAndDelete(postId);
     res.status(200).json({ message: "Post Deleted" });
   } catch (error) {

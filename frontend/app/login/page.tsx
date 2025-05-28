@@ -22,11 +22,13 @@ const Page: React.FC = () => {
     <div className="w-full mt-[100px] flex flex-col md:flex-row">
       <div className="w-full md:w-2/3 p-8">
         {token && (
-          <div className="flex">
+          <div className="flex flex-col md:flex-row bg-gray-100">
             <UserSidebar />
-            <h2 className="text-xl font-bold">{userInfo?.name}</h2>
-            <h3 className="text-gray-600">{userInfo?.email}</h3>
-            <PermissionForm />
+            <div className="w-full md:w-2/3 p-8 bg-white shadow-md rounded-lg">
+              <h2 className="text-xl font-bold">{userInfo?.name}</h2>
+              <h3 className="text-gray-600">{userInfo?.email}</h3>
+              <PermissionForm />
+            </div>
           </div>
         )}
 

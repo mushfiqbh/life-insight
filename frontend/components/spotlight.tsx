@@ -73,6 +73,7 @@ const Spotlight = () => {
               >
                 <div className="h-72 relative overflow-hidden rounded-lg">
                   <Image
+                    priority
                     width={1920}
                     height={1080}
                     src={adminChoice?.image}
