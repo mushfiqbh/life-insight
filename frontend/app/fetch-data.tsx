@@ -11,7 +11,7 @@ const FetchData = () => {
 
   useEffect(() => {
     dispatch(setToken(Cookies.get("token") || ""));
-    dispatch(getUserInfo(Cookies.get("token") || ""));
+    dispatch(getUserInfo());
   }, [dispatch]);
 
   return null;
