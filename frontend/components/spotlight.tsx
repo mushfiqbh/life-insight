@@ -42,7 +42,6 @@ const Spotlight = () => {
             >
               <div className="max-h-[22rem] relative overflow-hidden rounded-tl-lg rounded-tr-lg">
                 <Image
-                  priority
                   src={latestPost?.image}
                   alt={latestPost?.title}
                   width={1920}
@@ -73,7 +72,6 @@ const Spotlight = () => {
               >
                 <div className="h-72 relative overflow-hidden rounded-lg">
                   <Image
-                    priority
                     width={1920}
                     height={1080}
                     src={adminChoice?.image}

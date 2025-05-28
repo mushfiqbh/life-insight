@@ -52,7 +52,6 @@ const Page: React.FC = () => {
       </div>
       <div className="w-full mb-6">
         <Image
-          priority
           src={post.image}
           width={1280}
           height={720}
