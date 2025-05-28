@@ -23,7 +23,7 @@ export default function DropdownMenu({
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
   const t = useTranslations("navbar");
-  const token = useSelector((state: RootState) => state.users.token);
+  const token = useSelector((state: RootState) => state.user.token);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
