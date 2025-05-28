@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "nodewebapp-cmatepawd0g4grd6.southindia-01.azurewebsites.net",
+        hostname: "lifeinsight-fxbwg5eth6becsc4.southindia-01.azurewebsites.net",
       },
       {
         protocol: "https",
