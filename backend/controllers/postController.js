@@ -67,9 +67,9 @@ export const selectedPosts = async (req, res) => {
   try {
     let data = {};
 
-    data.adminChoice = await postModel.findOne({ adminChoice: 1 });
-    data.latestPost = await postModel.findOne().sort({ createdAt: -1 });
-    data.popularPosts = await postModel.find().sort({ views: -1 }).limit(4);
+    data.adminChoice = await postModel.findOne({ adminChoice: 1 }).select('-content');
+    data.latestPost = await postModel.findOne().sort({ createdAt: -1 }).select('-content');
+    data.popularPosts = await postModel.find().sort({ views: -1 }).limit(4).select('-content');
 
     res.json({ success: true, data });
   } catch (error) {

@@ -19,23 +19,42 @@ LifeInsight is a full-stack project designed to provide actionable insights and 
 ## Getting Started
 
 1. **Clone the repository:**
-    ```bash
-    git clone https://github.com/mushfiqbh/LifeInsight.git
-    cd LifeInsight
-    ```
+
+   ```bash
+   git clone https://github.com/mushfiqbh/LifeInsight.git
+   cd LifeInsight
+   ```
 
 2. **Install dependencies:**
-    ```bash
-    npm install
-    ```
+
+   ```bash
+   npm install
+   ```
 
 3. **Set up environment variables:**  
-    Copy `.env` and update the values as needed.
+   Create a `.env` file in the /backend directory and add the following variables:
+
+   ```bash
+   JWT_SECRET=
+   NODE_ENV=development
+   PORT=5000
+   DATABASE_URL=
+   CLOUDINARY_CLOUD_NAME=
+   CLOUDINARY_API_KEY=
+   CLOUDINARY_API_SECRET=
+   ```
+
+   Create a `.env` file in the /frontend directory and add the following variables:
+
+   ```bash
+   NEXT_PUBLIC_SERVER_URL=http://127.0.0.1:5000
+   CONTENT_LANGUAGE=en
+   ```
 
 4. **Run the development server:**
-    ```bash
-    npm run dev
-    ```
+   ```bash
+   npm run dev
+   ```
 
 ## Contributing
 

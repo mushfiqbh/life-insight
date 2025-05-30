@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import parse from "html-react-parser";
-import "./contentTOC.css";
+import "../styles/contentTOC.module.css";
 
 export default function ContentWithTOC({ data }: { data: string }) {
   const [headings, setHeadings] = useState<
@@ -47,7 +47,7 @@ export default function ContentWithTOC({ data }: { data: string }) {
       {/* Main Content */}
       <Card className="w-full md:w-3/4 p-2">
         <motion.div
-          className="post_elements_parent"
+          className="post_elements_parent" // Important for styling
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}

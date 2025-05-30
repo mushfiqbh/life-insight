@@ -76,12 +76,13 @@ const Spotlight = () => {
                   <Image
                     priority
                     src={assets.dunning_krugar}
-                    width={1920}
-                    height={1080}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 288px"
                     alt={adminChoice?.title}
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                    className="object-cover transition-transform duration-300 hover:scale-110 rounded-lg"
                   />
                 </div>
+
                 <div className="text-center -mt-2 relative">
                   <span className="bg-green-500 text-white px-3 py-1 rounded-md text-sm">
                     {t("popular")}
