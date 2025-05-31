@@ -70,5 +70,5 @@ jobs:
         with:
           app-name: 'LifeInsight'
           slot-name: 'Production'
-          package: './backend'
+          package: .
           
