@@ -3,7 +3,7 @@ import "./globals.css";
 import ReduxProvider from "./redux-provider"; // Import the new provider
 import Footer from "@/components/footer";
 import Header from "@/components/header";
-import FetchData from "./fetch-data";
+import PreFetch from "./prefetch";
 import { ThemeProvider } from "@/components/theme-provider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
@@ -26,7 +26,7 @@ export default async function RootLayout({
     <html lang={locale} suppressHydrationWarning>
       <body>
         <ReduxProvider>
-          <FetchData />
+          <PreFetch />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

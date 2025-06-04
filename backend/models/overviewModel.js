@@ -11,7 +11,7 @@ const overviewSchema = mongoose.Schema(
     label: {
       type: String,
     },
-    posts: [
+    postIds: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "post",
