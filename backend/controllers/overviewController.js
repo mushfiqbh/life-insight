@@ -41,7 +41,7 @@ export const getOverview = async (req, res) => {
   try {
     const overview = await overviewModel
       .findOne({ label: label.toLowerCase() })
-      .populate("posts");
+      .populate("postIds");
 
     if (!overview) {
       return res
@@ -59,7 +59,7 @@ export const getOverviewById = async (req, res) => {
   const { labelId } = req.params;
 
   try {
-    const overview = await overviewModel.findById(labelId).populate("posts");
+    const overview = await overviewModel.findById(labelId).populate("postIds");
 
     if (!overview) {
       return res

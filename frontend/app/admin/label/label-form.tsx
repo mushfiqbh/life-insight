@@ -1,16 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button, Stack, TextareaAutosize, TextField } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import axios from "axios";
 import LoadingSpinner from "@/components/ui/loading-spinner";
-import { SaveIcon } from "lucide-react";
 import CatalogProps from "@/types/catalogProps";
+import LabelMetadata from "@/components/admin/LabelMetadata";
+import FaqKeyTerms from "@/components/admin/FaqKeyTerms";
 
 const LabelForm = ({ labelId }: { labelId?: string }) => {
+  const url = process.env.NEXT_PUBLIC_SERVER_URL;
+  const { token } = useSelector((state: RootState) => state.user);
+  const [buttonText, setButtonText] = useState(labelId ? "Update" : "Save");
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState<CatalogProps>({
     _id: "",
     title: "",
@@ -25,11 +28,9 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
     keyterms: [{ key: "", terms: "" }],
   });
 
-  const url = process.env.NEXT_PUBLIC_SERVER_URL;
-  const router = useRouter();
-  const { token } = useSelector((state: RootState) => state.user);
-  const [buttonText, setButtonText] = useState("Save");
-  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setButtonText(labelId ? "Update" : "Save");
+  }, [labelId, data]);
 
   useEffect(() => {
     if (labelId && token) {
@@ -53,45 +54,42 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
   }, [labelId, url, token]);
 
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setButtonText("Save");
-    const { name, value } = event.target;
-    if (name.includes("author")) {
-      setData((prev) => ({
-        ...prev,
-        author: {
-          ...prev.author,
-          [name.split(".")[1]]: value,
-        },
-      }));
-    } else {
-      setData((prev) => ({ ...prev, [name]: value }));
-    }
-  };
-
-  const handleFaqsChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number
+    index?: number
   ) => {
-    setButtonText("Save");
+    setButtonText(labelId ? "Update" : "Save");
     const { name, value } = event.target;
-    setData((prev) => {
-      const updatedFaqs = [...prev.faqs];
-      const updatedKeyTerms = [...prev.keyterms];
 
-      if (name === "question") updatedFaqs[index].question = value;
-      else if (name === "answer") updatedFaqs[index].answer = value;
-      else if (name === "key") updatedKeyTerms[index].key = value;
-      else if (name === "terms") updatedKeyTerms[index].terms = value;
+    if (index !== undefined) {
+      setData((prev) => {
+        const updatedFaqs = [...prev.faqs];
+        const updatedKeyTerms = [...prev.keyterms];
 
-      return { ...prev, faqs: updatedFaqs, keyterms: updatedKeyTerms };
-    });
+        if (name === "question") updatedFaqs[index].question = value;
+        else if (name === "answer") updatedFaqs[index].answer = value;
+        else if (name === "key") updatedKeyTerms[index].key = value;
+        else if (name === "terms") updatedKeyTerms[index].terms = value;
+
+        return { ...prev, faqs: updatedFaqs, keyterms: updatedKeyTerms };
+      });
+    } else {
+      if (name.includes("author")) {
+        setData((prev) => ({
+          ...prev,
+          author: {
+            ...prev.author,
+            [name.split(".")[1]]: value,
+          },
+        }));
+      } else {
+        setData((prev) => ({ ...prev, [name]: value }));
+      }
+    }
   };
 
   const createOverview = async (event: React.FormEvent) => {
     event.preventDefault();
-    setButtonText("Saving");
+    setButtonText(labelId ? "Updating" : "Saving");
 
     const buildFormData = (): FormData => {
       const formData = new FormData();
@@ -152,15 +150,13 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
         });
       }
 
-      setButtonText("Saved");
+      setButtonText(labelId ? "Updated" : "Saved");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Axios error:", error.response?.data || error.message);
       } else {
         console.error("Unexpected error:", error);
       }
-    } finally {
-      setButtonText("Save");
     }
   };
 
@@ -172,155 +168,17 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
         onSubmit={createOverview}
         className="w-full flex flex-col lg:flex-row gap-10"
       >
-        <div className="w-full lg:w-1/2">
-          <Stack spacing={2} direction="row">
-            <Button
-              variant="contained"
-              color="error"
-              onClick={() => router.push("/admin")}
-            >
-              EXIT
-            </Button>
-            <Button
-              type="submit"
-              size="small"
-              color="info"
-              startIcon={<SaveIcon />}
-              variant="contained"
-              disabled={buttonText === "Saved" ? true : false}
-            >
-              {buttonText}
-            </Button>
-          </Stack>
+        <LabelMetadata
+          data={data}
+          handleChange={handleChange}
+          buttonText={buttonText}
+        />
 
-          <div className="flex flex-col gap-5 mt-5">
-            <TextField
-              label="Title"
-              variant="standard"
-              name="title"
-              value={data.title}
-              onChange={handleChange}
-              placeholder="বাংলায় নাম দিন"
-              className="p-2 border rounded-md"
-            />
-
-            <TextField
-              label="Subtitle (Label)"
-              variant="standard"
-              name="subtitle"
-              value={data.subtitle}
-              onChange={handleChange}
-              placeholder="Label (English Only)"
-              required
-              className="p-2 border rounded-md"
-            />
-
-            <Stack direction="row" spacing={3}>
-              <TextField
-                variant="standard"
-                label="Author Name"
-                name="author.name"
-                value={data.author.name}
-                onChange={handleChange}
-                required
-              />
-              <TextField
-                variant="standard"
-                label="Author Bio"
-                name="author.bio"
-                value={data.author.bio}
-                onChange={handleChange}
-                required
-              />
-            </Stack>
-
-            <TextareaAutosize
-              name="desc"
-              value={data.desc}
-              onChange={handleChange}
-              placeholder="বর্ণনা লিখুন"
-              className="p-2 border rounded-md focus:outline-none"
-            />
-          </div>
-        </div>
-
-        {/* Right Form */}
-
-        <div className="w-full lg:w-1/2 flex flex-col gap-5">
-          <h3 className="text-2xl">FAQs</h3>
-          {data.faqs.map((faq, index) => (
-            <div
-              key={index}
-              className="flex flex-col gap-2 border p-2 rounded-md"
-            >
-              <input
-                type="text"
-                name="question"
-                value={faq.question}
-                onChange={(e) => handleFaqsChange(e, index)}
-                placeholder="Question"
-                className="p-2 border rounded-md"
-              />
-              <textarea
-                name="answer"
-                value={faq.answer}
-                onChange={(e) => handleFaqsChange(e, index)}
-                placeholder="Answer"
-                className="p-2 border rounded-md"
-              />
-            </div>
-          ))}
-
-          <Button
-            onClick={() =>
-              setData((prev) => ({
-                ...prev,
-                faqs: [...prev.faqs, { question: "", answer: "" }],
-              }))
-            }
-            variant="outlined"
-            color="info"
-          >
-            Add FAQ
-          </Button>
-
-          <h3 className="text-2xl">Key Terms</h3>
-          {data.keyterms.map((keyterm, index) => (
-            <div
-              key={index}
-              className="flex flex-col gap-2 border p-2 rounded-md"
-            >
-              <input
-                type="text"
-                name="key"
-                value={keyterm.key}
-                onChange={(e) => handleFaqsChange(e, index)}
-                placeholder="Key"
-                className="p-2 border rounded-md"
-              />
-              <textarea
-                name="terms"
-                value={keyterm.terms}
-                onChange={(e) => handleFaqsChange(e, index)}
-                placeholder="Term"
-                className="p-2 border rounded-md"
-              />
-            </div>
-          ))}
-
-          <Button
-            onClick={() =>
-              setData((prev) => ({
-                ...prev,
-                keyterms: [...prev.keyterms, { key: "", terms: "" }],
-              }))
-            }
-            variant="outlined"
-            color="info"
-          >
-            Add KeyTerm
-          </Button>
-        </div>
+        <FaqKeyTerms
+          data={data}
+          setData={setData}
+          handleChange={handleChange}
+        />
       </form>
     </div>
   );
