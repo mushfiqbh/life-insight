@@ -15,7 +15,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import { useSelector } from "react-redux";
 import PostProps from "@/types/postProps";
 
-const MetadataEditor = ({
+const PostMetadata = ({
   file,
   setFile,
   postId,
@@ -207,4 +207,4 @@ const MetadataEditor = ({
   );
 };
 
-export default MetadataEditor;
+export default PostMetadata;

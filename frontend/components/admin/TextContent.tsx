@@ -6,7 +6,7 @@ import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import insertAtCursor from "@/lib/insertAtCursor";
 import PostProps, { ContentDataProps } from "@/types/postProps";
 
-const TextEditor = ({
+const TextContent = ({
   data,
   setData,
   contentData,
@@ -197,4 +197,4 @@ const TextEditor = ({
   );
 };
 
-export default TextEditor;
+export default TextContent;

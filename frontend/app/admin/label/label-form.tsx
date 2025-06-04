@@ -8,6 +8,7 @@ import LoadingSpinner from "@/components/ui/loading-spinner";
 import CatalogProps from "@/types/catalogProps";
 import LabelMetadata from "@/components/admin/LabelMetadata";
 import FaqKeyTerms from "@/components/admin/FaqKeyTerms";
+import ControlPanel from "@/components/admin/ControlPanel";
 
 const LabelForm = ({ labelId }: { labelId?: string }) => {
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
@@ -164,15 +165,10 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
 
   return (
     <div className="w-4/5 mx-auto mt-20 my-5 p-5">
-      <form
-        onSubmit={createOverview}
-        className="w-full flex flex-col lg:flex-row gap-10"
-      >
-        <LabelMetadata
-          data={data}
-          handleChange={handleChange}
-          buttonText={buttonText}
-        />
+      <form onSubmit={createOverview} className="w-full py-10 space-y-5">
+        <ControlPanel buttonText={buttonText} />
+
+        <LabelMetadata data={data} handleChange={handleChange} />
 
         <FaqKeyTerms
           data={data}

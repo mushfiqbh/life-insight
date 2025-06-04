@@ -6,8 +6,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import axios from "axios";
 import LoadingSpinner from "@/components/ui/loading-spinner";
-import TextEditor from "@/components/admin/TextEditor";
-import MetadataEditor from "@/components/admin/MetadataEditor";
+import TextContent from "@/components/admin/TextContent";
+import PostMetadata from "@/components/admin/PostMetadata";
 import ControlPanel from "@/components/admin/ControlPanel";
 
 const PostForm = ({ postId }: { postId?: string }) => {
@@ -179,7 +179,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
       <form onSubmit={createPost} className="w-full py-10">
         <ControlPanel buttonText={buttonText} />
 
-        <MetadataEditor
+        <PostMetadata
           postId={postId}
           file={file}
           setFile={setFile}
@@ -188,7 +188,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
           handleChange={handleChange}
         />
 
-        <TextEditor
+        <TextContent
           data={data}
           setData={setData}
           contentData={contentData}
