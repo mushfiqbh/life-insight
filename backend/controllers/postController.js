@@ -1,6 +1,5 @@
 import postModel from "../models/postModel.js";
 import userModel from "../models/userModel.js";
-import fs from "fs";
 import uploadToCloudinary from "../utils/cloudinaryUpload.js";
 
 export const createPost = async (req, res) => {
@@ -124,6 +123,7 @@ export const updatePost = async (req, res) => {
     let editors = Array.isArray(existingPost.editors)
       ? [...existingPost.editors]
       : [];
+      
     const userIdStr = userId?.toString();
     if (userIdStr && !editors.includes(userIdStr)) {
       editors.push(userIdStr);
