@@ -1,4 +1,5 @@
 {
     "appService.defaultWebAppToDeploy": "undefined/subscriptions/f6464555-5e08-485d-93d8-fd67b8839e32/resourceGroups/PersonalProjects/providers/Microsoft.Web/sites/LifeInsight",
-    "appService.deploySubpath": "backend"
+    "appService.deploySubpath": "backend",
+    "postman.settings.dotenv-detection-notification-visibility": false
 }

@@ -10,7 +10,7 @@ import {
 } from "@/redux/usersSlice";
 import Cookies from "js-cookie";
 
-const FetchData = () => {
+const PreFetch = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -22,4 +22,4 @@ const FetchData = () => {
   return null;
 };
 
-export default FetchData;
+export default PreFetch;

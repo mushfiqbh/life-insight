@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import insertAtCursor from "@/lib/insertAtCursor";
 import {
+  Autocomplete,
   Button,
   Checkbox,
   FormControlLabel,
@@ -41,6 +42,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
   const router = useRouter();
   const { token, userInfo } = useSelector((state: RootState) => state.user);
+  const { index: labels } = useSelector((state: RootState) => state.catalogs);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [buttonText, setButtonText] = useState("Save");
   const [file, setFile] = useState<File | null>(null);
@@ -135,6 +137,11 @@ const PostForm = ({ postId }: { postId?: string }) => {
 
     if (!postId && !file) {
       alert("Cover Image is required when creating a new post.");
+      return;
+    }
+
+    if (!data.label.trim().length) {
+      alert("Please select a category for the post.");
       return;
     }
 
@@ -289,15 +296,18 @@ const PostForm = ({ postId }: { postId?: string }) => {
             )}
           </Stack>
 
-          <TextField
-            label="Label"
-            variant="standard"
+          <Autocomplete
             lang="en"
-            name="label"
             value={data.label}
-            onChange={handleChange}
-            placeholder="Label (English Only)"
-            required
+            onChange={(event, newValue) => {
+              setData({ ...data, label: newValue || "" });
+            }}
+            disablePortal
+            options={labels.map((item) => item.label)}
+            sx={{ width: 300 }}
+            renderInput={(params) => (
+              <TextField {...params} label="Category" variant="standard" />
+            )}
           />
 
           <TextField

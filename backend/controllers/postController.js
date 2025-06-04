@@ -1,5 +1,6 @@
 import postModel from "../models/postModel.js";
 import userModel from "../models/userModel.js";
+import overviewModel from "../models/overviewModel.js";
 import uploadToCloudinary from "../utils/cloudinaryUpload.js";
 
 export const createPost = async (req, res) => {
@@ -32,7 +33,17 @@ export const createPost = async (req, res) => {
       adminChoice: req.body.adminChoice,
     });
 
-    await newPost.save();
+    const thePost = await newPost.save();
+
+    // push id to overview.postIds where label = label if not already present
+    const overview = await overviewModel.findOne(
+      { label: req.body.label } // Find overview by label
+    );
+    if (overview && !overview.postIds.includes(thePost._id)) {
+      overview.postIds.push(thePost._id);
+      await overview.save();
+    }
+
     res.json({ success: true, message: "Post Created" });
   } catch (error) {
     console.error("Error in createPost:", error);
@@ -66,9 +77,18 @@ export const selectedPosts = async (req, res) => {
   try {
     let data = {};
 
-    data.adminChoice = await postModel.findOne({ adminChoice: 1 }).select('-content');
-    data.latestPost = await postModel.findOne().sort({ createdAt: -1 }).select('-content');
-    data.popularPosts = await postModel.find().sort({ views: -1 }).limit(4).select('-content');
+    data.adminChoice = await postModel
+      .findOne({ adminChoice: 1 })
+      .select("-content");
+    data.latestPost = await postModel
+      .findOne()
+      .sort({ createdAt: -1 })
+      .select("-content");
+    data.popularPosts = await postModel
+      .find()
+      .sort({ views: -1 })
+      .limit(4)
+      .select("-content");
 
     res.json({ success: true, data });
   } catch (error) {
@@ -123,7 +143,7 @@ export const updatePost = async (req, res) => {
     let editors = Array.isArray(existingPost.editors)
       ? [...existingPost.editors]
       : [];
-      
+
     const userIdStr = userId?.toString();
     if (userIdStr && !editors.includes(userIdStr)) {
       editors.push(userIdStr);
@@ -153,6 +173,16 @@ export const updatePost = async (req, res) => {
       { $set: updatedFields },
       { new: true }
     );
+
+    if (updatedPost) {
+      const overview = await overviewModel.findOne({
+        label: updatedPost.label,
+      });
+      if (overview && !overview.postIds.includes(updatedPost._id)) {
+        overview.postIds.push(updatedPost._id);
+        await overview.save();
+      }
+    }
 
     res
       .status(200)
