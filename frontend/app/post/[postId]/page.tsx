@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import ShowGrid from "@/components/showcase/grid";
 import LoadingSpinner from "@/components/ui/loading-spinner";
-import ContentWithTOC from "@/components/contentTOC";
+import ContentWithTOC from "@/components/shared/contentTOC";
 import { fetchPost } from "@/redux/postsSlice";
 import { assets } from "@/assets/assets";
 
@@ -36,7 +36,7 @@ const Page: React.FC = () => {
     <div className="w-full mt-16 p-5 md:p-20">
       <div className="mb-6">
         <Link
-          href={`/overview/${post.label}`}
+          href={`/condition/${post.label}`}
           className="text-xl font-bold text-blue-600"
         >
           {post.label?.toUpperCase()}

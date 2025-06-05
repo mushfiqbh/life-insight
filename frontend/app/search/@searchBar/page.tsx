@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import { useSearchContext } from "@/context/SearchContext";
 import PostProps from "@/types/postProps";
-import CatalogProps from "@/types/catalogProps";
+import ConditionProps from "@/types/conditionProps";
 
 const Searchbar: React.FC = () => {
   const { setSearchResult, setSearchPerformed } = useSearchContext();
@@ -30,7 +30,7 @@ const Searchbar: React.FC = () => {
       try {
         const response = await axios.get(url + "/api/search/" + query);
         const data = response.data.data.map(
-          ({ item }: { item: PostProps | CatalogProps }) => item
+          ({ item }: { item: PostProps | ConditionProps }) => item
         );
 
         setSearchResult(data);

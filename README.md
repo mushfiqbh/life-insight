@@ -1,4 +1,4 @@
-# LifeInsight
+# 📚 LifeInsight
 
 LifeInsight is a full-stack project designed to provide actionable insights and analytics for personal or organizational growth. This application leverages modern web technologies to deliver a seamless and interactive user experience.
 
@@ -35,13 +35,13 @@ LifeInsight is a full-stack project designed to provide actionable insights and 
    Create a `.env` file in the /backend directory and add the following variables:
 
    ```bash
-   JWT_SECRET=
+   JWT_SECRET=your-secret-key
    NODE_ENV=development
    PORT=5000
-   DATABASE_URL=
-   CLOUDINARY_CLOUD_NAME=
-   CLOUDINARY_API_KEY=
-   CLOUDINARY_API_SECRET=
+   DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/dbname
+   CLOUDINARY_CLOUD_NAME=your-cloud-name
+   CLOUDINARY_API_KEY=your-api-key
+   CLOUDINARY_API_SECRET=your-api-secret
    ```
 
    Create a `.env` file in the /frontend directory and add the following variables:
@@ -56,10 +56,32 @@ LifeInsight is a full-stack project designed to provide actionable insights and 
    npm run dev
    ```
 
-## Contributing
+---
 
-Contributions are welcome! Please open issues or submit pull requests for improvements and bug fixes.
+## 🗂️ API Documentation
 
-## License
+Api endpoints are clearly declared in [API-DOCS.md](API-DOCS.md)
+
+This documentation provides a comprehensive overview of the available API endpoints, their methods, and expected parameters.
+
+## 🤝 Contributing
+
+We welcome contributions! Please read our [CONTRIBUTION.md](CONTRIBUTION.md) guide for details on how to get started.
+
+Feel free to suggest improvements, file issues, or open a PR! 🚀
+
+Let me know if you'd like to expand on any section or add details like example requests, error responses, or status codes! 🚀
+
+---
+
+## ✍️ Notes
+
+- File uploads are handled using **Multer** with in-memory storage.
+- API responses are in JSON format.
+- Default error handling is assumed but can be customized as needed.
+
+---
+
+## 📄 License
 
 This project is licensed under the MIT License.

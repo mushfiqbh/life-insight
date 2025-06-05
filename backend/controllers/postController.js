@@ -1,5 +1,6 @@
 import postModel from "../models/postModel.js";
 import userModel from "../models/userModel.js";
+import conditionModel from "../models/conditionModel.js";
 import uploadToCloudinary from "../utils/cloudinaryUpload.js";
 
 export const createPost = async (req, res) => {
@@ -32,7 +33,17 @@ export const createPost = async (req, res) => {
       adminChoice: req.body.adminChoice,
     });
 
-    await newPost.save();
+    const thePost = await newPost.save();
+
+    // push id to condition.postIds where label = label if not already present
+    const condition = await conditionModel.findOne(
+      { label: req.body.label } // Find condition by label
+    );
+    if (condition && !condition.postIds.includes(thePost._id)) {
+      condition.postIds.push(thePost._id);
+      await condition.save();
+    }
+
     res.json({ success: true, message: "Post Created" });
   } catch (error) {
     console.error("Error in createPost:", error);
@@ -43,22 +54,25 @@ export const createPost = async (req, res) => {
 };
 
 export const getAllPosts = async (req, res) => {
-  const pageNo = parseInt(req.params.pageNo) || 1;
+  // Use query params (e.g., /api/posts?page=1)
+  const page = parseInt(req.query.page) || 1;
   const limit = 10;
-  const skip = (pageNo - 1) * limit;
+  const skip = (page - 1) * limit;
 
   try {
-    const totalPosts = await postModel.countDocuments(); // Get total post count
-    const data = await postModel.find().skip(skip).limit(limit);
+    const totalPosts = await postModel.countDocuments();
+    const posts = await postModel.find().skip(skip).limit(limit);
 
     res.status(200).json({
-      success: true,
-      data,
-      totalPages: Math.ceil(totalPosts / limit),
-      currentPage: pageNo,
+      page, // The current page number
+      totalPages: Math.ceil(totalPosts / limit), // Total number of pages
+      posts, // The array of posts
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error Occurred", error });
+    res.status(500).json({
+      message: "Error Occurred",
+      error: error.message,
+    });
   }
 };
 
@@ -66,9 +80,18 @@ export const selectedPosts = async (req, res) => {
   try {
     let data = {};
 
-    data.adminChoice = await postModel.findOne({ adminChoice: 1 }).select('-content');
-    data.latestPost = await postModel.findOne().sort({ createdAt: -1 }).select('-content');
-    data.popularPosts = await postModel.find().sort({ views: -1 }).limit(4).select('-content');
+    data.adminChoice = await postModel
+      .findOne({ adminChoice: 1 })
+      .select("-content");
+    data.latestPost = await postModel
+      .findOne()
+      .sort({ createdAt: -1 })
+      .select("-content");
+    data.popularPosts = await postModel
+      .find()
+      .sort({ views: -1 })
+      .limit(4)
+      .select("-content");
 
     res.json({ success: true, data });
   } catch (error) {
@@ -123,7 +146,7 @@ export const updatePost = async (req, res) => {
     let editors = Array.isArray(existingPost.editors)
       ? [...existingPost.editors]
       : [];
-      
+
     const userIdStr = userId?.toString();
     if (userIdStr && !editors.includes(userIdStr)) {
       editors.push(userIdStr);
@@ -153,6 +176,16 @@ export const updatePost = async (req, res) => {
       { $set: updatedFields },
       { new: true }
     );
+
+    if (updatedPost) {
+      const condition = await conditionModel.findOne({
+        label: updatedPost.label,
+      });
+      if (condition && !condition.postIds.includes(updatedPost._id)) {
+        condition.postIds.push(updatedPost._id);
+        await condition.save();
+      }
+    }
 
     res
       .status(200)
@@ -202,7 +235,7 @@ export const deletePost = async (req, res) => {
     }
 
     const permit = await userModel.findById(userId);
-    if (!permit.permissions.includes("deletePost")) {
+    if (!permit.permissions.includes("delete")) {
       return res.status(401).json({ message: "Permission Denied" });
     }
 

@@ -1,4 +1,3 @@
-// postRouter.js
 import express from "express";
 import multer from "multer";
 import authMiddleware from "../middleware/authMiddleware.js";
@@ -19,7 +18,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // ROUTES
-postRouter.get("/page/:pageNo", getAllPosts);
+postRouter.get("/", getAllPosts);
 postRouter.get("/filter", selectedPosts);
 postRouter.get("/:postId", getPost);
 

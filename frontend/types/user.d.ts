@@ -1,4 +1,4 @@
-interface User {
+export default interface User {
   _id: string;
   name: string;
   email: string;
@@ -6,4 +6,9 @@ interface User {
   permissions: string[];
 }
 
-export default User;
+export interface UserState {
+  token: string | null;
+  userInfo: User | null;
+  userInfoList: User[];
+  error: string | null;
+}

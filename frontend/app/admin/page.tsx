@@ -1,45 +1,53 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Stack } from "@mui/material";
+import ToggleButtons from "@/components/admin/ToggleButtons";
+import PostList from "@/components/showcase/PostList";
+import ConditionList from "@/components/showcase/ConditionList";
 import { Button } from "@/components/ui/button";
-import { useAdminContext } from "@/context/AdminContext";
-import PostPagination from "./_private/post-pagination";
-import OverviewPagination from "./_private/overview-pagination";
+import { useRouter } from "next/navigation";
 
-const Page = () => {
+const AdminDashboardPage = () => {
   const router = useRouter();
-  const { toggle, setToggle } = useAdminContext();
+  const [activeTab, setActiveTab] = useState<"posts" | "conditions">("posts");
 
   return (
     <div className="w-fit mx-auto p-4 mt-20">
+      {/* Toggle between posts and conditions */}
       <Stack
         spacing={2}
         direction="row"
         className="w-full flex-wrap gap-2 bg-background p-4 rounded-lg shadow-md"
       >
+        <ToggleButtons activeTab={activeTab} setActiveTab={setActiveTab} />
+
+        {/* Buttons to create post and create condition */}
+
         <Button
-          variant={toggle ? "contained" : "outlined"}
-          onClick={() => setToggle(true)}
+          variant="text"
+          onClick={() => {
+            router.push("/admin/post");
+          }}
         >
-          POST LIST
+          Create Post
         </Button>
+
         <Button
-          variant={toggle ? "outlined" : "contained"}
-          onClick={() => setToggle(false)}
+          variant="text"
+          onClick={() => {
+            router.push("/admin/condition");
+          }}
         >
-          OVERVIEW LIST
-        </Button>
-        <Button variant="text" onClick={() => router.push("/admin/post")}>
-          Add Post
-        </Button>
-        <Button variant="text" onClick={() => router.push("/admin/label")}>
-          Add Overview
+          Create Condition
         </Button>
       </Stack>
-      {toggle ? <PostPagination /> : <OverviewPagination />}
+
+      {/* Render Posts or Conditions */}
+      {activeTab === "posts" && <PostList />}
+      {activeTab === "conditions" && <ConditionList />}
     </div>
   );
 };
 
-export default Page;
+export default AdminDashboardPage;

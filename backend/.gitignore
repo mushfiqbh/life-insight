@@ -13,6 +13,7 @@ node_modules
 dist
 dist-ssr
 *.local
+migrate.js
 
 # Editor directories and files
 .vscode/*

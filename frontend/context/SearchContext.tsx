@@ -1,5 +1,5 @@
 "use client";
-import CatalogProps from "@/types/catalogProps";
+import ConditionProps from "@/types/conditionProps";
 import PostProps from "@/types/postProps";
 import { Dispatch, SetStateAction } from "react";
 import { createContext, useState, useContext } from "react";
@@ -7,8 +7,8 @@ import { createContext, useState, useContext } from "react";
 interface SearchContextState {
   searchPerformed: boolean;
   setSearchPerformed: Dispatch<SetStateAction<boolean>>;
-  searchResult: (PostProps | CatalogProps)[];
-  setSearchResult: Dispatch<SetStateAction<(PostProps | CatalogProps)[]>>;
+  searchResult: (PostProps | ConditionProps)[];
+  setSearchResult: Dispatch<SetStateAction<(PostProps | ConditionProps)[]>>;
 }
 
 const SearchContext = createContext<SearchContextState | null>(null);
@@ -16,7 +16,7 @@ const SearchContext = createContext<SearchContextState | null>(null);
 export function SearchProvider({ children }: { children: React.ReactNode }) {
   const [searchPerformed, setSearchPerformed] = useState<boolean>(false);
   const [searchResult, setSearchResult] = useState<
-    (PostProps | CatalogProps)[]
+    (PostProps | ConditionProps)[]
   >([]);
 
   return (
