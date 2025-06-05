@@ -2,8 +2,8 @@
 import { Button } from "@/components/ui/button";
 
 interface ToggleButtonsProps {
-  activeTab: "posts" | "categories";
-  setActiveTab: (tab: "posts" | "categories") => void;
+  activeTab: "posts" | "conditions";
+  setActiveTab: (tab: "posts" | "conditions") => void;
 }
 
 const ToggleButtons = ({ activeTab, setActiveTab }: ToggleButtonsProps) => (
@@ -15,10 +15,10 @@ const ToggleButtons = ({ activeTab, setActiveTab }: ToggleButtonsProps) => (
       Posts
     </Button>
     <Button
-      variant={activeTab === "categories" ? "contained" : "outlined"}
-      onClick={() => setActiveTab("categories")}
+      variant={activeTab === "conditions" ? "contained" : "outlined"}
+      onClick={() => setActiveTab("conditions")}
     >
-      Categories
+      Conditions
     </Button>
   </div>
 );

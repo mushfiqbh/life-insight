@@ -3,16 +3,16 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { fetchOverviewIndex } from "@/redux/catalogSlice";
+import { fetchConditionIndex } from "@/redux/conditionsSlice";
 
-const InitialFetch = () => {
+const PreFetch = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(fetchOverviewIndex());
+    dispatch(fetchConditionIndex());
   }, [dispatch]);
 
   return null;
 };
 
-export default InitialFetch;
+export default PreFetch;

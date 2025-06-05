@@ -8,12 +8,12 @@ const StoreContextProvider = (props) => {
   const [userInfo, setUserInfo] = useState({});
   const [userInfoList, setUserInfoList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [catalog, setCatalog] = useState([]);
+  const [condition, setCondition] = useState([]);
   const [posts, setPosts] = useState([]);
   const [nonLabeledPosts, setNonLabeledPosts] = useState([]);
 
   const updateNonLabeledPosts = () => {
-    const labelList = catalog.map((item) => item.label);
+    const labelList = condition.map((item) => item.label);
     const otherPosts = posts.filter((item) => !labelList.includes(item.label));
     setNonLabeledPosts(otherPosts);
   };
@@ -44,9 +44,9 @@ const StoreContextProvider = (props) => {
   const contextValue = {
     loading,
     setLoading,
-    catalog,
-    setCatalog,
-    deleteCatalog,
+    condition,
+    setCondition,
+    deleteCondition,
     nonLabeledPosts,
     updateUserInfoByOwner,
   };

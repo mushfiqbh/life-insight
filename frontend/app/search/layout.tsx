@@ -8,11 +8,11 @@ export const metadata: Metadata = {
 
 export default function Layout({
   children,
-  catalogs,
+  conditions,
   searchBar,
 }: {
   children: React.ReactNode;
-  catalogs: React.ReactNode;
+  conditions: React.ReactNode;
   searchBar: React.ReactNode;
 }) {
   return (
@@ -20,7 +20,7 @@ export default function Layout({
       <div className="w-full md:w-fit mx-auto p-4 mt-20">
         {searchBar}
         {children}
-        {catalogs}
+        {conditions}
       </div>
     </SearchProvider>
   );

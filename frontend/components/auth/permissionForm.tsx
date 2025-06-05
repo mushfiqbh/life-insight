@@ -7,6 +7,15 @@ import { RootState, AppDispatch } from "@/redux/store";
 import { getUserInfo } from "@/redux/usersSlice";
 import { Button } from "@/components/ui/button";
 
+const allPermissions = [
+  "admin",
+  "edit",
+  "delete",
+  "view",
+  "moderate",
+  "contribute",
+];
+
 const PermissionForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { token, userInfo, userInfoList } = useSelector(
@@ -79,7 +88,7 @@ const PermissionForm: React.FC = () => {
           </option>
         ))}
       </select>
-      {["admin", "adminChoice", "deletePost", "deleteOverview"].map((perm) => (
+      {allPermissions.map((perm) => (
         <div key={perm} className="flex items-center">
           <input
             type="checkbox"

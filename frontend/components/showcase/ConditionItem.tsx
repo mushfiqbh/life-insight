@@ -1,13 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import PostProps from "@/types/postProps";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
+import { deleteCondition } from "@/redux/conditionsSlice";
+import ConditionProps from "@/types/conditionProps";
 import { franc } from "franc-min";
-import { deletePost } from "@/redux/postsSlice";
 
 const detectLanguage = (text: string) => {
   const langCode = franc(text);
@@ -21,17 +20,14 @@ const detectLanguage = (text: string) => {
   return langMap[langCode] || "en";
 };
 
-const PostItem = ({ post }: { post: PostProps }) => {
+export default function ConditionItem({ condition }: { condition: ConditionProps }) {
   const [language, setLanguage] = useState<string>("en");
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
-  const { adminChoice } = useSelector(
-    (state: RootState) => state.posts.selectedPosts
-  );
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    setLanguage(detectLanguage(post?.title));
-  }, [post, setLanguage]);
+    setLanguage(detectLanguage(condition?.title));
+  }, [condition, setLanguage]);
 
   return (
     <div
@@ -39,47 +35,33 @@ const PostItem = ({ post }: { post: PostProps }) => {
       className="flex items-center justify-between p-4 border rounded-lg shadow-sm text-foreground bg-background hover:shadow-md transition"
     >
       <Link
-        href={`/post/${post._id}`}
-        className="flex items-center gap-4 flex-1"
+        href={`/condition/${condition.label}`}
+        className="flex-1 flex items-center gap-4"
       >
-        <div className="w-14 h-14 flex-shrink-0 overflow-hidden rounded-md border">
-          <Image
-            src={post.image}
-            alt={post.title}
-            width={56}
-            height={56}
-            className="object-cover"
-          />
-        </div>
         <div className="flex-1">
-          <h3 className="text-lg font-semibold">
-            {adminChoice._id === post._id && (
-              <span className="text-red-500 font-bold">*</span>
-            )}
-            {post.title}
-          </h3>
-          <p className="text-sm line-clamp-1">
-            <b className="">{post.label} </b>
-            {post.subtitle.slice(0, 90)}
+          <h3 className="text-lg font-semibold">{condition.title}</h3>
+          <p className="text-sm">
+            <b>{condition?.posts?.length} Posts</b> Labeled For{" "}
+            <b>{condition.label}</b> Reviewed By <b>{condition.author.name}</b>
           </p>
         </div>
       </Link>
 
       <div className="flex gap-2">
-        {userInfo?.permissions?.includes("editPost") && (
+        {userInfo?.permissions?.includes("edit") && (
           <Link
-            href={`admin/post/${post._id}`}
+            href={`/admin/condition/${condition._id}`}
             className="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
           >
             Edit
           </Link>
         )}
-        {userInfo?.permissions?.includes("deletePost") && (
+        {userInfo?.permissions?.includes("delete") && (
           <button
             className="px-3 py-1 text-sm font-medium text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
             onClick={() => {
-              if (confirm("Are you sure to delete?") && post._id) {
-                dispatch(deletePost(post._id));
+              if (confirm("Are you sure to delete?") && condition._id) {
+                dispatch(deleteCondition(condition._id));
               }
             }}
           >
@@ -89,6 +71,4 @@ const PostItem = ({ post }: { post: PostProps }) => {
       </div>
     </div>
   );
-};
-
-export default PostItem;
+}

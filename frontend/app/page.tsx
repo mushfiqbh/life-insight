@@ -1,8 +1,8 @@
 import React from "react";
-import Statbar from "@/components/statbar";
-import Explore from "@/components/explore";
-import Section from "@/components/section";
-import Spotlight from "@/components/spotlight";
+import Statbar from "@/components/home/statbar";
+import Explore from "@/components/home/explore";
+import Section from "@/components/home/section";
+import Spotlight from "@/components/home/spotlight";
 
 const Page = () => {
   return (

@@ -3,13 +3,13 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 
 import userReducer from "./usersSlice";
 import postsReducer from "./postsSlice";
-import catalogReducer from "./catalogSlice";
+import conditionReducer from "./conditionsSlice";
 
 const store = configureStore({
   reducer: {
     posts: postsReducer,
     user: userReducer,
-    catalogs: catalogReducer
+    conditions: conditionReducer
   },
 });
 

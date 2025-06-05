@@ -3,18 +3,18 @@
 import { useState } from "react";
 import { Stack } from "@mui/material";
 import ToggleButtons from "@/components/admin/ToggleButtons";
-import PostList from "./components/PostList";
-import CategoryList from "./components/CategoryList";
+import PostList from "@/components/showcase/PostList";
+import ConditionList from "@/components/showcase/ConditionList";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 const AdminDashboardPage = () => {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"posts" | "categories">("posts");
+  const [activeTab, setActiveTab] = useState<"posts" | "conditions">("posts");
 
   return (
     <div className="w-fit mx-auto p-4 mt-20">
-      {/* Toggle between posts and categories */}
+      {/* Toggle between posts and conditions */}
       <Stack
         spacing={2}
         direction="row"
@@ -22,7 +22,7 @@ const AdminDashboardPage = () => {
       >
         <ToggleButtons activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        {/* Buttons to create post and create category */}
+        {/* Buttons to create post and create condition */}
 
         <Button
           variant="text"
@@ -36,16 +36,16 @@ const AdminDashboardPage = () => {
         <Button
           variant="text"
           onClick={() => {
-            router.push("/admin/label");
+            router.push("/admin/condition");
           }}
         >
-          Create Category
+          Create Condition
         </Button>
       </Stack>
 
-      {/* Render Posts or Categories */}
+      {/* Render Posts or Conditions */}
       {activeTab === "posts" && <PostList />}
-      {activeTab === "categories" && <CategoryList />}
+      {activeTab === "conditions" && <ConditionList />}
     </div>
   );
 };

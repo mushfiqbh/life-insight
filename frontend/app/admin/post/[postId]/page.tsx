@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import PostForm from "../post-form";
+import PostForm from "@/components/admin/PostForm";
 
 const Page = () => {
   const { postId } = useParams() as { postId: string };
