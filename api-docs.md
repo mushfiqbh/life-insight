@@ -167,26 +167,26 @@ Authorization: Bearer <token>
 - Confirms post deletion.
 
 ---
-## Catalog API
-Base route: `/api/catalogs`
+## Condition API
+Base route: `/api/conditions`
 
-### Get List of Catalogs
+### Get List of Conditions
 ```
-GET /api/catalogs/
+GET /api/conditions/
 ```
 **Response:**
-- Returns an array of catalogs.
+- Returns an array of conditions.
 
-### Get a Specific Catalog
+### Get a Specific Condition
 ```
-GET /api/catalogs/{catalogId}
+GET /api/conditions/{conditionId}
 ```
 **Response:**
-- Returns the requested catalog data.
+- Returns the requested condition data.
 
-### Create a New Catalog
+### Create a New Condition
 ```
-POST /api/catalogs/
+POST /api/conditions/
 ```
 **Headers:**
 ```
@@ -195,16 +195,16 @@ Authorization: Bearer <token>
 **Request Body:**
 ```json
 {
-  "name": "Catalog Name",
-  "description": "Catalog Description"
+  "name": "Condition Name",
+  "description": "Condition Description"
 }
 ```
 **Response:**
-- Returns created catalog data.
+- Returns created condition data.
 
-### Update a Catalog
+### Update a Condition
 ```
-PUT /api/catalogs/{catalogId}
+PUT /api/conditions/{conditionId}
 ```
 **Headers:**
 ```
@@ -218,16 +218,16 @@ Authorization: Bearer <token>
 }
 ```
 **Response:**
-- Returns updated catalog data.
+- Returns updated condition data.
 
-### Delete a Catalog
+### Delete a Condition
 ```
-DELETE /api/catalogs/{catalogId}
+DELETE /api/conditions/{conditionId}
 ```
 **Headers:**
 ```
 Authorization: Bearer <token>
 ```
 **Response:**
-- Confirms catalog deletion.
+- Confirms condition deletion.
 

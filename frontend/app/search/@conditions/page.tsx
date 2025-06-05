@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
-import { catalogue } from "@/assets/assets";
+import { conditionue } from "@/assets/assets";
 
-const Catalogs: React.FC = () => {
+const Conditions: React.FC = () => {
   return (
-    <div className="w-full flex flex-col gap-5" id="catalog">
-      {catalogue?.map((set, index) => (
+    <div className="w-full flex flex-col gap-5" id="condition">
+      {conditionue?.map((set, index) => (
         <div key={index} className="min-w-[50%] sm:min-w-full">
           <Link href={set.pathname}>
             <h1 className="text-green-600 hover:text-red-600 text-xl font-bold">
@@ -36,4 +36,4 @@ const Catalogs: React.FC = () => {
   );
 };
 
-export default Catalogs;
+export default Conditions;

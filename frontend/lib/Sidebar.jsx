@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const SIDEBAR_ITEMS = [
 	{
-		name: "Overview",
+		name: "Condition",
 		icon: BarChart2,
 		color: "#6366f1",
 		href: "/",

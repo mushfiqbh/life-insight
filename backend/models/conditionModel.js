@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const overviewSchema = mongoose.Schema(
+const conditionSchema = mongoose.Schema(
   {
     title: {
       type: String,
@@ -33,6 +33,6 @@ const overviewSchema = mongoose.Schema(
   { timeStamps: true }
 );
 
-const overviewModel =
-  mongoose.models.overview || mongoose.model("overview", overviewSchema);
-export default overviewModel;
+const conditionModel =
+  mongoose.models.condition || mongoose.model("condition", conditionSchema);
+export default conditionModel;

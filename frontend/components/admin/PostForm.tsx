@@ -102,7 +102,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
     }
 
     if (!data.label.trim().length) {
-      alert("Please select a category for the post.");
+      alert("Please select a condition for the post.");
       return;
     }
 

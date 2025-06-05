@@ -4,18 +4,18 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import axios from "axios";
-import CatalogProps from "@/types/catalogProps";
+import ConditionProps from "@/types/conditionProps";
 import LoadingSpinner from "@/components/ui/loading-spinner";
-import LabelMetadata from "./editor/LabelMetadata";
+import ConditionMetadata from "./editor/ConditionMetadata";
 import FaqKeyTerms from "./editor/FaqKeyTerms";
 import ControlPanel from "./Control-Panel";
 
-const LabelForm = ({ labelId }: { labelId?: string }) => {
+const ConditionForm = ({ conditionId }: { conditionId?: string }) => {
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
   const { token } = useSelector((state: RootState) => state.user);
-  const [buttonText, setButtonText] = useState(labelId ? "Update" : "Save");
+  const [buttonText, setButtonText] = useState(conditionId ? "Update" : "Save");
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<CatalogProps>({
+  const [data, setData] = useState<ConditionProps>({
     _id: "",
     title: "",
     subtitle: "",
@@ -30,15 +30,18 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
   });
 
   useEffect(() => {
-    setButtonText(labelId ? "Update" : "Save");
-  }, [labelId, data]);
+    setButtonText(conditionId ? "Update" : "Save");
+  }, [conditionId, data]);
 
   useEffect(() => {
-    if (labelId && token) {
+    if (conditionId && token) {
       const fetchLabelData = async () => {
-        const response = await fetch(`${url}/api/catalogs/byid/${labelId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await fetch(
+          `${url}/api/conditions/byid/${conditionId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         return response.json();
       };
 
@@ -52,13 +55,13 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
     } else {
       setLoading(false);
     }
-  }, [labelId, url, token]);
+  }, [conditionId, url, token]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index?: number
   ) => {
-    setButtonText(labelId ? "Update" : "Save");
+    setButtonText(conditionId ? "Update" : "Save");
     const { name, value } = event.target;
 
     if (index !== undefined) {
@@ -88,9 +91,9 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
     }
   };
 
-  const createOverview = async (event: React.FormEvent) => {
+  const createCondition = async (event: React.FormEvent) => {
     event.preventDefault();
-    setButtonText(labelId ? "Updating" : "Saving");
+    setButtonText(conditionId ? "Updating" : "Saving");
 
     const buildFormData = (): FormData => {
       const formData = new FormData();
@@ -126,11 +129,11 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
         },
       };
 
-      const endpoint = labelId
-        ? `${url}/api/catalogs/${labelId}`
-        : `${url}/api/catalogs/`;
+      const endpoint = conditionId
+        ? `${url}/api/conditions/${conditionId}`
+        : `${url}/api/conditions/`;
 
-      const method = labelId ? axios.put : axios.post;
+      const method = conditionId ? axios.put : axios.post;
       return method(endpoint, formData, config);
     };
 
@@ -138,7 +141,7 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
       const formData = buildFormData();
       const response = await sendRequest(formData);
 
-      if (!labelId && response.data?.success) {
+      if (!conditionId && response.data?.success) {
         setData({
           _id: "",
           title: "",
@@ -151,7 +154,7 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
         });
       }
 
-      setButtonText(labelId ? "Updated" : "Saved");
+      setButtonText(conditionId ? "Updated" : "Saved");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Axios error:", error.response?.data || error.message);
@@ -165,10 +168,10 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
 
   return (
     <div className="w-4/5 mx-auto mt-20 my-5 p-5">
-      <form onSubmit={createOverview} className="w-full py-10 space-y-5">
+      <form onSubmit={createCondition} className="w-full py-10 space-y-5">
         <ControlPanel buttonText={buttonText} />
 
-        <LabelMetadata data={data} handleChange={handleChange} />
+        <ConditionMetadata data={data} handleChange={handleChange} />
 
         <FaqKeyTerms
           data={data}
@@ -180,4 +183,4 @@ const LabelForm = ({ labelId }: { labelId?: string }) => {
   );
 };
 
-export default LabelForm;
+export default ConditionForm;

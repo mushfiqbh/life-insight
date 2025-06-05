@@ -33,7 +33,7 @@ const PostMetadata = ({
     index?: number
   ) => void;
 }) => {
-  const { index: labels } = useSelector((state: RootState) => state.catalogs);
+  const { index: labels } = useSelector((state: RootState) => state.conditions);
   const { userInfo } = useSelector((state: RootState) => state.user);
 
   return (
@@ -99,7 +99,7 @@ const PostMetadata = ({
         options={labels.map((item) => item.label)}
         sx={{ width: 300 }}
         renderInput={(params) => (
-          <TextField {...params} label="Category" variant="standard" />
+          <TextField {...params} label="Condition" variant="standard" />
         )}
       />
 

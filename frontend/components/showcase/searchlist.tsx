@@ -7,13 +7,13 @@ import Image from "next/image";
 import LoadMore from "@/components/ui/load-more";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import CatalogProps from "@/types/catalogProps";
+import ConditionProps from "@/types/conditionProps";
 import PostProps from "@/types/postProps";
 
 export default function SearchList({
   data,
 }: {
-  data: (PostProps | CatalogProps)[];
+  data: (PostProps | ConditionProps)[];
 }) {
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
   const [activeIndex, setActiveIndex] = useState(0);
@@ -25,7 +25,7 @@ export default function SearchList({
       {items?.map((item, index) => (
         <Link
           href={
-            "views" in item ? "/post/" + item._id : "/overview/" + item.label
+            "views" in item ? "/post/" + item._id : "/condition/" + item.label
           }
           key={index}
           onClick={() => item._id && dispatch(incrementViews(item._id))}
@@ -41,7 +41,7 @@ export default function SearchList({
               src={
                 "image" in item
                   ? item.image
-                  : url + "/api/image/" + "defaultCatalog.jpg"
+                  : url + "/api/image/" + "defaultCondition.jpg"
               }
               alt=""
               height={50}

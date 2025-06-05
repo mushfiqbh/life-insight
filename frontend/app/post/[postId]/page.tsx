@@ -36,7 +36,7 @@ const Page: React.FC = () => {
     <div className="w-full mt-16 p-5 md:p-20">
       <div className="mb-6">
         <Link
-          href={`/overview/${post.label}`}
+          href={`/condition/${post.label}`}
           className="text-xl font-bold text-blue-600"
         >
           {post.label?.toUpperCase()}

@@ -182,10 +182,10 @@ export const topics = [
   },
 ];
 
-export const catalogue = [
+export const conditionue = [
   {
     title: "এটুজেড",
-    pathname: "/overview",
+    pathname: "/condition",
     includes: [
       {
         title: "Addiction",

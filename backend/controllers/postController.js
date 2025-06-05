@@ -1,6 +1,6 @@
 import postModel from "../models/postModel.js";
 import userModel from "../models/userModel.js";
-import overviewModel from "../models/overviewModel.js";
+import conditionModel from "../models/conditionModel.js";
 import uploadToCloudinary from "../utils/cloudinaryUpload.js";
 
 export const createPost = async (req, res) => {
@@ -35,13 +35,13 @@ export const createPost = async (req, res) => {
 
     const thePost = await newPost.save();
 
-    // push id to overview.postIds where label = label if not already present
-    const overview = await overviewModel.findOne(
-      { label: req.body.label } // Find overview by label
+    // push id to condition.postIds where label = label if not already present
+    const condition = await conditionModel.findOne(
+      { label: req.body.label } // Find condition by label
     );
-    if (overview && !overview.postIds.includes(thePost._id)) {
-      overview.postIds.push(thePost._id);
-      await overview.save();
+    if (condition && !condition.postIds.includes(thePost._id)) {
+      condition.postIds.push(thePost._id);
+      await condition.save();
     }
 
     res.json({ success: true, message: "Post Created" });
@@ -178,12 +178,12 @@ export const updatePost = async (req, res) => {
     );
 
     if (updatedPost) {
-      const overview = await overviewModel.findOne({
+      const condition = await conditionModel.findOne({
         label: updatedPost.label,
       });
-      if (overview && !overview.postIds.includes(updatedPost._id)) {
-        overview.postIds.push(updatedPost._id);
-        await overview.save();
+      if (condition && !condition.postIds.includes(updatedPost._id)) {
+        condition.postIds.push(updatedPost._id);
+        await condition.save();
       }
     }
 
@@ -235,7 +235,7 @@ export const deletePost = async (req, res) => {
     }
 
     const permit = await userModel.findById(userId);
-    if (!permit.permissions.includes("deletePost")) {
+    if (!permit.permissions.includes("delete")) {
       return res.status(401).json({ message: "Permission Denied" });
     }
 

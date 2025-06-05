@@ -6,29 +6,29 @@ import Image from "next/image";
 import { topics } from "@/assets/assets";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { fetchOverviewIndex } from "@/redux/catalogSlice";
+import { fetchConditionIndex } from "@/redux/conditionsSlice";
 import { useTranslations } from "next-intl";
 
 const Page: React.FC = () => {
   const [activeAlpha, setActiveAlpha] = useState<string>("All");
   const [alphas, setAlphas] = useState<string[]>([]);
   const dispatch = useDispatch<AppDispatch>();
-  const overviews = useSelector((state: RootState) => state.catalogs.index);
+  const conditions = useSelector((state: RootState) => state.conditions.index);
   const t = useTranslations("explore");
 
   useEffect(() => {
-    dispatch(fetchOverviewIndex());
+    dispatch(fetchConditionIndex());
   }, [dispatch]);
 
   useEffect(() => {
-    if (!overviews || !Array.isArray(overviews)) return;
+    if (!conditions || !Array.isArray(conditions)) return;
 
     const alphabet = Array.from(
       new Set(
-        overviews
+        conditions
           .map((item) => item?.title?.[0])
           .concat(
-            overviews
+            conditions
               .map((item) => item?.subtitle?.[0]?.toUpperCase())
               .filter(Boolean)
           )
@@ -36,7 +36,7 @@ const Page: React.FC = () => {
     );
 
     setAlphas(["All", ...alphabet.sort()]);
-  }, [overviews]);
+  }, [conditions]);
 
   return (
     <div className="atoz mt-24">
@@ -78,7 +78,7 @@ const Page: React.FC = () => {
       </div>
 
       <div className="w-full md:w-4/5 mx-auto p-5 flex flex-wrap gap-5 font-bold">
-        {overviews.map((item, index) => {
+        {conditions.map((item, index) => {
           if (
             activeAlpha === "All" ||
             activeAlpha === item.title[0] ||
@@ -86,7 +86,7 @@ const Page: React.FC = () => {
           ) {
             return (
               <Link
-                href={`/overview/${item.label}`}
+                href={`/condition/${item.label}`}
                 key={index}
                 className="w-36"
               >

@@ -1,6 +1,6 @@
 "use client";
 
-import CatalogProps from "@/types/catalogProps";
+import ConditionProps from "@/types/conditionProps";
 import { Button } from "@mui/material";
 import React from "react";
 
@@ -9,8 +9,8 @@ const FaqKeyTerms = ({
   setData,
   handleChange,
 }: {
-  data: CatalogProps;
-  setData: React.Dispatch<React.SetStateAction<CatalogProps>>;
+  data: ConditionProps;
+  setData: React.Dispatch<React.SetStateAction<ConditionProps>>;
   handleChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index?: number

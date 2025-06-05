@@ -1,13 +1,13 @@
 "use client";
 import { useInView } from "react-intersection-observer";
-import { useInfiniteCategories } from "@/hooks/useInfiniteCateories";
-import CategoryItem from "./CategoryItem";
+import { useInfiniteConditions } from "@/hooks/useInfiniteCateories";
+import ConditionItem from "./ConditionItem";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { useEffect } from "react";
 
-const CategoryList = () => {
+const ConditionList = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteCategories();
+    useInfiniteConditions();
   const { ref, inView } = useInView({
     threshold: 0,
     triggerOnce: false,
@@ -19,13 +19,13 @@ const CategoryList = () => {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  // Flatten all categories from pages
-  const categories = data?.pages.flatMap((page) => page.categories) ?? [];
+  // Flatten all conditions from pages
+  const conditions = data?.pages.flatMap((page) => page.conditions) ?? [];
 
   return (
     <div>
-      {categories.map((category) => (
-        <CategoryItem key={category._id} category={category} />
+      {conditions.map((condition) => (
+        <ConditionItem key={condition._id} condition={condition} />
       ))}
       {isFetchingNextPage && <LoadingSpinner />}
       <div ref={ref} className="h-8"></div>
@@ -33,4 +33,4 @@ const CategoryList = () => {
   );
 };
 
-export default CategoryList;
+export default ConditionList;

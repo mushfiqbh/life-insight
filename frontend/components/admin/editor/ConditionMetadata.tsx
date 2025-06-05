@@ -1,14 +1,14 @@
 "use client";
 
-import CatalogProps from "@/types/catalogProps";
+import ConditionProps from "@/types/conditionProps";
 import { Stack, TextareaAutosize, TextField } from "@mui/material";
 import React from "react";
 
-const LabelMetadata = ({
+const ConditionMetadata = ({
   data,
   handleChange,
 }: {
-  data: CatalogProps;
+  data: ConditionProps;
   handleChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index?: number
@@ -67,4 +67,4 @@ const LabelMetadata = ({
   );
 };
 
-export default LabelMetadata;
+export default ConditionMetadata;

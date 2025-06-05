@@ -1,20 +1,20 @@
-import overviewModel from "../models/overviewModel.js";
+import conditionModel from "../models/conditionModel.js";
 import userModel from "../models/userModel.js";
 
-export const overviewList = async (req, res) => {
+export const conditionList = async (req, res) => {
   // Use query parameter instead of route param
   const page = parseInt(req.query.page) || 1;
   const limit = 5;
   const skip = (page - 1) * limit;
 
   try {
-    const totalCategories = await overviewModel.countDocuments(); // Get total count
-    const categories = await overviewModel.find().skip(skip).limit(limit);
+    const totalConditions = await conditionModel.countDocuments(); // Get total count
+    const conditions = await conditionModel.find().skip(skip).limit(limit);
 
     res.status(200).json({
       page, // Current page number
-      totalPages: Math.ceil(totalCategories / limit), // Total pages
-      categories, // The array of categories
+      totalPages: Math.ceil(totalConditions / limit), // Total pages
+      conditions, // The array of conditions
     });
   } catch (error) {
     res.status(500).json({
@@ -24,9 +24,9 @@ export const overviewList = async (req, res) => {
   }
 };
 
-export const overviewIndex = async (req, res) => {
+export const conditionIndex = async (req, res) => {
   try {
-    const data = await overviewModel
+    const data = await conditionModel
       .find({})
       .select("_id title subtitle label");
 
@@ -38,39 +38,39 @@ export const overviewIndex = async (req, res) => {
   }
 };
 
-export const getOverview = async (req, res) => {
+export const getCondition = async (req, res) => {
   const { label } = req.params;
 
   try {
-    const overview = await overviewModel
+    const condition = await conditionModel
       .findOne({ label: label.toLowerCase() })
       .populate("postIds");
 
-    if (!overview) {
+    if (!condition) {
       return res
         .status(404)
-        .json({ success: false, message: "Overview not found" });
+        .json({ success: false, message: "Condition not found" });
     }
 
-    res.status(200).json({ success: true, data: overview });
+    res.status(200).json({ success: true, data: condition });
   } catch (error) {
     res.status(500).json({ success: false, message: "Error Occurred", error });
   }
 };
 
-export const getOverviewById = async (req, res) => {
-  const { labelId } = req.params;
+export const getConditionById = async (req, res) => {
+  const { conditionId } = req.params;
 
   try {
-    const overview = await overviewModel.findById(labelId).populate("postIds");
+    const condition = await conditionModel.findById(conditionId).populate("postIds");
 
-    if (!overview) {
+    if (!condition) {
       return res
         .status(404)
-        .json({ success: false, message: "Overview not found" });
+        .json({ success: false, message: "Condition not found" });
     }
 
-    res.status(200).json({ success: true, data: overview });
+    res.status(200).json({ success: true, data: condition });
   } catch (error) {
     res.status(500).json({ success: false, message: "Error Occurred", error });
   }
@@ -85,7 +85,7 @@ const safeParse = (value, fallback) => {
   }
 };
 
-export const createOverview = async (req, res) => {
+export const createCondition = async (req, res) => {
   try {
     const { title, subtitle, desc } = req.body;
 
@@ -95,7 +95,7 @@ export const createOverview = async (req, res) => {
     const parsedFaqs = safeParse(req.body.faqs, []);
     const parsedKeyterms = safeParse(req.body.keyterms, []);
 
-    const newOverview = new overviewModel({
+    const newCondition = new conditionModel({
       title,
       subtitle,
       label,
@@ -105,15 +105,15 @@ export const createOverview = async (req, res) => {
       keyterms: parsedKeyterms,
     });
 
-    await newOverview.save();
+    await newCondition.save();
 
     return res.status(201).json({
       success: true,
-      message: "Overview Created",
-      data: newOverview,
+      message: "Condition Created",
+      data: newCondition,
     });
   } catch (error) {
-    console.error("Error creating overview:", error);
+    console.error("Error creating condition:", error);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -122,14 +122,14 @@ export const createOverview = async (req, res) => {
   }
 };
 
-export const updateOverview = async (req, res) => {
-  const { overviewId } = req.params;
+export const updateCondition = async (req, res) => {
+  const { conditionId } = req.params;
   const { title, subtitle, desc, author, faqs, keyterms } = req.body;
 
   try {
-    const overview = await overviewModel.findById(overviewId);
-    if (!overview) {
-      return res.status(404).json({ message: "Overview not found" });
+    const condition = await conditionModel.findById(conditionId);
+    if (!condition) {
+      return res.status(404).json({ message: "Condition not found" });
     }
 
     const parsedAuthor = safeParse(author, {});
@@ -138,7 +138,7 @@ export const updateOverview = async (req, res) => {
 
     const label = subtitle?.toLowerCase().split(" ").join("-");
 
-    await overviewModel.findByIdAndUpdate(overviewId, {
+    await conditionModel.findByIdAndUpdate(conditionId, {
       title,
       subtitle,
       desc,
@@ -148,39 +148,39 @@ export const updateOverview = async (req, res) => {
       label,
     });
 
-    const updatedOverview = await overviewModel.findById(overviewId);
+    const updatedCondition = await conditionModel.findById(conditionId);
 
     res.json({
       success: true,
-      message: "Overview Updated",
-      data: updatedOverview,
+      message: "Condition Updated",
+      data: updatedCondition,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Error updating Overview",
+      message: "Error updating Condition",
       error,
     });
   }
 };
 
-export const deleteOverview = async (req, res) => {
-  const { overviewId } = req.params;
+export const deleteCondition = async (req, res) => {
+  const { conditionId } = req.params;
 
   try {
-    const overview = await overviewModel.findById(overviewId);
-    if (!overview) {
-      return res.status(404).json({ message: "Overview not found" });
+    const condition = await conditionModel.findById(conditionId);
+    if (!condition) {
+      return res.status(404).json({ message: "Condition not found" });
     }
 
     const permit = await userModel.findById(req.body.userId);
-    if (!permit.permission.includes("deleteOverview")) {
+    if (!permit.permission.includes("deleteCondition")) {
       return res.status(401).json({ message: "Permission Denied" });
     }
 
-    await overviewModel.findByIdAndDelete(overviewId);
-    res.status(200).json({ message: "Overview Deleted" });
+    await conditionModel.findByIdAndDelete(conditionId);
+    res.status(200).json({ message: "Condition Deleted" });
   } catch (error) {
-    res.status(500).json({ message: "Error Deleting Overview", error });
+    res.status(500).json({ message: "Error Deleting Condition", error });
   }
 };

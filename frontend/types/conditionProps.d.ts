@@ -1,6 +1,6 @@
 import PostProps from "./postProps";
 
-export default interface CatalogProps {
+export default interface ConditionProps {
   _id: string;
   title: string;
   subtitle: string;
@@ -18,22 +18,22 @@ export default interface CatalogProps {
     key: string;
     terms: string;
   }[];
-  posts?: PostProps[];
+  postIds?: PostProps[];
   date?: string;
 }
 
-export interface CatalogState {
-  overview: CatalogProps;
-  overviews: {
-    overviewList: CatalogProps[];
+export interface ConditionState {
+  condition: ConditionProps;
+  conditions: {
+    conditionList: ConditionProps[];
     totalPages: number;
   };
-  index: OverviewIndex[];
+  index: ConditionIndex[];
   loading: boolean;
   error: string | null;
 }
 
-export interface OverviewIndex {
+export interface ConditionIndex {
   _id: string;
   title: string;
   subtitle: string;

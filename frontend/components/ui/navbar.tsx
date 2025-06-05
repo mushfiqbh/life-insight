@@ -16,7 +16,7 @@ const Navbar = () => {
   return (
     <nav className="bg-transparent border-gray-300 gap-5 hidden md:flex items-center ml-4 pl-4 border-l">
       {[
-        { href: "/atoz", label: t("atoz") },
+        { href: "/conditions", label: t("atoz") },
         { href: "/about", label: t("about") },
         { href: "/login", label: token ? t("account") : t("login") },
         token && { href: "/admin", label: t("admin") },

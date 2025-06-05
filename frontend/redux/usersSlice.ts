@@ -1,15 +1,8 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import User from "@/types/user";
+import { UserState } from "@/types/user";
 import axios from "axios";
 
 const url = process.env.NEXT_PUBLIC_SERVER_URL;
-
-interface UserState {
-  token: string | null;
-  userInfo: User | null;
-  userInfoList: User[];
-  error: string | null;
-}
 
 const initialState: UserState = {
   token: null,

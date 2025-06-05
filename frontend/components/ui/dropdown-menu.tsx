@@ -50,7 +50,7 @@ export default function DropdownMenu({
       aria-labelledby="nested-list-subheader"
     >
       {[
-        { href: "/atoz", label: t("atoz") },
+        { href: "/conditions", label: t("atoz") },
         { href: "/login", label: token ? t("account") : t("login") },
         token && { href: "/admin", label: t("admin") },
       ]
