@@ -38,7 +38,7 @@ export const fetchOverviews = createAsyncThunk(
 export const fetchOverviewIndex = createAsyncThunk(
   "catalog/fetchOverviewIndex",
   async () => {
-    const response = await axios.get(url + "/api/catalogs/");
+    const response = await axios.get(url + "/api/catalogs/index");
     return response.data.data.sort((a: OverviewIndex, b: OverviewIndex) =>
       a.title > b.title ? 1 : -1
     );
