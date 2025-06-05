@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ReduxProvider from "./redux-provider"; // Import the new provider
-import Footer from "@/components/footer";
-import Header from "@/components/header";
+import Footer from "@/components/shared/footer";
+import Header from "@/components/shared/header";
 import PreFetch from "./prefetch";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/shared/theme-provider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { cookies } from "next/headers";

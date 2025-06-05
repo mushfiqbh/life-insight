@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import axios from "axios";
-import LoadingSpinner from "@/components/ui/loading-spinner";
 import CatalogProps from "@/types/catalogProps";
-import LabelMetadata from "@/components/admin/LabelMetadata";
-import FaqKeyTerms from "@/components/admin/FaqKeyTerms";
-import ControlPanel from "@/components/admin/ControlPanel";
+import LoadingSpinner from "@/components/ui/loading-spinner";
+import LabelMetadata from "./editor/LabelMetadata";
+import FaqKeyTerms from "./editor/FaqKeyTerms";
+import ControlPanel from "./Control-Panel";
 
 const LabelForm = ({ labelId }: { labelId?: string }) => {
   const url = process.env.NEXT_PUBLIC_SERVER_URL;

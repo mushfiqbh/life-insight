@@ -4,10 +4,10 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { assets } from "@/assets/assets";
-import Navbar from "./ui/navbar";
+import Navbar from "../ui/navbar";
 import { Menu, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import DropdownMenu from "./ui/dropdown-menu";
+import DropdownMenu from "../ui/dropdown-menu";
 
 const Header: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);

@@ -1,6 +1,6 @@
 "use client";
 
-import ContentWithTOC from "@/components/contentTOC";
+import ContentWithTOC from "@/components/shared/contentTOC";
 import { Button, Stack, TextField } from "@mui/material";
 import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import insertAtCursor from "@/lib/insertAtCursor";

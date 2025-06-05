@@ -1,7 +1,7 @@
 "use client"
 
 import { useParams } from "next/navigation";
-import LabelForm from "../label-form";
+import LabelForm from "@/components/admin/LabelForm";
 
 const Page = () => {
   const { labelId } = useParams() as { labelId: string };

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import PostProps from "@/types/postProps";
-import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { franc } from "franc-min";
@@ -23,7 +22,6 @@ const detectLanguage = (text: string) => {
 };
 
 const PostItem = ({ post }: { post: PostProps }) => {
-  const router = useRouter();
   const [language, setLanguage] = useState<string>("en");
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
   const { adminChoice } = useSelector(
@@ -41,7 +39,7 @@ const PostItem = ({ post }: { post: PostProps }) => {
       className="flex items-center justify-between p-4 border rounded-lg shadow-sm text-foreground bg-background hover:shadow-md transition"
     >
       <Link
-        href={`/admin/post/${post._id}`}
+        href={`/post/${post._id}`}
         className="flex items-center gap-4 flex-1"
       >
         <div className="w-14 h-14 flex-shrink-0 overflow-hidden rounded-md border">
@@ -68,12 +66,14 @@ const PostItem = ({ post }: { post: PostProps }) => {
       </Link>
 
       <div className="flex gap-2">
-        <button
-          className="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
-          onClick={() => router.push(`/post/${post._id}`)}
-        >
-          View
-        </button>
+        {userInfo?.permissions?.includes("editPost") && (
+          <Link
+            href={`admin/post/${post._id}`}
+            className="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
+          >
+            Edit
+          </Link>
+        )}
         {userInfo?.permissions?.includes("deletePost") && (
           <button
             className="px-3 py-1 text-sm font-medium text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"

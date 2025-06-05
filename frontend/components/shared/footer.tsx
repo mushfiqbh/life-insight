@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { assets } from "../assets/assets";
+import { assets } from "../../assets/assets";
 import styles from "@/styles/footer.module.css";
 import { useTranslations } from "next-intl";
 

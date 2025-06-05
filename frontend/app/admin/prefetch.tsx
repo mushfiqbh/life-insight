@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { fetchOverviewIndex } from "@/redux/catalogSlice";
 
-const InitialFetch = () => {
+const PreFetch = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -15,4 +15,4 @@ const InitialFetch = () => {
   return null;
 };
 
-export default InitialFetch;
+export default PreFetch;

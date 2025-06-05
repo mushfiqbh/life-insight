@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { useRouter } from "next/navigation";
 import { deleteCatalog } from "@/redux/catalogSlice";
 import CatalogProps from "@/types/catalogProps";
 import { franc } from "franc-min";
@@ -25,7 +24,6 @@ export default function CategoryItem({ category }: { category: CatalogProps }) {
   const [language, setLanguage] = useState<string>("en");
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
 
   useEffect(() => {
     setLanguage(detectLanguage(category?.title));
@@ -37,7 +35,7 @@ export default function CategoryItem({ category }: { category: CatalogProps }) {
       className="flex items-center justify-between p-4 border rounded-lg shadow-sm text-foreground bg-background hover:shadow-md transition"
     >
       <Link
-        href={`/admin/label/${category._id}`}
+        href={`/overview/${category.label}`}
         className="flex-1 flex items-center gap-4"
       >
         <div className="flex-1">
@@ -50,12 +48,14 @@ export default function CategoryItem({ category }: { category: CatalogProps }) {
       </Link>
 
       <div className="flex gap-2">
-        <button
-          className="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
-          onClick={() => router.push(`/label/${category.label}`)}
-        >
-          View
-        </button>
+        {userInfo?.permissions?.includes("editOverview") && (
+          <Link
+            href={`/admin/label/${category._id}`}
+            className="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
+          >
+            Edit
+          </Link>
+        )}
         {userInfo?.permissions?.includes("deleteOverview") && (
           <button
             className="px-3 py-1 text-sm font-medium text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"

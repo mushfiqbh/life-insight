@@ -1,7 +1,7 @@
 "use client";
 import { useInView } from "react-intersection-observer";
 import { useInfiniteCategories } from "@/hooks/useInfiniteCateories";
-import CatalogItem from "@/components/showcase/CategoryItem";
+import CategoryItem from "./CategoryItem";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { useEffect } from "react";
 
@@ -25,7 +25,7 @@ const CategoryList = () => {
   return (
     <div>
       {categories.map((category) => (
-        <CatalogItem key={category._id} category={category} />
+        <CategoryItem key={category._id} category={category} />
       ))}
       {isFetchingNextPage && <LoadingSpinner />}
       <div ref={ref} className="h-8"></div>

@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Stack } from "@mui/material";
 import ToggleButtons from "@/components/admin/ToggleButtons";
-import PostList from "./components/PostList";
-import CategoryList from "./components/CategoryList";
+import PostList from "@/components/showcase/PostList";
+import CategoryList from "@/components/showcase/CategoryList";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 

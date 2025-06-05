@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { fetchSelectedPosts, incrementViews } from "@/redux/postsSlice";
-import LoadingSpinner from "./ui/loading-spinner";
+import LoadingSpinner from "../ui/loading-spinner";
 import { RootState } from "@/redux/store";
 import { useTranslations } from "next-intl";
 import { assets } from "@/assets/assets";

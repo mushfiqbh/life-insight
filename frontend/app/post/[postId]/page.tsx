@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import ShowGrid from "@/components/showcase/grid";
 import LoadingSpinner from "@/components/ui/loading-spinner";
-import ContentWithTOC from "@/components/contentTOC";
+import ContentWithTOC from "@/components/shared/contentTOC";
 import { fetchPost } from "@/redux/postsSlice";
 import { assets } from "@/assets/assets";
 

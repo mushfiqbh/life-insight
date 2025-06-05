@@ -6,9 +6,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import axios from "axios";
 import LoadingSpinner from "@/components/ui/loading-spinner";
-import TextContent from "@/components/admin/TextContent";
-import PostMetadata from "@/components/admin/PostMetadata";
-import ControlPanel from "@/components/admin/ControlPanel";
+import TextContent from "./editor/TextContent";
+import PostMetadata from "./editor/PostMetadata";
+import ControlPanel from "./Control-Panel";
 
 const PostForm = ({ postId }: { postId?: string }) => {
   const url = process.env.NEXT_PUBLIC_SERVER_URL;
