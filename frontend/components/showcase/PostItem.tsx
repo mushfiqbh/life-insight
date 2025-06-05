@@ -66,7 +66,7 @@ const PostItem = ({ post }: { post: PostProps }) => {
       </Link>
 
       <div className="flex gap-2">
-        {userInfo?.permissions?.includes("editPost") && (
+        {userInfo?.permissions?.includes("edit") && (
           <Link
             href={`admin/post/${post._id}`}
             className="px-3 py-1 text-sm font-medium text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
@@ -74,7 +74,7 @@ const PostItem = ({ post }: { post: PostProps }) => {
             Edit
           </Link>
         )}
-        {userInfo?.permissions?.includes("deletePost") && (
+        {userInfo?.permissions?.includes("delete") && (
           <button
             className="px-3 py-1 text-sm font-medium text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white transition"
             onClick={() => {

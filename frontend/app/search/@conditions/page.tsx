@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
-import { conditionue } from "@/assets/assets";
+import { grouped_conditions } from "@/assets/assets";
 
 const Conditions: React.FC = () => {
   return (
     <div className="w-full flex flex-col gap-5" id="condition">
-      {conditionue?.map((set, index) => (
+      {grouped_conditions?.map((set, index) => (
         <div key={index} className="min-w-[50%] sm:min-w-full">
           <Link href={set.pathname}>
             <h1 className="text-green-600 hover:text-red-600 text-xl font-bold">
