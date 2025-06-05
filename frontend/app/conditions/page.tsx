@@ -8,13 +8,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchConditionIndex } from "@/redux/conditionsSlice";
 import { useTranslations } from "next-intl";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 const Page: React.FC = () => {
   const [activeAlpha, setActiveAlpha] = useState<string>("All");
   const [alphas, setAlphas] = useState<string[]>([]);
   const dispatch = useDispatch<AppDispatch>();
   const conditions = useSelector((state: RootState) => state.conditions.index);
+  const [loading, setLoading] = useState<boolean>(true);
   const t = useTranslations("explore");
+
+  useEffect(() => {
+    if (conditions) {
+      setLoading(false);
+    }
+  }, [conditions]);
 
   useEffect(() => {
     dispatch(fetchConditionIndex());
@@ -37,6 +45,8 @@ const Page: React.FC = () => {
 
     setAlphas(["All", ...alphabet.sort()]);
   }, [conditions]);
+
+  if (loading) return <LoadingSpinner />;
 
   return (
     <div className="atoz mt-24">

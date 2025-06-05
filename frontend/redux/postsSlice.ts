@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import PostProps, { PostsState } from "../types/postProps";
+import { demo_selected_posts } from "@/assets/assets";
 import axios from "axios";
 
 const url = process.env.NEXT_PUBLIC_SERVER_URL;
@@ -48,6 +49,24 @@ export const fetchSelectedPosts = createAsyncThunk("posts/fetch", async () => {
 export const fetchPost = createAsyncThunk(
   "posts/post",
   async (postId: string) => {
+    if (postId.length === 1) {
+      if (postId === "1") {
+        return {
+          post: demo_selected_posts.latestPost,
+          relatedPosts: demo_selected_posts.popularPosts,
+        };
+      } else if (postId === "2") {
+        return {
+          post: demo_selected_posts.adminChoice,
+          relatedPosts: demo_selected_posts.popularPosts,
+        };
+      } else {
+        return {
+          post: demo_selected_posts.popularPosts[Number(postId) - 3],
+          relatedPosts: [],
+        };
+      }
+    }
     const response = await axios.get(url + "/api/posts/" + postId);
     return response.data.data;
   }
@@ -73,7 +92,7 @@ export const deletePost = createAsyncThunk(
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    
+
     if (response.status === 200) {
       return ID;
     }
@@ -106,6 +125,10 @@ const postsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchPosts.fulfilled, (state, action) => {
       state.posts = action.payload ?? { postList: [], totalPages: 0 };
+    });
+    builder.addCase(fetchSelectedPosts.pending, (state) => {
+      state.selectedPosts = demo_selected_posts;
+      state.loading = false;
     });
     builder.addCase(fetchSelectedPosts.fulfilled, (state, action) => {
       state.selectedPosts = action.payload;

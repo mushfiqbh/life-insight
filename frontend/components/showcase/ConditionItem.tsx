@@ -41,7 +41,7 @@ export default function ConditionItem({ condition }: { condition: ConditionProps
         <div className="flex-1">
           <h3 className="text-lg font-semibold">{condition.title}</h3>
           <p className="text-sm">
-            <b>{condition?.posts?.length} Posts</b> Labeled For{" "}
+            <b>{condition?.postIds?.length} Posts</b> Labeled For{" "}
             <b>{condition.label}</b> Reviewed By <b>{condition.author.name}</b>
           </p>
         </div>
