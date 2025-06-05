@@ -14,8 +14,8 @@ import multer from "multer";
 const overviewRouter = express.Router();
 const upload = multer();
 
-overviewRouter.get("/", overviewIndex);
-overviewRouter.get("/page/:pageNo", overviewList); // Get list of Overviews
+overviewRouter.get("/index", overviewIndex);
+overviewRouter.get("/", overviewList); // Get list of Overviews
 overviewRouter.get("/:label", getOverview); // Get a specific Overview by ID
 overviewRouter.get("/byid/:labelId", getOverviewById); // Get a specific Overview by ID
 overviewRouter.post("/", authMiddleware, upload.none(), createOverview); // Create a new Overview

@@ -54,22 +54,25 @@ export const createPost = async (req, res) => {
 };
 
 export const getAllPosts = async (req, res) => {
-  const pageNo = parseInt(req.params.pageNo) || 1;
+  // Use query params (e.g., /api/posts?page=1)
+  const page = parseInt(req.query.page) || 1;
   const limit = 10;
-  const skip = (pageNo - 1) * limit;
+  const skip = (page - 1) * limit;
 
   try {
-    const totalPosts = await postModel.countDocuments(); // Get total post count
-    const data = await postModel.find().skip(skip).limit(limit);
+    const totalPosts = await postModel.countDocuments();
+    const posts = await postModel.find().skip(skip).limit(limit);
 
     res.status(200).json({
-      success: true,
-      data,
-      totalPages: Math.ceil(totalPosts / limit),
-      currentPage: pageNo,
+      page, // The current page number
+      totalPages: Math.ceil(totalPosts / limit), // Total number of pages
+      posts, // The array of posts
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error Occurred", error });
+    res.status(500).json({
+      message: "Error Occurred",
+      error: error.message,
+    });
   }
 };
 

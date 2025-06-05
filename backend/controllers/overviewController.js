@@ -2,22 +2,25 @@ import overviewModel from "../models/overviewModel.js";
 import userModel from "../models/userModel.js";
 
 export const overviewList = async (req, res) => {
-  const pageNo = parseInt(req.params.pageNo) || 1;
+  // Use query parameter instead of route param
+  const page = parseInt(req.query.page) || 1;
   const limit = 5;
-  const skip = (pageNo - 1) * limit;
+  const skip = (page - 1) * limit;
 
   try {
-    const totalPosts = await overviewModel.countDocuments(); // Get total post count
-    const data = await overviewModel.find().skip(skip).limit(limit);
+    const totalCategories = await overviewModel.countDocuments(); // Get total count
+    const categories = await overviewModel.find().skip(skip).limit(limit);
 
     res.status(200).json({
-      success: true,
-      data,
-      totalPages: Math.ceil(totalPosts / limit),
-      currentPage: pageNo,
+      page, // Current page number
+      totalPages: Math.ceil(totalCategories / limit), // Total pages
+      categories, // The array of categories
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error Occurred", error });
+    res.status(500).json({
+      message: "Error Occurred",
+      error: error.message,
+    });
   }
 };
 
