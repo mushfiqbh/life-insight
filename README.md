@@ -1,3 +1,4 @@
+
 # 📚 LifeInsight
 
 LifeInsight is a full-stack project designed to provide actionable insights and analytics for personal or organizational growth. This application leverages modern web technologies to deliver a seamless and interactive user experience.
