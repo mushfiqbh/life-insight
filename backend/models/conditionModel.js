@@ -30,7 +30,7 @@ const conditionSchema = mongoose.Schema(
       type: Array,
     },
   },
-  { timeStamps: true }
+  { timestamps: true }
 );
 
 const conditionModel =

@@ -19,7 +19,8 @@ export default interface PostProps {
   image: string;
   views: number;
   adminChoice: boolean;
-  date?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ContentDataProps {

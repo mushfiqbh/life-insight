@@ -39,6 +39,7 @@ const PostItem = ({ post }: { post: PostProps }) => {
       className="flex items-center justify-between p-4 border rounded-lg shadow-sm text-foreground bg-background hover:shadow-md transition"
     >
       <Link
+        target="_blank"
         href={`/post/${post._id}`}
         className="flex items-center gap-4 flex-1"
       >

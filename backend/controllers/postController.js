@@ -161,6 +161,7 @@ export const updatePost = async (req, res) => {
       image: existingPost.image,
       adminChoice: req.body.adminChoice,
       editors,
+      views: existingPost.views || 0,
     };
 
     if (req.body.author) {

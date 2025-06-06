@@ -62,7 +62,9 @@ export const getConditionById = async (req, res) => {
   const { conditionId } = req.params;
 
   try {
-    const condition = await conditionModel.findById(conditionId).populate("postIds");
+    const condition = await conditionModel
+      .findById(conditionId)
+      .populate("postIds");
 
     if (!condition) {
       return res
@@ -103,6 +105,9 @@ export const createCondition = async (req, res) => {
       author: parsedAuthor,
       faqs: parsedFaqs,
       keyterms: parsedKeyterms,
+      postIds: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
     await newCondition.save();
@@ -138,15 +143,19 @@ export const updateCondition = async (req, res) => {
 
     const label = subtitle?.toLowerCase().split(" ").join("-");
 
-    await conditionModel.findByIdAndUpdate(conditionId, {
-      title,
-      subtitle,
-      desc,
-      author: parsedAuthor,
-      faqs: parsedFaqs,
-      keyterms: parsedKeyterms,
-      label,
-    });
+    await conditionModel.findByIdAndUpdate(
+      conditionId,
+      {
+        title,
+        subtitle,
+        desc,
+        author: parsedAuthor,
+        faqs: parsedFaqs,
+        keyterms: parsedKeyterms,
+        label,
+      },
+      { new: true, runValidators: true }
+    );
 
     const updatedCondition = await conditionModel.findById(conditionId);
 
@@ -174,7 +183,7 @@ export const deleteCondition = async (req, res) => {
     }
 
     const permit = await userModel.findById(req.body.userId);
-    if (!permit.permission.includes("deleteCondition")) {
+    if (!permit.permission.includes("delete")) {
       return res.status(401).json({ message: "Permission Denied" });
     }
 
