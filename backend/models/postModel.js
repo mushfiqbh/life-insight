@@ -11,6 +11,10 @@ const postSchema = mongoose.Schema(
     subtitle: {
       type: String,
     },
+    tags: {
+      type: [{ type: String }],
+      default: [],
+    },
     author: {
       name: String,
       bio: String,

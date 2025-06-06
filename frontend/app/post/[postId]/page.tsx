@@ -44,7 +44,7 @@ const Page: React.FC = () => {
           <li>
             Author: <span className="font-semibold">{post?.author?.name}</span>
           </li>
-          <li>Date: {post.updatedAt.split("T")[0]}</li>
+          <li>Date: {post?.updatedAt?.split("T")[0]}</li>
           <li>Reading Time: {post.readingTime || 1} min</li>
         </ul>
       </div>

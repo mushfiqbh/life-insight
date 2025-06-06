@@ -327,9 +327,10 @@ export const demo_selected_posts: {
     title:
       "আরও অর্থ কি আপনাকে সুখী করে? হ্যাঁ, কিন্তু এটা জটিল তবে কয়েকটি সতর্কতা রয়েছে",
     subtitle: "গবেষণা বলে যে এটি সাহায্য করতে পারে, তবে কয়েকটি সতর্কতা রয়েছে",
+    tags: [],
     author: {
       name: "Kendra Cherry, MSEd",
-      bio: 'Kendra Cherry, MS, is a psychosocial rehabilitation specialist, psychology educator, and author of the "Everything Psychology Book."',
+      bio: "Kendra Cherry, MS, is a psychosocial rehabilitation specialist, psychology educator, and author of the Everything Psychology Book.",
     },
     content: "f",
     readingTime: 1,
@@ -362,6 +363,7 @@ export const demo_selected_posts: {
       'আপনার "কর্টিসল ফেস" কি স্ট্রেসের কারণে? বিশেষজ্ঞরা যা বলছেন তা এখানে',
     subtitle:
       "সিরি, দয়া করে আমাকে বলুন কিভাবে আমার নিটোল গাল এবং বৃত্তাকার চোয়াল ডিপফ করতে হয়",
+    tags: [],
     author: {
       name: "new",
       bio: "twxf",
@@ -392,6 +394,7 @@ export const demo_selected_posts: {
       label: "good-life",
       title: "আপনার আবেগীয় বুদ্ধিমত্তা (Emotional intelligence) কি উচ্চ?",
       subtitle: "First Post First Post First Post  up",
+      tags: [],
       author: {
         name: "Tasnim",
         bio: "Teacher",
@@ -419,6 +422,7 @@ export const demo_selected_posts: {
         "আপনার কর্টিসল ফেস কি স্ট্রেসের কারণে? বিশেষজ্ঞরা যা বলছেন তা এখানে",
       subtitle:
         "সিরি, দয়া করে আমাকে বলুন কিভাবে আমার নিটোল গাল এবং বৃত্তাকার চোয়াল ডিপফ করতে হয়",
+      tags: [],
       author: {
         name: "Tara",
         bio: "Doctor",
@@ -448,6 +452,7 @@ export const demo_selected_posts: {
       label: "good-life",
       title: "আপনার আবেগীয় বুদ্ধিমত্তা (Emotional intelligence) কি উচ্চ?",
       subtitle: "First Post First Post First Post  up",
+      tags: [],
       author: {
         name: "Tasnim",
         bio: "Teacher",
@@ -475,6 +480,7 @@ export const demo_selected_posts: {
         "আপনার কর্টিসল ফেস কি স্ট্রেসের কারণে? বিশেষজ্ঞরা যা বলছেন তা এখানে",
       subtitle:
         "সিরি, দয়া করে আমাকে বলুন কিভাবে আমার নিটোল গাল এবং বৃত্তাকার চোয়াল ডিপফ করতে হয়",
+      tags: [],
       author: {
         name: "Tara",
         bio: "Doctor",

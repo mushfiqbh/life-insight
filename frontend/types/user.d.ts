@@ -4,8 +4,8 @@ export default interface User {
   email: string;
   password: string;
   permissions: string[];
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface UserState {
