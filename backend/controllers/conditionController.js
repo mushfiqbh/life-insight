@@ -9,7 +9,7 @@ export const conditionList = async (req, res) => {
 
   try {
     const totalConditions = await conditionModel.countDocuments(); // Get total count
-    const conditions = await conditionModel.find().skip(skip).limit(limit);
+    const conditions = await conditionModel.find({}).skip(skip).limit(limit);
 
     res.status(200).json({
       page, // Current page number
@@ -44,7 +44,8 @@ export const getCondition = async (req, res) => {
   try {
     const condition = await conditionModel
       .findOne({ label: label.toLowerCase() })
-      .populate("postIds");
+      .populate("postIds")
+      .select("-content");
 
     if (!condition) {
       return res

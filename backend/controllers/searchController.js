@@ -9,7 +9,7 @@ export const search = async (req, res) => {
     const condition = await conditionModel.find({});
 
     const options = {
-      keys: ["title", "subtitle", "content", "desc"],
+      keys: ["title", "subtitle", "content", "desc", "tags"],
       includeScore: true,
       threshold: 0.3,
     };

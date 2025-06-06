@@ -8,12 +8,16 @@ type RelatedPostsPage = {
   relatedPosts: PostProps[];
 };
 
-export const useInfiniteRelatedPosts = (label: string) => {
+export const useInfiniteRelatedPosts = (postId: string, limit?: number) => {
   return useInfiniteQuery({
-    queryKey: ["relatedPosts", label],
+    queryKey: ["relatedPosts"],
     queryFn: async ({ pageParam = 1 }) => {
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/related?label=${label}&page=${pageParam}`
+        `${
+          process.env.NEXT_PUBLIC_SERVER_URL
+        }/api/posts/related?postId=${postId}&page=${pageParam}&limit=${
+          limit || 4
+        }`
       );
 
       return res.data;

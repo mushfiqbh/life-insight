@@ -8,12 +8,12 @@ type PostsPage = {
   posts: PostProps[];
 };
 
-export const useInfinitePosts = () => {
+export const useInfinitePosts = ({ label }: { label?: string }) => {
   return useInfiniteQuery({
     queryKey: ["posts"],
     queryFn: async ({ pageParam = 1 }) => {
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts?page=${pageParam}`
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts?label=${label}&page=${pageParam}`
       );
       return res.data;
     },

@@ -55,14 +55,16 @@ export const createPost = async (req, res) => {
 };
 
 export const getAllPosts = async (req, res) => {
-  // Use query params (e.g., /api/posts?page=1)
+  const label = req.query.label ? req.query.label.toLowerCase() : null;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
 
   try {
     const totalPosts = await postModel.countDocuments();
     const posts = await postModel
-      .find()
+      .find(
+        label ? { label: label } : {} // Filter by label if provided
+      )
       .skip((page - 1) * limit)
       .limit(limit)
       .select("-content") // Exclude content field
@@ -121,13 +123,27 @@ export const getPost = async (req, res) => {
 };
 
 export const getRelatedPosts = async (req, res) => {
-  const label = req.query.label;
+  const postId = req.query.postId;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 4;
 
   try {
+    const post = await postModel.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const label = post.label;
+    const tags = post.tags || [];
+
     // First get the total count of related posts
-    const totalPosts = await postModel.countDocuments({ label });
+    const totalPosts = await postModel.countDocuments({
+      label,
+      _id: { $ne: postId }, // Exclude the current post
+      tags: { $in: tags }, // Include posts with at least one matching tag
+    });
+
     const totalPages = Math.ceil(totalPosts / limit);
 
     // Then get the posts for the current page

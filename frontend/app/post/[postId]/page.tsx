@@ -10,7 +10,7 @@ import LoadingSpinner from "@/components/ui/loading-spinner";
 import ContentWithTOC from "@/components/shared/contentTOC";
 import { fetchPost } from "@/redux/postsSlice";
 import { assets } from "@/assets/assets";
-import PostGrid from "@/components/showcase/PostGrid";
+import RelatedPostGrid from "@/components/showcase/RelatedPostGrid";
 
 const Page: React.FC = () => {
   const { postId } = useParams() as { postId: string };
@@ -51,11 +51,11 @@ const Page: React.FC = () => {
       <div className="w-full mb-6">
         <Image
           priority
-          src={assets.dunning_krugar}
-          width={1280}
-          height={720}
+          src={post?.image || assets.dunning_krugar}
+          width={720}
+          height={400}
           alt={post?.title || "Post_Image"}
-          className="rounded-lg"
+          className="h-auto rounded-lg"
         />
       </div>
       <div className="flex flex-col md:flex-row gap-10">
@@ -110,7 +110,7 @@ const Page: React.FC = () => {
       </div>
       <h2 className="text-2xl font-bold mt-10">Related Articles</h2>
 
-      <PostGrid label={post.label} postId={post._id} />
+      <RelatedPostGrid postId={post._id} />
     </div>
   );
 };

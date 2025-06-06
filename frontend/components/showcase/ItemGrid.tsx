@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { detectLanguage } from "@/lib/detectLanguage";
 
-export default function GridItem({ post }: { post: PostProps }) {
+export default function ItemGrid({ post }: { post: PostProps }) {
   const dispatch = useDispatch<AppDispatch>();
   const [language, setLanguage] = useState<string>("en");
 
