@@ -1,6 +1,6 @@
 "use client";
 
-import ContentWithTOC from "@/components/shared/contentTOC";
+import PostContent from "@/components/shared/PostContent";
 import { Button, Stack, TextField } from "@mui/material";
 import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import insertAtCursor from "@/lib/insertAtCursor";
@@ -61,7 +61,7 @@ const TextContent = ({
 
       {preview ? (
         <div>
-          <ContentWithTOC data={data.content} noTOC />
+          <PostContent data={data.content} />
         </div>
       ) : (
         <div>
