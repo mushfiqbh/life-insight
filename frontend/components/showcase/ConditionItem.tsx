@@ -20,7 +20,11 @@ const detectLanguage = (text: string) => {
   return langMap[langCode] || "en";
 };
 
-export default function ConditionItem({ condition }: { condition: ConditionProps }) {
+export default function ConditionItem({
+  condition,
+}: {
+  condition: ConditionProps;
+}) {
   const [language, setLanguage] = useState<string>("en");
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
   const dispatch = useDispatch<AppDispatch>();
@@ -35,6 +39,7 @@ export default function ConditionItem({ condition }: { condition: ConditionProps
       className="flex items-center justify-between p-4 border rounded-lg shadow-sm text-foreground bg-background hover:shadow-md transition"
     >
       <Link
+        target="_blank"
         href={`/condition/${condition.label}`}
         className="flex-1 flex items-center gap-4"
       >

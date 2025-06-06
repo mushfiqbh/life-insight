@@ -51,7 +51,7 @@ const Condition = () => {
           </Link>
         </li>
         <li>
-          সময় <span>{condition.date?.split("T")[0]}</span>
+          সময় <span>{condition.updatedAt?.split("T")[0]}</span>
         </li>
       </ul>
 

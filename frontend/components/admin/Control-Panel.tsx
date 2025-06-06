@@ -12,7 +12,11 @@ const ControlPanel = ({ buttonText }: { buttonText: string }) => {
           variant="contained"
           color="error"
           onClick={() =>
-            confirm("Exit without Saving?") ? router.back() : null
+            buttonText === "Saved" || buttonText === "Updated"
+              ? router.back()
+              : confirm("Exit without Saving?")
+              ? router.back()
+              : null
           }
         >
           EXIT
