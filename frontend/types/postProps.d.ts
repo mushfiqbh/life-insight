@@ -32,10 +32,7 @@ export interface ContentDataProps {
 }
 
 export interface PostsState {
-  post: {
-    post: PostProps;
-    relatedPosts: PostProps[];
-  };
+  post: PostProps;
   posts: {
     postList: PostProps[];
     totalPages: number;

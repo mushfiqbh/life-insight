@@ -352,7 +352,8 @@ export const demo_selected_posts: {
       "https://res.cloudinary.com/dmmi1ququ/image/upload/v1748066983/posts/wvtpdxx1mj0dllbvnpb0.png",
     views: 117,
     adminChoice: true,
-    date: "2024-07-23T00:00:00.000Z",
+    createdAt: "2025-02-28T00:00:00.000Z",
+    updatedAt: "2024-07-23T00:00:00.000Z",
   },
   latestPost: {
     _id: "2",
@@ -382,7 +383,8 @@ export const demo_selected_posts: {
       "https://res.cloudinary.com/dmmi1ququ/image/upload/v1748066983/posts/wvtpdxx1mj0dllbvnpb0.png",
     views: 15,
     adminChoice: false,
-    date: "2025-02-28T00:00:00.000Z",
+    createdAt: "2025-02-28T00:00:00.000Z",
+    updatedAt: "2025-02-28T00:00:00.000Z",
   },
   popularPosts: [
     {
@@ -407,7 +409,8 @@ export const demo_selected_posts: {
         "https://res.cloudinary.com/dmmi1ququ/image/upload/v1748066983/posts/wvtpdxx1mj0dllbvnpb0.png",
       views: 81,
       adminChoice: false,
-      date: "2024-07-21T00:00:00.000Z",
+      createdAt: "2025-02-28T00:00:00.000Z",
+      updatedAt: "2024-07-21T00:00:00.000Z",
     },
     {
       _id: "4",
@@ -437,7 +440,8 @@ export const demo_selected_posts: {
         "https://res.cloudinary.com/dmmi1ququ/image/upload/v1748066983/posts/wvtpdxx1mj0dllbvnpb0.png",
       views: 108,
       adminChoice: false,
-      date: "2024-06-12T00:00:00.000Z",
+      createdAt: "2025-02-28T00:00:00.000Z",
+      updatedAt: "2024-06-12T00:00:00.000Z",
     },
     {
       _id: "5",
@@ -461,7 +465,8 @@ export const demo_selected_posts: {
         "https://res.cloudinary.com/dmmi1ququ/image/upload/v1748066983/posts/wvtpdxx1mj0dllbvnpb0.png",
       views: 81,
       adminChoice: false,
-      date: "2024-07-21T00:00:00.000Z",
+      createdAt: "2025-02-28T00:00:00.000Z",
+      updatedAt: "2024-07-21T00:00:00.000Z",
     },
     {
       _id: "6",
@@ -491,7 +496,8 @@ export const demo_selected_posts: {
         "https://res.cloudinary.com/dmmi1ququ/image/upload/v1748066983/posts/wvtpdxx1mj0dllbvnpb0.png",
       views: 108,
       adminChoice: false,
-      date: "2024-06-12T00:00:00.000Z",
+      createdAt: "2025-02-28T00:00:00.000Z",
+      updatedAt: "2024-06-12T00:00:00.000Z",
     },
   ],
 };

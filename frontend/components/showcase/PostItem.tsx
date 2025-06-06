@@ -6,20 +6,8 @@ import Link from "next/link";
 import PostProps from "@/types/postProps";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { franc } from "franc-min";
 import { deletePost } from "@/redux/postsSlice";
-
-const detectLanguage = (text: string) => {
-  const langCode = franc(text);
-  const langMap: Record<string, string> = {
-    eng: "en",
-    ben: "bn",
-    hin: "hi",
-    spa: "es",
-    fra: "fr",
-  };
-  return langMap[langCode] || "en";
-};
+import { detectLanguage } from "@/lib/detectLanguage";
 
 const PostItem = ({ post }: { post: PostProps }) => {
   const [language, setLanguage] = useState<string>("en");

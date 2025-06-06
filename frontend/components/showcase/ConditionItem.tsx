@@ -6,19 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { deleteCondition } from "@/redux/conditionsSlice";
 import ConditionProps from "@/types/conditionProps";
-import { franc } from "franc-min";
-
-const detectLanguage = (text: string) => {
-  const langCode = franc(text);
-  const langMap: Record<string, string> = {
-    eng: "en",
-    ben: "bn",
-    hin: "hi",
-    spa: "es",
-    fra: "fr",
-  };
-  return langMap[langCode] || "en";
-};
+import { detectLanguage } from "@/lib/detectLanguage";
 
 export default function ConditionItem({
   condition,

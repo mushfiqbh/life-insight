@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import LoadingSpinner from "@/components/ui/loading-spinner";
-import ShowGrid from "@/components/showcase/grid";
+import PostGrid from "@/components/showcase/PostGrid";
 import Accordion from "@/components/ui/accordion";
 import { fetchCondition } from "@/redux/conditionsSlice";
 
@@ -114,7 +114,7 @@ const Condition = () => {
       )}
 
       <h2 className="text-2xl font-semibold mt-6">এই ওভারভিউ এর সমস্ত পোস্ট</h2>
-      <ShowGrid data={condition.postIds || []} />
+      <PostGrid label={label} />
     </div>
   );
 };

@@ -56,12 +56,16 @@ export const createPost = async (req, res) => {
 export const getAllPosts = async (req, res) => {
   // Use query params (e.g., /api/posts?page=1)
   const page = parseInt(req.query.page) || 1;
-  const limit = 10;
-  const skip = (page - 1) * limit;
+  const limit = parseInt(req.query.limit) || 10;
 
   try {
     const totalPosts = await postModel.countDocuments();
-    const posts = await postModel.find().skip(skip).limit(limit);
+    const posts = await postModel
+      .find()
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .select("-content") // Exclude content field
+      .sort({ createdAt: -1 }); // Sort by creation date, most recent first
 
     res.status(200).json({
       page, // The current page number
@@ -109,14 +113,41 @@ export const getPost = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    const relatedPosts = await postModel.find({
-      label: post.label,
-      _id: { $ne: postId },
-    });
-
-    res.json({ success: true, data: { post, relatedPosts } });
+    res.json({ success: true, data: post });
   } catch (error) {
     res.json({ success: false, message: "Error Occurred", error });
+  }
+};
+
+export const getRelatedPosts = async (req, res) => {
+  const label = req.query.label;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 4;
+
+  try {
+    // First get the total count of related posts
+    const totalPosts = await postModel.countDocuments({ label });
+    const totalPages = Math.ceil(totalPosts / limit);
+
+    // Then get the posts for the current page
+    const relatedPosts = await postModel
+      .find({ label })
+      .skip((page - 1) * limit)
+      .limit(Number(limit))
+      .select("-content");
+
+    res.status(200).json({
+      page,
+      totalPages,
+      relatedPosts,
+    });
+  } catch (error) {
+    console.error("Error fetching related posts:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching related posts",
+      error: error.message,
+    });
   }
 };
 

@@ -6,20 +6,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import ShowGrid from "@/components/showcase/grid";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import ContentWithTOC from "@/components/shared/contentTOC";
 import { fetchPost } from "@/redux/postsSlice";
 import { assets } from "@/assets/assets";
+import PostGrid from "@/components/showcase/PostGrid";
 
 const Page: React.FC = () => {
   const { postId } = useParams() as { postId: string };
   const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState(true);
-  const { error } = useSelector((state: RootState) => state.posts);
-  const { post, relatedPosts } = useSelector(
-    (state: RootState) => state.posts.post
-  );
+  const { post, error } = useSelector((state: RootState) => state.posts);
 
   useEffect(() => {
     dispatch(fetchPost(postId)).finally(() => setLoading(false));
@@ -112,7 +109,8 @@ const Page: React.FC = () => {
         <div className="w-full md:w-1/3"></div>
       </div>
       <h2 className="text-2xl font-bold mt-10">Related Articles</h2>
-      <ShowGrid data={relatedPosts} />
+
+      <PostGrid label={post.label} postId={post._id} />
     </div>
   );
 };
