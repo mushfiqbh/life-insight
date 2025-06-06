@@ -6,20 +6,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import ShowGrid from "@/components/showcase/grid";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import ContentWithTOC from "@/components/shared/contentTOC";
 import { fetchPost } from "@/redux/postsSlice";
 import { assets } from "@/assets/assets";
+import RelatedPostGrid from "@/components/showcase/RelatedPostGrid";
 
 const Page: React.FC = () => {
   const { postId } = useParams() as { postId: string };
   const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState(true);
-  const { error } = useSelector((state: RootState) => state.posts);
-  const { post, relatedPosts } = useSelector(
-    (state: RootState) => state.posts.post
-  );
+  const { post, error } = useSelector((state: RootState) => state.posts);
 
   useEffect(() => {
     dispatch(fetchPost(postId)).finally(() => setLoading(false));
@@ -47,18 +44,18 @@ const Page: React.FC = () => {
           <li>
             Author: <span className="font-semibold">{post?.author?.name}</span>
           </li>
-          <li>Date: {post.updatedAt.split("T")[0]}</li>
+          <li>Date: {post?.updatedAt?.split("T")[0]}</li>
           <li>Reading Time: {post.readingTime || 1} min</li>
         </ul>
       </div>
       <div className="w-full mb-6">
         <Image
           priority
-          src={assets.dunning_krugar}
-          width={1280}
-          height={720}
+          src={post?.image || assets.dunning_krugar}
+          width={720}
+          height={400}
           alt={post?.title || "Post_Image"}
-          className="rounded-lg"
+          className="h-auto rounded-lg"
         />
       </div>
       <div className="flex flex-col md:flex-row gap-10">
@@ -112,7 +109,8 @@ const Page: React.FC = () => {
         <div className="w-full md:w-1/3"></div>
       </div>
       <h2 className="text-2xl font-bold mt-10">Related Articles</h2>
-      <ShowGrid data={relatedPosts} />
+
+      <RelatedPostGrid postId={post._id} />
     </div>
   );
 };

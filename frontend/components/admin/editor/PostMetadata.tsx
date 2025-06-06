@@ -14,6 +14,7 @@ import Image from "next/image";
 import React, { Dispatch, SetStateAction } from "react";
 import { useSelector } from "react-redux";
 import PostProps from "@/types/postProps";
+import TagsField from "./TagsField";
 
 const PostMetadata = ({
   file,
@@ -122,6 +123,8 @@ const PostMetadata = ({
         onChange={handleChange}
         placeholder="সাবটাইটেল"
       />
+
+      <TagsField data={data} setData={setData} />
 
       <Stack width="100%" direction="row" spacing={3}>
         <TextField

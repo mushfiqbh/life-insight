@@ -6,10 +6,7 @@ import axios from "axios";
 const url = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const initialState: PostsState = {
-  post: {
-    post: {} as PostProps,
-    relatedPosts: [],
-  },
+  post: {} as PostProps,
   posts: {
     postList: [],
     totalPages: 1,
@@ -51,20 +48,11 @@ export const fetchPost = createAsyncThunk(
   async (postId: string) => {
     if (postId.length === 1) {
       if (postId === "1") {
-        return {
-          post: demo_selected_posts.latestPost,
-          relatedPosts: demo_selected_posts.popularPosts,
-        };
+        return demo_selected_posts.latestPost;
       } else if (postId === "2") {
-        return {
-          post: demo_selected_posts.adminChoice,
-          relatedPosts: demo_selected_posts.popularPosts,
-        };
+        return demo_selected_posts.adminChoice;
       } else {
-        return {
-          post: demo_selected_posts.popularPosts[Number(postId) - 3],
-          relatedPosts: [],
-        };
+        return demo_selected_posts.popularPosts[Number(postId) - 3];
       }
     }
     const response = await axios.get(url + "/api/posts/" + postId);

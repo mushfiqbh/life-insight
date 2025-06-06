@@ -6,22 +6,10 @@ import Link from "next/link";
 import PostProps from "@/types/postProps";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { franc } from "franc-min";
 import { deletePost } from "@/redux/postsSlice";
+import { detectLanguage } from "@/lib/detectLanguage";
 
-const detectLanguage = (text: string) => {
-  const langCode = franc(text);
-  const langMap: Record<string, string> = {
-    eng: "en",
-    ben: "bn",
-    hin: "hi",
-    spa: "es",
-    fra: "fr",
-  };
-  return langMap[langCode] || "en";
-};
-
-const PostItem = ({ post }: { post: PostProps }) => {
+const ItemList = ({ post }: { post: PostProps }) => {
   const [language, setLanguage] = useState<string>("en");
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
   const { adminChoice } = useSelector(
@@ -92,4 +80,4 @@ const PostItem = ({ post }: { post: PostProps }) => {
   );
 };
 
-export default PostItem;
+export default ItemList;

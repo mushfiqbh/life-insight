@@ -1,12 +1,12 @@
 "use client";
 
 import { useInView } from "react-intersection-observer";
-import { useInfinitePosts } from "@/hooks/useInfinitePosts";
-import ItemPost from "./ItemList";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { useEffect } from "react";
+import ItemGrid from "./ItemGrid";
+import { useInfinitePosts } from "@/hooks/useInfinitePosts";
 
-const PostList = ({ label }: { label?: string }) => {
+const PostGrid = ({ label }: { label?: string }) => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfinitePosts({ label });
 
@@ -25,14 +25,13 @@ const PostList = ({ label }: { label?: string }) => {
   const posts = data?.pages.flatMap((page) => page.posts) ?? [];
 
   return (
-    <div>
-      {posts.map((post) => (
-        <ItemPost key={post._id} post={post} />
-      ))}
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+      {posts.length &&
+        posts?.map((post, index) => <ItemGrid key={index} post={post} />)}
       {isFetchingNextPage && <LoadingSpinner />}
       <div ref={ref} className="h-8"></div>
     </div>
   );
 };
 
-export default PostList;
+export default PostGrid;

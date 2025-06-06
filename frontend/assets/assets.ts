@@ -327,9 +327,10 @@ export const demo_selected_posts: {
     title:
       "আরও অর্থ কি আপনাকে সুখী করে? হ্যাঁ, কিন্তু এটা জটিল তবে কয়েকটি সতর্কতা রয়েছে",
     subtitle: "গবেষণা বলে যে এটি সাহায্য করতে পারে, তবে কয়েকটি সতর্কতা রয়েছে",
+    tags: [],
     author: {
       name: "Kendra Cherry, MSEd",
-      bio: 'Kendra Cherry, MS, is a psychosocial rehabilitation specialist, psychology educator, and author of the "Everything Psychology Book."',
+      bio: "Kendra Cherry, MS, is a psychosocial rehabilitation specialist, psychology educator, and author of the Everything Psychology Book.",
     },
     content: "f",
     readingTime: 1,
@@ -352,7 +353,8 @@ export const demo_selected_posts: {
       "https://res.cloudinary.com/dmmi1ququ/image/upload/v1748066983/posts/wvtpdxx1mj0dllbvnpb0.png",
     views: 117,
     adminChoice: true,
-    date: "2024-07-23T00:00:00.000Z",
+    createdAt: "2025-02-28T00:00:00.000Z",
+    updatedAt: "2024-07-23T00:00:00.000Z",
   },
   latestPost: {
     _id: "2",
@@ -361,6 +363,7 @@ export const demo_selected_posts: {
       'আপনার "কর্টিসল ফেস" কি স্ট্রেসের কারণে? বিশেষজ্ঞরা যা বলছেন তা এখানে',
     subtitle:
       "সিরি, দয়া করে আমাকে বলুন কিভাবে আমার নিটোল গাল এবং বৃত্তাকার চোয়াল ডিপফ করতে হয়",
+    tags: [],
     author: {
       name: "new",
       bio: "twxf",
@@ -382,7 +385,8 @@ export const demo_selected_posts: {
       "https://res.cloudinary.com/dmmi1ququ/image/upload/v1748066983/posts/wvtpdxx1mj0dllbvnpb0.png",
     views: 15,
     adminChoice: false,
-    date: "2025-02-28T00:00:00.000Z",
+    createdAt: "2025-02-28T00:00:00.000Z",
+    updatedAt: "2025-02-28T00:00:00.000Z",
   },
   popularPosts: [
     {
@@ -390,6 +394,7 @@ export const demo_selected_posts: {
       label: "good-life",
       title: "আপনার আবেগীয় বুদ্ধিমত্তা (Emotional intelligence) কি উচ্চ?",
       subtitle: "First Post First Post First Post  up",
+      tags: [],
       author: {
         name: "Tasnim",
         bio: "Teacher",
@@ -407,7 +412,8 @@ export const demo_selected_posts: {
         "https://res.cloudinary.com/dmmi1ququ/image/upload/v1748066983/posts/wvtpdxx1mj0dllbvnpb0.png",
       views: 81,
       adminChoice: false,
-      date: "2024-07-21T00:00:00.000Z",
+      createdAt: "2025-02-28T00:00:00.000Z",
+      updatedAt: "2024-07-21T00:00:00.000Z",
     },
     {
       _id: "4",
@@ -416,6 +422,7 @@ export const demo_selected_posts: {
         "আপনার কর্টিসল ফেস কি স্ট্রেসের কারণে? বিশেষজ্ঞরা যা বলছেন তা এখানে",
       subtitle:
         "সিরি, দয়া করে আমাকে বলুন কিভাবে আমার নিটোল গাল এবং বৃত্তাকার চোয়াল ডিপফ করতে হয়",
+      tags: [],
       author: {
         name: "Tara",
         bio: "Doctor",
@@ -437,13 +444,15 @@ export const demo_selected_posts: {
         "https://res.cloudinary.com/dmmi1ququ/image/upload/v1748066983/posts/wvtpdxx1mj0dllbvnpb0.png",
       views: 108,
       adminChoice: false,
-      date: "2024-06-12T00:00:00.000Z",
+      createdAt: "2025-02-28T00:00:00.000Z",
+      updatedAt: "2024-06-12T00:00:00.000Z",
     },
     {
       _id: "5",
       label: "good-life",
       title: "আপনার আবেগীয় বুদ্ধিমত্তা (Emotional intelligence) কি উচ্চ?",
       subtitle: "First Post First Post First Post  up",
+      tags: [],
       author: {
         name: "Tasnim",
         bio: "Teacher",
@@ -461,7 +470,8 @@ export const demo_selected_posts: {
         "https://res.cloudinary.com/dmmi1ququ/image/upload/v1748066983/posts/wvtpdxx1mj0dllbvnpb0.png",
       views: 81,
       adminChoice: false,
-      date: "2024-07-21T00:00:00.000Z",
+      createdAt: "2025-02-28T00:00:00.000Z",
+      updatedAt: "2024-07-21T00:00:00.000Z",
     },
     {
       _id: "6",
@@ -470,6 +480,7 @@ export const demo_selected_posts: {
         "আপনার কর্টিসল ফেস কি স্ট্রেসের কারণে? বিশেষজ্ঞরা যা বলছেন তা এখানে",
       subtitle:
         "সিরি, দয়া করে আমাকে বলুন কিভাবে আমার নিটোল গাল এবং বৃত্তাকার চোয়াল ডিপফ করতে হয়",
+      tags: [],
       author: {
         name: "Tara",
         bio: "Doctor",
@@ -491,7 +502,8 @@ export const demo_selected_posts: {
         "https://res.cloudinary.com/dmmi1ququ/image/upload/v1748066983/posts/wvtpdxx1mj0dllbvnpb0.png",
       views: 108,
       adminChoice: false,
-      date: "2024-06-12T00:00:00.000Z",
+      createdAt: "2025-02-28T00:00:00.000Z",
+      updatedAt: "2024-06-12T00:00:00.000Z",
     },
   ],
 };

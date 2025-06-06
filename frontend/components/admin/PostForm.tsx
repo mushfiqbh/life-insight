@@ -23,6 +23,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
     label: "",
     title: "",
     subtitle: "",
+    tags: [],
     author: {
       name: "",
       bio: "",
@@ -56,7 +57,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
       setLoading(true);
       getPostById(postId)
         .then((response) => {
-          setData(response.data.post);
+          setData(response.data);
         })
         .catch((error) => {
           console.error("Error fetching post:", error);
@@ -154,6 +155,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
           label: "",
           title: "",
           subtitle: "",
+          tags: [],
           author: { name: "", bio: "" },
           editors: [],
           sources: [{ text: "", href: "" }],

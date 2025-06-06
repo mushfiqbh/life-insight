@@ -1,7 +1,7 @@
 "use client";
 import { useInView } from "react-intersection-observer";
 import { useInfiniteConditions } from "@/hooks/useInfiniteCateories";
-import ConditionItem from "./ConditionItem";
+import ConditionListItem from "./ItemCondition";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { useEffect } from "react";
 
@@ -25,7 +25,7 @@ const ConditionList = () => {
   return (
     <div>
       {conditions.map((condition) => (
-        <ConditionItem key={condition._id} condition={condition} />
+        <ConditionListItem key={condition._id} condition={condition} />
       ))}
       {isFetchingNextPage && <LoadingSpinner />}
       <div ref={ref} className="h-8"></div>

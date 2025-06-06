@@ -19,8 +19,8 @@ export default interface ConditionProps {
     terms: string;
   }[];
   postIds?: PostProps[];
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ConditionState {
