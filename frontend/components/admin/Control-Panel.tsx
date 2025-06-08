@@ -3,7 +3,13 @@ import { SaveIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const ControlPanel = ({ buttonText }: { buttonText: string }) => {
+const ControlPanel = ({
+  buttonText,
+  postId,
+}: {
+  buttonText: string;
+  postId?: string;
+}) => {
   const router = useRouter();
   return (
     <div className="w-full shadow-xl p-5 rounded-md bg-slate-400">
@@ -21,6 +27,19 @@ const ControlPanel = ({ buttonText }: { buttonText: string }) => {
         >
           EXIT
         </Button>
+
+        {postId && (
+          <Button
+            type="link"
+            href={`/post/${postId}`}
+            target="_blank"
+            size="small"
+            color="primary"
+            variant="contained"
+          >
+            VIEW POST
+          </Button>
+        )}
 
         <Button
           type="submit"

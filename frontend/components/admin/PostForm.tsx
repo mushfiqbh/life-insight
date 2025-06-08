@@ -179,7 +179,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
   return (
     <div className="w-4/5 mt-20 mx-auto my-5">
       <form onSubmit={createPost} className="w-full py-10">
-        <ControlPanel buttonText={buttonText} />
+        <ControlPanel buttonText={buttonText} postId={data._id} />
 
         <PostMetadata
           postId={postId}

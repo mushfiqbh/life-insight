@@ -10,6 +10,7 @@ import LoadingSpinner from "@/components/ui/loading-spinner";
 import PostContent from "@/components/shared/PostContent";
 import { fetchPost } from "@/redux/postsSlice";
 import { assets } from "@/assets/assets";
+import { Facebook, Twitter } from "lucide-react";
 import RelatedPostGrid from "@/components/showcase/RelatedPostGrid";
 
 const Page: React.FC = () => {
@@ -111,7 +112,7 @@ const Page: React.FC = () => {
                 target="_blank"
                 className="text-blue-600 hover:text-blue-800"
               >
-                FB
+                <Facebook />
               </Link>
               <Link
                 href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
@@ -120,7 +121,7 @@ const Page: React.FC = () => {
                 target="_blank"
                 className="text-blue-600 hover:text-blue-800"
               >
-                TW
+                <Twitter />
               </Link>
             </div>
           </div>
