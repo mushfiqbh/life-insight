@@ -20,7 +20,7 @@ export default function ItemGrid({ post }: { post: PostProps }) {
   return (
     <div
       lang={language}
-      className="border rounded-lg shadow-lg bg-slate-200 hover:shadow-md transition overflow-hidden"
+      className="border rounded-lg shadow-lg bg-slate-200 hover:shadow-md transition overflow-hidden group"
     >
       <Link
         href={`/post/${post._id}`}
@@ -31,7 +31,7 @@ export default function ItemGrid({ post }: { post: PostProps }) {
           alt=""
           width={300}
           height={200}
-          className="w-full h-40 object-cover"
+          className="w-full h-40 object-cover group-hover:scale-105 transition-transform"
         />
         <div className="p-4">
           <b className="text-green-600 uppercase">{post.label}</b>

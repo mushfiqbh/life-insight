@@ -8,7 +8,7 @@ import { useInfinitePosts } from "@/hooks/useInfinitePosts";
 
 const PostGrid = ({ label }: { label?: string }) => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfinitePosts({ label });
+    useInfinitePosts({ label: label ?? "" });
 
   const { ref, inView } = useInView({
     threshold: 0,
