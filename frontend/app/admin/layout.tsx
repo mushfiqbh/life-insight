@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import PreFetch from "./prefetch";
-import { AdminProvider } from "@/context/AdminContext";
 
 export const metadata: Metadata = {
   title: "Admin - Life Insight",
@@ -9,11 +8,11 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <AdminProvider>
+    <>
       <PreFetch />
       <div className="admin">
         <main>{children}</main>
       </div>
-    </AdminProvider>
+    </>
   );
 }

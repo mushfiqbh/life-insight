@@ -24,9 +24,6 @@ const RelatedPostGrid = ({ postId }: { postId: string }) => {
   // Flatten all posts from pages
   let relatedPosts = data?.pages.flatMap((page) => page.relatedPosts) ?? [];
 
-  // Remove the current post from related posts
-  relatedPosts = relatedPosts.filter((post) => post._id !== postId);
-
   if (relatedPosts.length === 0) {
     return (
       <div className="w-full mt-12 p-5 md:p-20 text-center">
@@ -34,6 +31,9 @@ const RelatedPostGrid = ({ postId }: { postId: string }) => {
       </div>
     );
   }
+
+  // Remove the current post from related posts
+  relatedPosts = relatedPosts.filter((post) => post._id !== postId);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">

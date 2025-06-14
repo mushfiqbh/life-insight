@@ -6,6 +6,21 @@ import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import insertAtCursor from "@/lib/insertAtCursor";
 import PostProps, { ContentDataProps } from "@/types/postProps";
 
+const convertToHTML = (markup: string, inputs: string[]) => {
+  switch (markup) {
+    case "title":
+      return `<h2>${inputs[0]}</h2>`;
+    case "blockquote":
+      return `<blockquote>${inputs[0]}</blockquote>`;
+    case "advice":
+      return `<div class='advice'>${inputs[0]}<hr/></div>`;
+    case "quote":
+      return `<div class='quote'>${inputs[0]}<b>${inputs[1]}</b></div>`;
+    default:
+      return "";
+  }
+};
+
 const TextContent = ({
   data,
   setData,
@@ -23,22 +38,20 @@ const TextContent = ({
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const handleInsertText = () => {
-    let textToInsert = "";
-    if (contentData.markup === "title") {
-      textToInsert = "<h2>" + contentData.input1 + "</h2>";
-    } else if (contentData.markup === "blockquote") {
-      textToInsert = `<blockquote>${contentData.input1}</blockquote>`;
-    } else if (contentData.markup === "quote") {
-      textToInsert = `<div class='quote'>${contentData.input1}<b>${contentData.input2}</b></div>`;
-    } else if (contentData.markup === "advice") {
-      textToInsert = `<div class='advice'>${contentData.input1}<hr/></div>`;
-    }
+    const textToInsert = convertToHTML(contentData.markup, [
+      contentData.input1,
+      contentData.input2,
+    ]);
 
-    const newValue = insertAtCursor(textareaRef.current, textToInsert);
+    const newValue = textareaRef.current
+      ? insertAtCursor(textareaRef.current, textToInsert)
+      : textToInsert;
+
     setData({
       ...data,
       content: newValue,
     });
+
     setContentData({
       markup: "",
       input1: "",

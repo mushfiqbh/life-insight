@@ -176,6 +176,7 @@ export const updateCondition = async (req, res) => {
 
 export const deleteCondition = async (req, res) => {
   const { conditionId } = req.params;
+  const userId = req.userId;
 
   try {
     const condition = await conditionModel.findById(conditionId);
@@ -183,8 +184,9 @@ export const deleteCondition = async (req, res) => {
       return res.status(404).json({ message: "Condition not found" });
     }
 
-    const permit = await userModel.findById(req.body.userId);
-    if (!permit.permission.includes("delete")) {
+    const permit = await userModel.findById(userId);
+
+    if (!permit.permissions.includes("delete")) {
       return res.status(401).json({ message: "Permission Denied" });
     }
 
