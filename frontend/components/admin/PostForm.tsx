@@ -23,6 +23,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
     label: "",
     title: "",
     subtitle: "",
+    tags: [],
     author: {
       name: "",
       bio: "",
@@ -56,7 +57,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
       setLoading(true);
       getPostById(postId)
         .then((response) => {
-          setData(response.data.post);
+          setData(response.data);
         })
         .catch((error) => {
           console.error("Error fetching post:", error);
@@ -154,6 +155,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
           label: "",
           title: "",
           subtitle: "",
+          tags: [],
           author: { name: "", bio: "" },
           editors: [],
           sources: [{ text: "", href: "" }],
@@ -177,7 +179,7 @@ const PostForm = ({ postId }: { postId?: string }) => {
   return (
     <div className="w-4/5 mt-20 mx-auto my-5">
       <form onSubmit={createPost} className="w-full py-10">
-        <ControlPanel buttonText={buttonText} />
+        <ControlPanel buttonText={buttonText} postId={data._id} />
 
         <PostMetadata
           postId={postId}

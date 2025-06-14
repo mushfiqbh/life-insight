@@ -2,13 +2,14 @@
 
 import { useInView } from "react-intersection-observer";
 import { useInfinitePosts } from "@/hooks/useInfinitePosts";
-import PostItem from "./PostItem";
+import ItemPost from "./ItemList";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { useEffect } from "react";
 
-const PostList = () => {
+const PostList = ({ label }: { label?: string }) => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfinitePosts();
+    useInfinitePosts({ label: label ?? "" });
+
   const { ref, inView } = useInView({
     threshold: 0,
     triggerOnce: false,
@@ -26,7 +27,7 @@ const PostList = () => {
   return (
     <div>
       {posts.map((post) => (
-        <PostItem key={post._id} post={post} />
+        <ItemPost key={post._id} post={post} />
       ))}
       {isFetchingNextPage && <LoadingSpinner />}
       <div ref={ref} className="h-8"></div>

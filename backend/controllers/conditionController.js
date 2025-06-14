@@ -9,7 +9,7 @@ export const conditionList = async (req, res) => {
 
   try {
     const totalConditions = await conditionModel.countDocuments(); // Get total count
-    const conditions = await conditionModel.find().skip(skip).limit(limit);
+    const conditions = await conditionModel.find({}).skip(skip).limit(limit);
 
     res.status(200).json({
       page, // Current page number
@@ -44,7 +44,8 @@ export const getCondition = async (req, res) => {
   try {
     const condition = await conditionModel
       .findOne({ label: label.toLowerCase() })
-      .populate("postIds");
+      .populate("postIds")
+      .select("-content");
 
     if (!condition) {
       return res
@@ -62,7 +63,9 @@ export const getConditionById = async (req, res) => {
   const { conditionId } = req.params;
 
   try {
-    const condition = await conditionModel.findById(conditionId).populate("postIds");
+    const condition = await conditionModel
+      .findById(conditionId)
+      .populate("postIds");
 
     if (!condition) {
       return res
@@ -103,6 +106,9 @@ export const createCondition = async (req, res) => {
       author: parsedAuthor,
       faqs: parsedFaqs,
       keyterms: parsedKeyterms,
+      postIds: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
     await newCondition.save();
@@ -138,15 +144,19 @@ export const updateCondition = async (req, res) => {
 
     const label = subtitle?.toLowerCase().split(" ").join("-");
 
-    await conditionModel.findByIdAndUpdate(conditionId, {
-      title,
-      subtitle,
-      desc,
-      author: parsedAuthor,
-      faqs: parsedFaqs,
-      keyterms: parsedKeyterms,
-      label,
-    });
+    await conditionModel.findByIdAndUpdate(
+      conditionId,
+      {
+        title,
+        subtitle,
+        desc,
+        author: parsedAuthor,
+        faqs: parsedFaqs,
+        keyterms: parsedKeyterms,
+        label,
+      },
+      { new: true, runValidators: true }
+    );
 
     const updatedCondition = await conditionModel.findById(conditionId);
 
@@ -166,6 +176,7 @@ export const updateCondition = async (req, res) => {
 
 export const deleteCondition = async (req, res) => {
   const { conditionId } = req.params;
+  const userId = req.userId;
 
   try {
     const condition = await conditionModel.findById(conditionId);
@@ -173,8 +184,9 @@ export const deleteCondition = async (req, res) => {
       return res.status(404).json({ message: "Condition not found" });
     }
 
-    const permit = await userModel.findById(req.body.userId);
-    if (!permit.permission.includes("deleteCondition")) {
+    const permit = await userModel.findById(userId);
+
+    if (!permit.permissions.includes("delete")) {
       return res.status(401).json({ message: "Permission Denied" });
     }
 

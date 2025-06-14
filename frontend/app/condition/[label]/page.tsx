@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import LoadingSpinner from "@/components/ui/loading-spinner";
-import ShowGrid from "@/components/showcase/grid";
+import PostGrid from "@/components/showcase/PostGrid";
 import Accordion from "@/components/ui/accordion";
 import { fetchCondition } from "@/redux/conditionsSlice";
 
@@ -15,7 +15,6 @@ const Condition = () => {
   const [activeKey, setActiveKey] = useState(0);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch<AppDispatch>();
-  const { error } = useSelector((state: RootState) => state.conditions);
   const condition = useSelector(
     (state: RootState) => state.conditions.condition
   );
@@ -28,10 +27,13 @@ const Condition = () => {
     return <LoadingSpinner />;
   }
 
-  if (error) {
+  if (!condition) {
     return (
       <div className="w-full mt-12 p-5 md:p-20 bg-white">
         Condition Not Found
+        <Link href="/conditions" className="p-1 text-blue-700 underline">
+          Explore Conditions
+        </Link>
       </div>
     );
   }
@@ -47,16 +49,16 @@ const Condition = () => {
         <li>
           পর্যালোচনা করেছেন{" "}
           <Link href="" className="text-blue-500">
-            {condition.author.name}
+            {condition.author?.name}
           </Link>
         </li>
         <li>
-          সময় <span>{condition.date?.split("T")[0]}</span>
+          সময় <span>{condition.updatedAt?.split("T")[0]}</span>
         </li>
       </ul>
 
       <div className="flex flex-wrap gap-4 mt-6">
-        {condition.keyterms.map(
+        {condition.keyterms?.map(
           (item, index) =>
             item.key && (
               <Link
@@ -114,7 +116,7 @@ const Condition = () => {
       )}
 
       <h2 className="text-2xl font-semibold mt-6">এই ওভারভিউ এর সমস্ত পোস্ট</h2>
-      <ShowGrid data={condition.postIds || []} />
+      <PostGrid label={label} />
     </div>
   );
 };

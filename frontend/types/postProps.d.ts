@@ -5,6 +5,7 @@ export default interface PostProps {
   label: string;
   title: string;
   subtitle: string;
+  tags: string[];
   author: {
     name: string;
     bio: string;
@@ -19,7 +20,8 @@ export default interface PostProps {
   image: string;
   views: number;
   adminChoice: boolean;
-  date?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ContentDataProps {
@@ -31,10 +33,7 @@ export interface ContentDataProps {
 }
 
 export interface PostsState {
-  post: {
-    post: PostProps;
-    relatedPosts: PostProps[];
-  };
+  post: PostProps;
   posts: {
     postList: PostProps[];
     totalPages: number;

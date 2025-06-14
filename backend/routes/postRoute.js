@@ -9,6 +9,7 @@ import {
   deletePost,
   incrementViews,
   getAllPosts,
+  getRelatedPosts,
 } from "../controllers/postController.js";
 
 const postRouter = express.Router();
@@ -20,6 +21,7 @@ const upload = multer({ storage });
 // ROUTES
 postRouter.get("/", getAllPosts);
 postRouter.get("/filter", selectedPosts);
+postRouter.get("/related", getRelatedPosts); // Endpoint for fetching related posts
 postRouter.get("/:postId", getPost);
 
 // UPLOAD (Now using memory buffer, not disk)

@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/shared/theme-provider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { cookies } from "next/headers";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: "Life Insight",
@@ -25,21 +26,23 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body>
-        <ReduxProvider>
-          <PreFetch />
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <NextIntlClientProvider locale={locale} messages={messages}>
-              <Header />
-              {children}
-              <Footer />
-            </NextIntlClientProvider>
-          </ThemeProvider>
-        </ReduxProvider>
+        <Providers>
+          <ReduxProvider>
+            <PreFetch />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <NextIntlClientProvider locale={locale} messages={messages}>
+                <Header />
+                {children}
+                <Footer />
+              </NextIntlClientProvider>
+            </ThemeProvider>
+          </ReduxProvider>
+        </Providers>
       </body>
     </html>
   );

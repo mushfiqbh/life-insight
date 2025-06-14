@@ -24,6 +24,7 @@ export const createPost = async (req, res) => {
       title: req.body.title,
       label: req.body.label,
       subtitle: req.body.subtitle,
+      tags: JSON.parse(req.body.tags),
       author: JSON.parse(req.body.author),
       content: req.body.content,
       readingTime: reading_time,
@@ -54,14 +55,20 @@ export const createPost = async (req, res) => {
 };
 
 export const getAllPosts = async (req, res) => {
-  // Use query params (e.g., /api/posts?page=1)
+  const label = req.query.label ? req.query.label.toLowerCase() : null;
   const page = parseInt(req.query.page) || 1;
-  const limit = 10;
-  const skip = (page - 1) * limit;
+  const limit = parseInt(req.query.limit) || 10;
 
   try {
     const totalPosts = await postModel.countDocuments();
-    const posts = await postModel.find().skip(skip).limit(limit);
+    const posts = await postModel
+      .find(
+        label ? { label: label } : {} // Filter by label if provided
+      )
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .select("-content") // Exclude content field
+      .sort({ createdAt: -1 }); // Sort by creation date, most recent first
 
     res.status(200).json({
       page, // The current page number
@@ -106,17 +113,61 @@ export const getPost = async (req, res) => {
     const post = await postModel.findById(postId);
 
     if (!post) {
+      return res
+        .status(404)
+        .json({ success: false, data: {}, message: "Post not found" });
+    }
+
+    res.json({ success: true, data: post });
+  } catch (error) {
+    res.json({ success: false, message: "Error Occurred", error });
+  }
+};
+
+export const getRelatedPosts = async (req, res) => {
+  const postId = req.query.postId;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 4;
+
+  try {
+    const post = await postModel.findById(postId);
+
+    if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    const relatedPosts = await postModel.find({
-      label: post.label,
-      _id: { $ne: postId },
+    const label = post.label;
+    const tags = post.tags || [];
+
+    // First get the total count of related posts
+    const totalPosts = await postModel.countDocuments({
+      label,
+      _id: { $ne: postId }, // Exclude the current post
+      tags: { $in: tags }, // Include posts with at least one matching tag
     });
 
-    res.json({ success: true, data: { post, relatedPosts } });
+    const totalPages = Math.ceil(totalPosts / limit);
+
+    // Then get the posts for the current page
+    const relatedPosts =
+      (await postModel
+        .find({ label })
+        .skip((page - 1) * limit)
+        .limit(Number(limit))
+        .select("-content")) || []; // Exclude content field
+
+    res.status(200).json({
+      page,
+      totalPages,
+      relatedPosts,
+    });
   } catch (error) {
-    res.json({ success: false, message: "Error Occurred", error });
+    console.error("Error fetching related posts:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching related posts",
+      error: error.message,
+    });
   }
 };
 
@@ -156,11 +207,13 @@ export const updatePost = async (req, res) => {
       title: req.body.title,
       label: req.body.label,
       subtitle: req.body.subtitle,
+      tags: JSON.parse(req.body.tags),
       content: req.body.content,
       readingTime,
       image: existingPost.image,
       adminChoice: req.body.adminChoice,
       editors,
+      views: existingPost.views || 0,
     };
 
     if (req.body.author) {

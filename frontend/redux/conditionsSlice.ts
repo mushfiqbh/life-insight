@@ -24,8 +24,10 @@ export const fetchConditions = createAsyncThunk(
   async (page: number) => {
     try {
       const response = await fetch(`${url}/api/conditions/page/${page}`);
-      const { data, totalPages }: { data: ConditionProps[]; totalPages: number } =
-        await response.json();
+      const {
+        data,
+        totalPages,
+      }: { data: ConditionProps[]; totalPages: number } = await response.json();
 
       return { conditionList: data, totalPages };
     } catch (error) {
@@ -59,7 +61,11 @@ export const deleteCondition = createAsyncThunk(
   "condition/delete",
   async (ID: string, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(`${url}/api/conditions/${ID}`);
+      const response = await axios.delete(`${url}/api/conditions/${ID}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       if (response.status === 200) {
         return ID;
       }

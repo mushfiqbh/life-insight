@@ -6,21 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { deleteCondition } from "@/redux/conditionsSlice";
 import ConditionProps from "@/types/conditionProps";
-import { franc } from "franc-min";
+import { detectLanguage } from "@/lib/detectLanguage";
 
-const detectLanguage = (text: string) => {
-  const langCode = franc(text);
-  const langMap: Record<string, string> = {
-    eng: "en",
-    ben: "bn",
-    hin: "hi",
-    spa: "es",
-    fra: "fr",
-  };
-  return langMap[langCode] || "en";
-};
-
-export default function ConditionItem({ condition }: { condition: ConditionProps }) {
+export default function ItemCondition({
+  condition,
+}: {
+  condition: ConditionProps;
+}) {
   const [language, setLanguage] = useState<string>("en");
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
   const dispatch = useDispatch<AppDispatch>();
@@ -35,6 +27,7 @@ export default function ConditionItem({ condition }: { condition: ConditionProps
       className="flex items-center justify-between p-4 border rounded-lg shadow-sm text-foreground bg-background hover:shadow-md transition"
     >
       <Link
+        target="_blank"
         href={`/condition/${condition.label}`}
         className="flex-1 flex items-center gap-4"
       >

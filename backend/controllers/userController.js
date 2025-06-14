@@ -121,7 +121,10 @@ export const updateUserInfo = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    await userModel.findByIdAndUpdate(userId, updateData);
+    await userModel.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true,
+    });
 
     res.status(200).json({ success: true, message: "User Info Updated" });
   } catch (error) {

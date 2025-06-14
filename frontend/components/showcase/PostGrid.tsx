@@ -1,13 +1,15 @@
 "use client";
+
 import { useInView } from "react-intersection-observer";
-import { useInfiniteConditions } from "@/hooks/useInfiniteCateories";
-import ConditionListItem from "./ItemCondition";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { useEffect } from "react";
+import ItemGrid from "./ItemGrid";
+import { useInfinitePosts } from "@/hooks/useInfinitePosts";
 
-const ConditionList = () => {
+const PostGrid = ({ label }: { label?: string }) => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteConditions();
+    useInfinitePosts({ label: label ?? "" });
+
   const { ref, inView } = useInView({
     threshold: 0,
     triggerOnce: false,
@@ -19,18 +21,17 @@ const ConditionList = () => {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  // Flatten all conditions from pages
-  const conditions = data?.pages.flatMap((page) => page.conditions) ?? [];
+  // Flatten all posts from pages
+  const posts = data?.pages.flatMap((page) => page.posts) ?? [];
 
   return (
-    <div>
-      {conditions.map((condition) => (
-        <ConditionListItem key={condition._id} condition={condition} />
-      ))}
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+      {posts.length &&
+        posts?.map((post, index) => <ItemGrid key={index} post={post} />)}
       {isFetchingNextPage && <LoadingSpinner />}
       <div ref={ref} className="h-8"></div>
     </div>
   );
 };
 
-export default ConditionList;
+export default PostGrid;

@@ -11,6 +11,10 @@ const postSchema = mongoose.Schema(
     subtitle: {
       type: String,
     },
+    tags: {
+      type: [{ type: String }],
+      default: [],
+    },
     author: {
       name: String,
       bio: String,
@@ -41,7 +45,7 @@ const postSchema = mongoose.Schema(
       default: "false",
     },
   },
-  { timeStamps: true }
+  { timestamps: true }
 );
 
 const postModel = mongoose.models.post || mongoose.model("post", postSchema);

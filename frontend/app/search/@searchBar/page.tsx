@@ -48,14 +48,14 @@ const Searchbar: React.FC = () => {
   }, []);
 
   return (
-    <form className="flex items-center justify-center p-5">
+    <form className="flex items-center justify-center w-full mb-4">
       <input
         type="search"
         value={query}
         ref={inputRef}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="এখানে টাইপ করুন"
-        className="w-full md:w-2/5 p-2 text-red-500 bg-green-300 rounded-lg focus:outline-none"
+        className="w-full p-3 border-b-2 border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
       />
     </form>
   );
