@@ -113,7 +113,9 @@ export const getPost = async (req, res) => {
     const post = await postModel.findById(postId);
 
     if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+      return res
+        .status(404)
+        .json({ success: false, data: {}, message: "Post not found" });
     }
 
     res.json({ success: true, data: post });
@@ -147,11 +149,12 @@ export const getRelatedPosts = async (req, res) => {
     const totalPages = Math.ceil(totalPosts / limit);
 
     // Then get the posts for the current page
-    const relatedPosts = await postModel
-      .find({ label })
-      .skip((page - 1) * limit)
-      .limit(Number(limit))
-      .select("-content");
+    const relatedPosts =
+      (await postModel
+        .find({ label })
+        .skip((page - 1) * limit)
+        .limit(Number(limit))
+        .select("-content")) || []; // Exclude content field
 
     res.status(200).json({
       page,

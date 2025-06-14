@@ -23,6 +23,20 @@ const Page: React.FC = () => {
     dispatch(fetchPost(postId)).finally(() => setLoading(false));
   }, [postId, dispatch]);
 
+  if (!post) {
+    return (
+      <div className="w-full mt-12 p-5 md:p-20 bg-white">
+        Post Not Found
+        <Link href="/conditions" className="p-1 text-blue-700 underline">
+          Explore Conditions
+        </Link>
+        <Link href="/" className="p-1 text-blue-700 underline">
+          Goto Home
+        </Link>
+      </div>
+    );
+  }
+
   if (loading) return <LoadingSpinner />;
 
   // this not working - bug
@@ -48,8 +62,8 @@ const Page: React.FC = () => {
             {/* Popover */}
             {post?.author?.bio && (
               <div className="absolute left-0 top-full mt-1 w-64 bg-white p-3 border border-gray-300 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                <h3 className="text-lg font-semibold">{post.author.name}</h3>
-                <p className="text-sm text-gray-700">{post.author.bio}</p>
+                <h3 className="text-lg font-semibold">{post.author?.name}</h3>
+                <p className="text-sm text-gray-700">{post.author?.bio}</p>
               </div>
             )}
           </li>
