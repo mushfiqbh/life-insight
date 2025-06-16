@@ -32,7 +32,7 @@ import award_mmm from "./logo_awards_mmm.png";
 import award_pm from "./logo_awards_pmeb.png";
 import award_adweek from "./logo_awards_adweek_mind.png";
 import award_fast from "./logo_awards_fast-company.png";
-import dunning_krugar from "./dunning_krugar.jpeg";
+import dunning_krugar from "./dunning_krugar.webp";
 import PostProps from "@/types/postProps";
 
 export const assets = {

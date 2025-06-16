@@ -44,7 +44,7 @@ const Spotlight = () => {
               <div className="max-h-[22rem] relative overflow-hidden rounded-tl-lg rounded-tr-lg">
                 <Image
                   priority
-                  src={assets.dunning_krugar}
+                  src={latestPost?.image ?? assets.dunning_krugar}
                   alt={latestPost?.title}
                   width={1920}
                   height={1080}
@@ -55,7 +55,6 @@ const Spotlight = () => {
                 <b className="text-green-600 uppercase">{latestPost?.label}</b>
                 <h1 className="text-2xl font-bold">{latestPost?.title}</h1>
                 <p className="text-gray-500">{latestPost?.subtitle}</p>
-                {/* <p className="text-sm text-gray-700">{latestPost?.author.name}</p> */}
               </div>
             </Link>
           )}
@@ -75,7 +74,7 @@ const Spotlight = () => {
                 <div className="h-72 relative overflow-hidden rounded-lg">
                   <Image
                     priority
-                    src={assets.dunning_krugar}
+                    src={adminChoice?.image ?? assets.dunning_krugar}
                     fill
                     sizes="(max-width: 768px) 100vw, 288px"
                     alt={adminChoice?.title}
