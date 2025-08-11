@@ -37,7 +37,7 @@ export default async function RootLayout({
             >
               <NextIntlClientProvider locale={locale} messages={messages}>
                 <Header />
-                {children}
+                <main className="mt-24 min-h-screen">{children}</main>
                 <Footer />
               </NextIntlClientProvider>
             </ThemeProvider>
